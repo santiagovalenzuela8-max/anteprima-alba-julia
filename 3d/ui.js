@@ -227,7 +227,7 @@
   var salaImg = document.getElementById('sala-img');
   var salaShade = document.querySelector('.sala__shade');
   var salaText = document.querySelector('.sala__text');
-  var K0x = 0.42, K0y = 0.48, Z0 = 1.18;
+  var K0x = 0.42, K0y = 0.48, Z0 = 1.06;   // zoom iniziale leggero: la foto non va ingrandita troppo
   function salaAt(p) {
     var kx = K0x + (1 - K0x) * p, ky = K0y + (1 - K0y) * p, z = Z0 + (1 - Z0) * p;
     salaBox.style.transform = 'scale(' + kx.toFixed(4) + ',' + ky.toFixed(4) + ')';

@@ -115,16 +115,49 @@ p { margin: 0; }
 .sala__pin { position: relative; height: 100svh; min-height: 560px; display: grid; place-items: center; overflow: hidden; }
 /* L'ovale è un contenitore con bordi arrotondati, più grande dello schermo (142%: così l'ellisse
    copre gli angoli). Si anima solo con transform: fluido anche sui telefoni. */
+/* La foto originale è larga ~1000 px: invece di tutto schermo si apre in un grande riquadro
+   vicino alla sua misura reale, così resta nitida. */
+.sala__stage { position: relative; width: min(calc(100% - 2 * var(--gutter)), 1120px); height: min(82svh, 780px); border-radius: 18px; overflow: hidden; isolation: isolate; }
 .sala__media { position: absolute; left: -21%; top: -21%; width: 142%; height: 142%; border-radius: 50%; overflow: hidden; transform: scale(.42, .48); will-change: transform; }
-.sala__img { position: absolute; left: 14.79%; top: 14.79%; width: 70.42%; height: 70.42%; transform: scale(2.81, 2.46); will-change: transform; }
-.sala__img img { width: 100%; height: 100%; object-fit: cover; }
+.sala__img { position: absolute; left: 14.79%; top: 14.79%; width: 70.42%; height: 70.42%; transform: scale(2.524, 2.208); }
+.sala__img img { width: 100%; height: 100%; object-fit: cover; image-rendering: auto; }
 .sala__shade { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, rgba(42,31,28,.62)); opacity: 0; pointer-events: none; }
-.sala__text { position: absolute; left: var(--gutter); bottom: clamp(28px, 6vw, 72px); max-width: 560px; color: #fff; display: grid; gap: 12px; opacity: 0; }
+.sala__text { position: absolute; left: clamp(20px, 4vw, 48px); right: 20px; bottom: clamp(24px, 5vw, 56px); max-width: 560px; color: #fff; display: grid; gap: 12px; opacity: 0; }
 .sala__text p { color: #f6ece6; font-size: 1.08rem; }
 .no-motion .sala__media, .no-gsap .sala__media, .no-motion .sala__img, .no-gsap .sala__img { transform: none; }
 .no-motion .sala__media, .no-gsap .sala__media { border-radius: 0; left: 0; top: 0; width: 100%; height: 100%; }
 .no-motion .sala__img, .no-gsap .sala__img { left: 0; top: 0; width: 100%; height: 100%; }
 .no-motion .sala__shade, .no-gsap .sala__shade, .no-motion .sala__text, .no-gsap .sala__text { opacity: 1; }
+
+/* ---------- Il fuoco: video guidato dallo scroll ----------
+   La sezione è alta 280svh; dentro, un riquadro "sticky" resta fermo sullo schermo
+   mentre lo scroll fa avanzare i fotogrammi. Niente pin JS: funziona anche senza GSAP. */
+.fire { position: relative; height: 280svh; background: #0d0706; color: #fff; }
+.fire__stick { position: sticky; top: 0; height: 100svh; min-height: 520px; overflow: hidden; }
+.fire__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; background: #0d0706 center / cover no-repeat; }
+.fire__glow { position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(60% 55% at 38% 45%, rgba(255,140,40,var(--heat, 0)), transparent 70%),
+    linear-gradient(90deg, rgba(13,7,6,.1) 30%, rgba(13,7,6,.75) 100%),
+    linear-gradient(180deg, rgba(13,7,6,.35), transparent 25%, transparent 70%, rgba(13,7,6,.6));
+  mix-blend-mode: normal; }
+.fire__copy { position: absolute; right: var(--gutter); bottom: clamp(56px, 10vh, 120px); width: min(460px, calc(100% - 2 * var(--gutter))); display: grid; gap: 16px; justify-items: start; }
+.fire__copy h2 { color: #fff; font-size: clamp(2.2rem, 1.3rem + 2.8vw, 3.6rem); }
+.fire__copy p { color: #f3e2d4; font-size: 1.08rem; }
+.fire__line { opacity: 0; transform: translateY(18px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.fire__line.is-on { opacity: 1; transform: none; }
+.fire__bar { position: absolute; left: var(--gutter); right: var(--gutter); bottom: 24px; height: 2px; background: rgba(255,255,255,.15); border-radius: 2px; overflow: hidden; }
+.fire__bar i { position: absolute; inset: 0; background: linear-gradient(90deg, var(--gold), #ff9a3c); transform-origin: left; transform: scaleX(0); }
+.no-motion .fire { height: auto; }
+.no-motion .fire__stick { position: relative; }
+.no-motion .fire__line { opacity: 1; transform: none; }
+@media (max-width: 900px) {
+  .fire { height: 240svh; }
+  .fire__glow { background:
+    radial-gradient(70% 45% at 45% 40%, rgba(255,140,40,var(--heat, 0)), transparent 70%),
+    linear-gradient(180deg, rgba(13,7,6,.3), transparent 22%, transparent 45%, rgba(13,7,6,.88) 78%); }
+  .fire__copy { left: var(--gutter); right: auto; bottom: 108px; }
+}
 
 /* ---------- Servizi in orizzontale ---------- */
 .services { background: var(--paper); }
@@ -282,7 +315,8 @@ p { margin: 0; }
   .hero__facts strong { font-size: 1.25rem; }
   .hero__facts dd { font-size: .82rem; line-height: 1.35; }
 
-  .sala__pin { height: 78svh; }
+  .sala__pin { height: 86svh; }
+  .sala__stage { height: 72svh; border-radius: 14px; }
   .services__head, .dishes__head { grid-template-columns: 1fr; }
   .services__pin { min-height: 0; }
   .services__track { width: auto; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; scrollbar-width: none; }

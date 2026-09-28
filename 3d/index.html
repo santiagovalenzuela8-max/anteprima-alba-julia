@@ -128,14 +128,32 @@
   <!-- LA SALA: si apre dall'ovale del logo -->
   <section class="sala" id="sala">
     <div class="sala__pin">
-      <figure class="sala__media" id="sala-media">
-        <div class="sala__img" id="sala-img"><img src="img/sala.jpg" alt="La sala di Alba Iulia: parete capitonné bianca con il logo, tavoli apparecchiati e il bancone della caffetteria" width="1037" height="754" loading="lazy" decoding="async"></div>
-      </figure>
-      <div class="sala__shade" aria-hidden="true"></div>
-      <div class="sala__text">
-        <h2>Entrate pure.</h2>
-        <p>La parete capitonné, i lampadari di cristallo, il bancone della caffetteria e la sala apparecchiata. Tutto sotto lo stesso tetto, dal mattino alla sera.</p>
+      <div class="sala__stage">
+        <figure class="sala__media" id="sala-media">
+          <div class="sala__img" id="sala-img"><img src="img/sala-hd.jpg" alt="La sala di Alba Iulia: parete capitonné bianca con il logo, tavoli apparecchiati e il bancone della caffetteria" width="2074" height="1508" loading="lazy" decoding="async"></div>
+        </figure>
+        <div class="sala__shade" aria-hidden="true"></div>
+        <div class="sala__text">
+          <h2>Entrate pure.</h2>
+          <p>La parete capitonné, i lampadari di cristallo, il bancone della caffetteria e la sala apparecchiata. Tutto sotto lo stesso tetto, dal mattino alla sera.</p>
+        </div>
       </div>
+    </div>
+  </section>
+
+  <!-- IL FUOCO: il video avanza con lo scroll, fotogramma per fotogramma -->
+  <section class="fire" id="fuoco" aria-label="Il bancone: una fiamma versata nel bicchiere">
+    <div class="fire__stick">
+      <canvas class="fire__canvas" id="fire-canvas" role="img" aria-label="Al bancone, una fiamma viene versata da una lattiera d'acciaio dentro un bicchiere"></canvas>
+      <div class="fire__glow" aria-hidden="true"></div>
+      <div class="fire__copy">
+        <h2 class="fire__line fire__line--1">Al bancone si accende la serata.</h2>
+        <p class="fire__line fire__line--2">Dal caffè del mattino all'aperitivo, al bar di Alba Iulia si prepara tutto al momento, davanti a voi.</p>
+        <a class="btn btn--solid fire__line fire__line--3 js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei prenotare per un aperitivo da Alba Iulia.">
+          <svg aria-hidden="true"><use href="#wa"/></svg>Prenota l'aperitivo
+        </a>
+      </div>
+      <div class="fire__bar" aria-hidden="true"><i id="fire-progress"></i></div>
     </div>
   </section>
 
@@ -334,6 +352,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="ui.js"></script>
+<script src="fire.js"></script>
 <script type="module" src="wall.js"></script>
 </body>
 </html>
