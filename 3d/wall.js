@@ -101,7 +101,7 @@ function init() {
   }, { passive: true });
 
   let scrollK = 0;
-  addEventListener('scroll', () => { scrollK = Math.min(1, scrollY / Math.max(1, hero.offsetHeight)); }, { passive: true });
+  addEventListener('scroll', () => { scrollK = Math.min(1, Math.max(0, -hero.getBoundingClientRect().top / Math.max(1, hero.offsetHeight))); }, { passive: true });
 
   let lastW = 0, lastH = 0;
   function resize() {

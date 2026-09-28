@@ -23,6 +23,7 @@
   var lines = section.querySelectorAll('.fire__line');
   var bar = document.getElementById('fire-progress');
   var stick = section.querySelector('.fire__stick');
+  var hint = section.querySelector('.fire__hint');
 
   // Primo fotogramma subito come sfondo, così la sezione non è mai vuota
   canvas.style.backgroundImage = 'url(' + list[0] + ')';
@@ -96,9 +97,11 @@
     // la fiamma "scalda" la scena, e i testi entrano a metà percorso
     section.style.setProperty('--heat', (0.12 + 0.28 * Math.sin(p * Math.PI)).toFixed(3));
     if (bar) bar.style.transform = 'scaleX(' + p.toFixed(3) + ')';
-    lines[0] && lines[0].classList.toggle('is-on', p > 0.12 || reduced);
-    lines[1] && lines[1].classList.toggle('is-on', p > 0.3 || reduced);
-    lines[2] && lines[2].classList.toggle('is-on', p > 0.45 || reduced);
+    // è la prima sezione: il titolo è visibile da subito, il resto entra scorrendo
+    lines[0] && lines[0].classList.add('is-on');
+    lines[1] && lines[1].classList.toggle('is-on', p > 0.22 || reduced);
+    lines[2] && lines[2].classList.toggle('is-on', p > 0.4 || reduced);
+    if (hint) hint.classList.toggle('is-off', p > 0.04);
   }
   function request() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
 
