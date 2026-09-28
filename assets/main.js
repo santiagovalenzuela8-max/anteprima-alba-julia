@@ -18,6 +18,18 @@
     else img.addEventListener('error', function () { placeholder(img); });
   });
 
+  /* Link interni: con <base> servono a scorrere nella pagina, non a ricaricarla */
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var id = a.getAttribute('href').slice(1);
+      var el = id ? document.getElementById(id) : document.body;
+      if (!el) return;
+      e.preventDefault();
+      el.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      if (id) history.replaceState(null, '', location.pathname + location.search + '#' + id);
+    });
+  });
+
   /* Navigazione */
   var nav = document.querySelector('.nav');
   var toggle = document.getElementById('nav-toggle');
