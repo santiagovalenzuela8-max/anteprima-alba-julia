@@ -1,20 +1,9 @@
-# Alba Julia · anteprima sito
+# Alba Iulia · anteprima sito
 
-Sito statico (HTML/CSS/JS, nessuna build) per Alba Julia, Via Luigi Prina 21, Verona.
+Sito statico (HTML/CSS/JS, nessuna build) per Alba Iulia, Via Luigi Prina 21, Verona.
 Destinazione: `andiamonline.eu/anteprima-alba-julia/`. Tutti i percorsi sono relativi: basta copiare
 `index.html`, `assets/` e `img/` nella cartella `anteprima-alba-julia` del server.
 
-## Foto (`img/`)
-Le foto mancanti mostrano un segnaposto con etichetta. Nomi attesi:
-
-| File | Dove appare |
-|---|---|
-| `titolare.jpg` | Apertura (ritratto grande) |
-| `titolare-2.jpg` | Sezione "La famiglia" |
-| `ristorante.jpg`, `caffe.jpg`, `gastronomia.jpg`, `macelleria.jpg` | Quattro servizi |
-| `piatto-1.jpg` | Specialità |
-| `banco-1.jpg`, `banco-2.jpg` | Macelleria |
-| `galleria-1.jpg` … `galleria-6.jpg` | Galleria |
-
-## Colori
-Tutti in cima a `assets/style.css` (`:root`).
+- `img/`: foto ritagliate e ottimizzate dagli screenshot caricati (titolare, sala, insegna, banco…).
+- `assets/style.css`: tutti i colori del brand in cima (`:root`), presi dall'insegna e dal locale.
+- `assets/capitonne.svg`: motivo della parete capitonné; logo ovale ridisegnato in SVG dentro `index.html`.
