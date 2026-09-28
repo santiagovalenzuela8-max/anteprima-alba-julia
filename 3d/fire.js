@@ -1,6 +1,7 @@
 /* Video guidati dallo scroll (il fuoco, il dolce, ...).
    Ogni video è diviso in fotogrammi WebP numerati 001, 002, ... in due cartelle:
-   <dir>/d = computer, <dir>/m = telefono (meno fotogrammi e più piccoli).
+   <dir>/d = orizzontale (computer, tablet in orizzontale), <dir>/m = verticale 720×1280 già ritagliato
+   sul soggetto (telefoni, tablet in verticale), con meno fotogrammi.
    Nell'HTML ogni sezione dichiara: data-dir, data-count-d, data-count-m e, se serve,
    data-first (titolo visibile da subito) e data-focus (dove inquadrare sugli schermi verticali, 0–1).
    I fotogrammi si scaricano solo quando la sezione si avvicina e si disegnano su canvas
@@ -8,7 +9,8 @@
 (function () {
   'use strict';
   var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var mobile = matchMedia('(max-width: 900px), (pointer: coarse)').matches;
+  var coarse = matchMedia('(pointer: coarse)').matches;
+  function portrait() { return innerHeight > innerWidth; }
 
   document.querySelectorAll('.scrollvid[data-dir]').forEach(setup);
 
@@ -17,27 +19,32 @@
     var stick = section.querySelector('.fire__stick');
     if (!canvas || !stick) return;
 
-    var dir = section.getAttribute('data-dir') + (mobile ? '/m/' : '/d/');
-    var count = +section.getAttribute(mobile ? 'data-count-m' : 'data-count-d');
     var focus = parseFloat(section.getAttribute('data-focus') || '0.5');
     var first = section.hasAttribute('data-first');
-    var list = [];
-    for (var n = 1; n <= count; n++) list.push(dir + String(n).padStart(3, '0') + '.webp');
-    var N = list.length;
-    if (!N) return;
+    var vertical, list, N, frames, started, gen = 0;
+    // sceglie la serie di fotogrammi adatta allo schermo (e la ricambia se lo si ruota)
+    function choose() {
+      var v = portrait();
+      if (v === vertical) return false;
+      vertical = v; gen++;
+      var dir = section.getAttribute('data-dir') + (v ? '/m/' : '/d/');
+      var count = +section.getAttribute(v ? 'data-count-m' : 'data-count-d');
+      list = [];
+      for (var n = 1; n <= count; n++) list.push(dir + String(n).padStart(3, '0') + '.webp');
+      N = list.length; frames = new Array(N); started = false; current = -1;
+      canvas.style.backgroundImage = 'url(' + list[0] + ')';
+      return true;
+    }
 
     var ctx = canvas.getContext('2d', { alpha: false });
-    var frames = new Array(N), started = false;
     var current = -1, wanted = 0, ticking = false, near = false;
     var lines = section.querySelectorAll('.fire__line');
     var bar = section.querySelector('.fire__bar i');
     var hint = section.querySelector('.fire__hint');
 
-    // Primo fotogramma subito come sfondo, così la sezione non è mai vuota
-    canvas.style.backgroundImage = 'url(' + list[0] + ')';
 
     function size() {
-      var dpr = Math.min(devicePixelRatio || 1, mobile ? 1.5 : 1.75);
+      var dpr = Math.min(devicePixelRatio || 1, coarse ? 1.5 : 1.75);
       var w = Math.round(canvas.clientWidth * dpr), h = Math.round(canvas.clientHeight * dpr);
       if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; current = -1; }
     }
@@ -57,7 +64,8 @@
       var cw = canvas.width, ch = canvas.height, iw = img.naturalWidth, ih = img.naturalHeight;
       var s = Math.max(cw / iw, ch / ih);                     // effetto "cover"
       var w = iw * s, h = ih * s;
-      var fx = cw / ch < 1 ? focus : 0.5;                     // inquadratura sugli schermi verticali
+      // i fotogrammi verticali sono già centrati sul soggetto; gli orizzontali su schermo stretto si spostano su "focus"
+      var fx = !vertical && cw / ch < 1 ? focus : 0.5;
       ctx.drawImage(img, (cw - w) * fx, (ch - h) / 2, w, h);
       // se abbiamo disegnato un fotogramma vicino, quello giusto verrà ridisegnato appena arriva
       current = exact ? i : -2;
@@ -70,20 +78,21 @@
       var order = [];
       for (var k = 0; k < N; k += 8) order.push(k);
       for (var j = 0; j < N; j++) if (j % 8) order.push(j);
-      var i = 0, inflight = 0, MAX = 6;
+      var i = 0, inflight = 0, MAX = 6, my = gen, mine = frames, src = list;
       function next() {
-        while (inflight < MAX && i < order.length) {
+        while (my === gen && inflight < MAX && i < order.length) {
           (function (idx) {
             var img = new Image();
             img.decoding = 'async';
             inflight++;
             img.onload = img.onerror = function () {
               inflight--;
+              if (my !== gen) return;               // lo schermo è stato ruotato: serie abbandonata
               if (near && (idx === wanted || current < 0)) request();
               next();
             };
-            img.src = list[idx];
-            frames[idx] = img;
+            img.src = src[idx];
+            mine[idx] = img;
           })(order[i++]);
         }
       }
@@ -121,7 +130,13 @@
       load();
       addEventListener('scroll', request, { passive: true });
     }
-    addEventListener('resize', function () { if (near) { size(); request(); } });
+    var far = false;
+    new IntersectionObserver(function (es) { far = es[0].isIntersecting; }, { rootMargin: '200% 0px' }).observe(section);
+    addEventListener('resize', function () {
+      if (choose() && far) load();
+      if (near) { size(); request(); }
+    });
+    choose();
     size();
     request();
   }
