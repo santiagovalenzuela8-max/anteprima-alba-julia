@@ -2,7 +2,7 @@
   'use strict';
 
   /* Numero WhatsApp del locale (formato internazionale, senza + e spazi) */
-  var WA_NUMBER = '390458626014';
+  var WA_NUMBER = '393456967120';
 
   var root = document.documentElement;
   var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
