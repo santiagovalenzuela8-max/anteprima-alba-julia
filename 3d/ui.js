@@ -129,6 +129,10 @@
   var carousel = document.getElementById('carousel');
   var ring = document.getElementById('ring');
   var items = Array.prototype.slice.call(ring.children);
+  var shades = items.map(function (it) { var sh = document.createElement('span'); sh.className = 'carousel__shade'; it.appendChild(sh); return sh; });
+  var lastOp = items.map(function () { return -1; });
+  var front = -1, running = false;
+  var autoSpin = !reduced && !matchMedia('(pointer: coarse)').matches;
   var N = items.length, step = 360 / N;
   var rot = 0, vel = 0, target = null, dragging = false, moved = 0, lastX = 0, inView = false, idle = 0;
   function radius() { return parseFloat(getComputedStyle(carousel).getPropertyValue('--r')) || 480; }
@@ -138,37 +142,42 @@
   }
   function paint() {
     ring.style.transform = 'translateZ(' + (-radius()) + 'px) rotateY(' + rot + 'deg)';
+    var nf = -1;
     items.forEach(function (it, i) {
       var a = ((i * step + rot) % 360 + 540) % 360 - 180; // 0 = di fronte
-      var f = Math.cos(a * Math.PI / 180);
-      it.style.filter = 'brightness(' + (0.45 + 0.55 * Math.max(0, f)).toFixed(2) + ')';
-      it.tabIndex = Math.abs(a) < step / 2 ? 0 : -1;
+      var op = Math.round((1 - Math.max(0, Math.cos(a * Math.PI / 180))) * 55) / 100;
+      if (op !== lastOp[i]) { shades[i].style.opacity = op; lastOp[i] = op; }
+      if (Math.abs(a) < step / 2) nf = i;
     });
+    if (nf !== front) { items.forEach(function (it, i) { it.tabIndex = i === nf ? 0 : -1; }); front = nf; }
   }
   function tick() {
+    var busy = dragging;
     if (!dragging) {
       if (target !== null) {
-        rot += (target - rot) * 0.12;
+        rot += (target - rot) * 0.14; busy = true;
         if (Math.abs(target - rot) < 0.05) { rot = target; target = null; }
       } else if (Math.abs(vel) > 0.02) {
-        rot += vel; vel *= 0.94;
-      } else if (!reduced && inView && performance.now() - idle > 2500) {
-        rot -= 0.06;
-      }
+        rot += vel; vel *= 0.93; busy = true;
+      } else if (autoSpin && performance.now() - idle > 2500) {
+        rot -= 0.05; busy = true;
+      } else if (autoSpin) busy = true; // in attesa di ripartire
     }
     paint();
-    if (inView) requestAnimationFrame(tick);
+    if (inView && busy) requestAnimationFrame(tick); else running = false;
   }
-  function snapBy(dir) { target = Math.round((target !== null ? target : rot) / step) * step + dir * step; vel = 0; idle = performance.now(); }
+  function kick() { if (!running && inView) { running = true; requestAnimationFrame(tick); } }
+  function snapBy(dir) { target = Math.round((target !== null ? target : rot) / step) * step + dir * step; vel = 0; idle = performance.now(); kick(); }
   layout(); paint();
   addEventListener('resize', function () { layout(); paint(); });
   new IntersectionObserver(function (es) {
-    var was = inView; inView = es[0].isIntersecting;
-    if (inView && !was) requestAnimationFrame(tick);
+    inView = es[0].isIntersecting;
+    kick();
   }).observe(carousel);
   carousel.addEventListener('pointerdown', function (e) {
     dragging = true; moved = 0; lastX = e.clientX; vel = 0; target = null;
     carousel.setPointerCapture(e.pointerId);
+    kick();
   });
   carousel.addEventListener('pointermove', function (e) {
     if (!dragging) return;
@@ -185,6 +194,7 @@
     } else {
       target = Math.round((rot + vel * 12) / step) * step; vel = 0;
     }
+    kick();
   }
   carousel.addEventListener('pointerup', endDrag);
   carousel.addEventListener('pointercancel', function () { dragging = false; });
@@ -203,22 +213,33 @@
   if (!hasGsap || reduced) return;
   var gsap = window.gsap;
   gsap.registerPlugin(window.ScrollTrigger);
+  window.ScrollTrigger.config({ ignoreMobileResize: true });
 
   // Titolo: le parole entrano una dopo l'altra, finita l'intro
   var title = document.getElementById('hero-title');
   title.innerHTML = title.textContent.trim().split(/\s+/).map(function (w) { return '<span class="w">' + w + '</span>'; }).join(' ');
-  gsap.from(title.querySelectorAll('.w'), { yPercent: 60, opacity: 0, duration: 1, ease: 'power3.out', stagger: 0.06, delay: 1.45 });
-  gsap.from('.hero__kicker, .hero__lead, .hero__actions, .hero__facts', { y: 20, opacity: 0, duration: .9, ease: 'power3.out', stagger: .08, delay: 1.8 });
-  gsap.from('.owner', { scale: .9, opacity: 0, duration: 1.3, ease: 'power3.out', delay: 1.5 });
+  gsap.from(title.querySelectorAll('.w'), { yPercent: 60, opacity: 0, duration: 1, ease: 'power3.out', stagger: 0.05, delay: 0.95 });
+  gsap.from('.hero__kicker, .hero__lead, .hero__actions, .hero__facts', { y: 20, opacity: 0, duration: .9, ease: 'power3.out', stagger: .07, delay: 1.2 });
+  gsap.from('.owner', { scale: .9, opacity: 0, duration: 1.1, ease: 'power3.out', delay: 1 });
 
-  // La sala si apre dall'ovale del logo fino a tutto schermo
-  var sala = document.getElementById('sala-media');
-  gsap.timeline({
-    scrollTrigger: { trigger: '.sala__pin', start: 'top top', end: '+=110%', scrub: 0.6, pin: true }
-  })
-    .fromTo(sala, { clipPath: 'ellipse(30% 34% at 50% 50%)' }, { clipPath: 'ellipse(85% 85% at 50% 50%)', ease: 'none' }, 0)
-    .fromTo(sala.querySelector('img'), { scale: 1.18 }, { scale: 1, ease: 'none' }, 0)
-    .fromTo('.sala__pin', { '--shade': 0 }, { '--shade': 1, ease: 'none', duration: .35 }, .65);
+  // La sala si apre dall'ovale del logo fino a tutto schermo (solo transform e opacità)
+  var salaBox = document.getElementById('sala-media');
+  var salaImg = document.getElementById('sala-img');
+  var salaShade = document.querySelector('.sala__shade');
+  var salaText = document.querySelector('.sala__text');
+  var K0x = 0.42, K0y = 0.48, Z0 = 1.18;
+  function salaAt(p) {
+    var kx = K0x + (1 - K0x) * p, ky = K0y + (1 - K0y) * p, z = Z0 + (1 - Z0) * p;
+    salaBox.style.transform = 'scale(' + kx.toFixed(4) + ',' + ky.toFixed(4) + ')';
+    salaImg.style.transform = 'scale(' + (z / kx).toFixed(4) + ',' + (z / ky).toFixed(4) + ')';
+    var o = Math.max(0, (p - 0.65) / 0.35).toFixed(3);
+    salaShade.style.opacity = o; salaText.style.opacity = o;
+  }
+  salaAt(0);
+  window.ScrollTrigger.create({
+    trigger: '.sala__pin', start: 'top top', end: '+=110%', pin: true, anticipatePin: 1,
+    onUpdate: function (st) { salaAt(st.progress); }
+  });
 
   // I quattro servizi scorrono in orizzontale (solo schermi larghi)
   var mm = gsap.matchMedia();
@@ -227,7 +248,7 @@
     var dist = function () { return Math.max(0, track.scrollWidth - innerWidth); };
     gsap.to(track, {
       x: function () { return -dist(); }, ease: 'none',
-      scrollTrigger: { trigger: '.services__pin', start: 'top top', end: function () { return '+=' + dist(); }, scrub: 0.6, pin: true, invalidateOnRefresh: true }
+      scrollTrigger: { trigger: '.services__pin', start: 'top top', end: function () { return '+=' + dist(); }, scrub: 0.5, pin: true, anticipatePin: 1, invalidateOnRefresh: true }
     });
   });
 
