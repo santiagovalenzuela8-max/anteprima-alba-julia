@@ -152,6 +152,13 @@ p { margin: 0; }
 @keyframes drip { 0% { transform: scaleY(0); } 60% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }
 .fire__bar { position: absolute; left: var(--gutter); right: var(--gutter); bottom: 24px; height: 2px; background: rgba(255,255,255,.15); border-radius: 2px; overflow: hidden; }
 .fire__bar i { position: absolute; inset: 0; background: linear-gradient(90deg, var(--gold), #ff9a3c); transform-origin: left; transform: scaleX(0); }
+/* Il dolce: scena chiara, niente bagliore arancio; solo una sfumatura dietro al testo */
+.fire--light { height: 320svh; background: #f3ebe0; }
+.fire--light .fire__canvas { background-color: #f3ebe0; }
+.fire--light .fire__glow { background:
+  linear-gradient(90deg, rgba(42,20,17,0) 38%, rgba(42,20,17,.72) 100%),
+  linear-gradient(180deg, rgba(42,20,17,0) 55%, rgba(42,20,17,.45)); }
+.fire--light .fire__bar i { background: linear-gradient(90deg, var(--gold), var(--brand)); }
 .no-motion .fire { height: auto; }
 .no-motion .fire__stick { position: relative; }
 .no-motion .fire__line { opacity: 1; transform: none; }
@@ -161,6 +168,8 @@ p { margin: 0; }
     radial-gradient(70% 45% at 45% 40%, rgba(255,140,40,var(--heat, 0)), transparent 70%),
     linear-gradient(180deg, rgba(13,7,6,.3), transparent 22%, transparent 45%, rgba(13,7,6,.88) 78%); }
   .fire__copy { left: var(--gutter); right: auto; bottom: 108px; }
+  .fire--light { height: 260svh; }
+  .fire--light .fire__glow { background: linear-gradient(180deg, rgba(42,20,17,0) 38%, rgba(42,20,17,.82) 80%); }
 }
 
 /* ---------- Servizi in orizzontale ---------- */

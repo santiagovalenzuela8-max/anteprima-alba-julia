@@ -87,9 +87,9 @@
 <main id="contenuto">
 
   <!-- IL FUOCO: il video avanza con lo scroll, fotogramma per fotogramma -->
-  <section class="fire" id="fuoco" aria-label="Il bancone: una fiamma versata nel bicchiere">
+  <section class="fire scrollvid" id="fuoco" data-dir="fuoco" data-count-d="105" data-count-m="53" data-focus="0.42" data-first aria-label="Il bancone: una fiamma versata nel bicchiere">
     <div class="fire__stick">
-      <canvas class="fire__canvas" id="fire-canvas" role="img" aria-label="Al bancone, una fiamma viene versata da una lattiera d'acciaio dentro un bicchiere"></canvas>
+      <canvas class="fire__canvas" role="img" aria-label="Al bancone, una fiamma viene versata da una lattiera d'acciaio dentro un bicchiere"></canvas>
       <div class="fire__glow" aria-hidden="true"></div>
       <div class="fire__copy">
         <h2 class="fire__line fire__line--1">Al bancone si accende la serata.</h2>
@@ -99,7 +99,7 @@
         </a>
       </div>
       <p class="fire__hint" aria-hidden="true">Scorri per accendere</p>
-      <div class="fire__bar" aria-hidden="true"><i id="fire-progress"></i></div>
+      <div class="fire__bar" aria-hidden="true"><i></i></div>
     </div>
   </section>
 
@@ -269,6 +269,22 @@
       <figure class="butcher__photo">
         <img src="img/banco.jpg" alt="Un taglio di manzo marezzato affettato a mano al banco della macelleria" loading="lazy" decoding="async">
       </figure>
+    </div>
+  </section>
+
+  <!-- IL DOLCE: secondo video guidato dallo scroll -->
+  <section class="fire fire--light scrollvid" id="dolce" data-dir="dolce" data-count-d="102" data-count-m="61" data-focus="0.3" aria-label="Il dolce: un tortino al cioccolato con i frutti di bosco">
+    <div class="fire__stick">
+      <canvas class="fire__canvas" role="img" aria-label="Un tortino al cioccolato servito con fragole, mirtilli e ribes, decorato a mano"></canvas>
+      <div class="fire__glow" aria-hidden="true"></div>
+      <div class="fire__copy">
+        <h2 class="fire__line fire__line--1">E per finire, un dolce.</h2>
+        <p class="fire__line fire__line--2">La pasticceria della caffetteria: tortini al cioccolato, frutti di bosco e dolci della tradizione, preparati ogni giorno da gustare al tavolo o da portare a casa.</p>
+        <a class="btn btn--solid fire__line fire__line--3 js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei ordinare dei dolci da Alba Iulia.">
+          <svg aria-hidden="true"><use href="#wa"/></svg>Ordina i dolci
+        </a>
+      </div>
+      <div class="fire__bar" aria-hidden="true"><i></i></div>
     </div>
   </section>
 
