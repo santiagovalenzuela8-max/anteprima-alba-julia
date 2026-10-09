@@ -1,9 +1,12 @@
-# Alba Iulia · anteprima sito
+# Alba Iulia · albajulia.it
 
-Sito statico (HTML/CSS/JS, nessuna build) per Alba Iulia, Via Luigi Prina 21, Verona.
-Destinazione: `andiamonline.eu/anteprima-alba-julia/`. Tutti i percorsi sono relativi: basta copiare
-`index.html`, `assets/` e `img/` nella cartella `anteprima-alba-julia` del server.
+Sito del ristorante Alba Iulia (Via Luigi Prina 21, Verona), versione 3D. Sito statico, nessuna build.
 
-- `img/`: foto ritagliate e ottimizzate dagli screenshot caricati (titolare, sala, insegna, banco…).
-- `assets/style.css`: tutti i colori del brand in cima (`:root`), presi dall'insegna e dal locale.
-- `assets/capitonne.svg`: motivo della parete capitonné; logo ovale ridisegnato in SVG dentro `index.html`.
+- `index.html`, `style.css`: pagina e stile
+- `wall.js`: parete capitonné 3D (Three.js da CDN)
+- `ui.js`: menu, animazioni (GSAP da CDN), galleria, WhatsApp (`WA_NUMBER`)
+- `fire.js`: video guidati dallo scroll; fotogrammi in `fuoco/` e `dolce/` (`d` orizzontale, `m` verticale)
+- `img/`: foto del locale
+
+Pubblicazione: progetto Vercel collegato a questo repository (branch `main`), dominio `albajulia.it`.
+I video originali (`*.mp4`) e gli screenshot sono esclusi dalla pubblicazione (`.vercelignore`).
