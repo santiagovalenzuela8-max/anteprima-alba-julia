@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://albajulia.it/sitemap.xml
+Sitemap: https://albaiulia.it/sitemap.xml

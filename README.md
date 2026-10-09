@@ -1,4 +1,4 @@
-# Alba Iulia · albajulia.it
+# Alba Iulia · albaiulia.it
 
 Sito del ristorante Alba Iulia (Via Luigi Prina 21, Verona), versione 3D. Sito statico, nessuna build.
 
@@ -8,5 +8,5 @@ Sito del ristorante Alba Iulia (Via Luigi Prina 21, Verona), versione 3D. Sito s
 - `fire.js`: video guidati dallo scroll; fotogrammi in `fuoco/` e `dolce/` (`d` orizzontale, `m` verticale)
 - `img/`: foto del locale
 
-Pubblicazione: progetto Vercel collegato a questo repository (branch `main`), dominio `albajulia.it`.
+Pubblicazione: progetto Vercel collegato a questo repository (branch `main`), dominio `albaiulia.it`.
 I video originali (`*.mp4`) e gli screenshot sono esclusi dalla pubblicazione (`.vercelignore`).
