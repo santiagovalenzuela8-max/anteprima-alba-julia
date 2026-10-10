@@ -1,0 +1,25 @@
+name: Controllo dominio albaiulia.it
+on:
+  push:
+    branches: [claude/alba-julia-restaurant-site-ytj4qr]
+    paths: [.github/workflows/check-domain.yml]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: DNS
+        run: |
+          for t in NS A AAAA CAA; do echo "== albaiulia.it $t"; dig +short albaiulia.it $t @8.8.8.8; done
+          echo "== www CNAME"; dig +short www.albaiulia.it CNAME @8.8.8.8
+          echo "== registro .it"; dig +norecurse albaiulia.it NS @dns.nic.it | sed -n '/AUTHORITY SECTION/,/^$/p;/status:/p'
+      - name: HTTPS albaiulia.it
+        run: |
+          curl -sS -o /dev/null -w "https://albaiulia.it -> %{http_code} %{redirect_url}\n" https://albaiulia.it/ || true
+          curl -sS -o /dev/null -w "https://www.albaiulia.it -> %{http_code} %{redirect_url}\n" https://www.albaiulia.it/ || true
+          curl -sS -o /dev/null -w "http://albaiulia.it -> %{http_code} %{redirect_url}\n" http://albaiulia.it/ || true
+          echo "== certificato"; echo | openssl s_client -connect albaiulia.it:443 -servername albaiulia.it 2>&1 | grep -E "subject=|issuer=|Verify return|errno|alert|CONNECTED" | head -8 || true
+          echo "== titolo pagina"; curl -sS https://albaiulia.it/ | grep -o "<title>[^<]*</title>" || true
+      - name: Vercel risponde per il dominio? (forzando l'IP di Vercel)
+        run: |
+          curl -sS -o /dev/null -w "via 76.76.21.21 -> %{http_code}\n" --resolve albaiulia.it:443:76.76.21.21 https://albaiulia.it/ || true
+          curl -sS -I --resolve albaiulia.it:80:76.76.21.21 http://albaiulia.it/ | head -5 || true
