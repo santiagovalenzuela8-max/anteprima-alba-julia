@@ -90,6 +90,46 @@
     });
   }
 
+  /* ---------- Servizi: fila da scorrere col mouse (trascinando o con le frecce) ---------- */
+  (function () {
+    var track = document.getElementById('services-track');
+    if (!track) return;
+    var prev = document.getElementById('svc-prev'), next = document.getElementById('svc-next');
+    function step() { var c = track.children[0]; return c ? c.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 24) : 300; }
+    function update() {
+      var max = track.scrollWidth - track.clientWidth - 40;   // a pochi pixel dalla fine la fila è già "finita"
+      if (prev) prev.disabled = track.scrollLeft <= 2;
+      if (next) next.disabled = track.scrollLeft >= max;
+    }
+    if (prev) prev.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: reduced ? 'auto' : 'smooth' }); });
+    if (next) next.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: reduced ? 'auto' : 'smooth' }); });
+    track.addEventListener('scroll', update, { passive: true });
+    addEventListener('resize', update);
+    update();
+    // trascinamento col mouse (sul touch ci pensa lo scorrimento nativo)
+    var down = false, startX = 0, startLeft = 0, moved = 0;
+    track.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      down = true; moved = 0; startX = e.clientX; startLeft = track.scrollLeft;
+      track.classList.add('is-dragging'); track.setPointerCapture(e.pointerId);
+    });
+    track.addEventListener('pointermove', function (e) {
+      if (!down) return;
+      var dx = e.clientX - startX; moved = Math.max(moved, Math.abs(dx));
+      track.scrollLeft = startLeft - dx;
+    });
+    function end() {
+      if (!down) return;
+      down = false; track.classList.remove('is-dragging');
+      // riaggancia alla scheda più vicina
+      var s = step(), target = Math.round(track.scrollLeft / s) * s;
+      track.scrollTo({ left: target, behavior: reduced ? 'auto' : 'smooth' });
+    }
+    track.addEventListener('pointerup', end);
+    track.addEventListener('pointercancel', end);
+    track.addEventListener('click', function (e) { if (moved > 6) { e.preventDefault(); e.stopPropagation(); } }, true);
+  })();
+
   /* ---------- Il piatto gira quando scegli una specialità ---------- */
   var plateImg = document.querySelector('.dishes__plate img');
   document.querySelectorAll('.menu__item').forEach(function (d) {
@@ -243,17 +283,6 @@
     onUpdate: function (st) { salaAt(st.progress); }
   });
 
-  // I quattro servizi scorrono in orizzontale (solo schermi larghi)
-  var mm = gsap.matchMedia();
-  mm.add('(min-width: 901px)', function () {
-    var track = document.getElementById('services-track');
-    var pin = document.querySelector('.services__pin');
-    var dist = function () { return Math.max(0, track.scrollWidth - pin.clientWidth); };
-    gsap.to(track, {
-      x: function () { return -dist(); }, ease: 'none',
-      scrollTrigger: { trigger: '.services__pin', start: 'top top', end: function () { return '+=' + dist(); }, scrub: 0.5, pin: true, anticipatePin: 1, invalidateOnRefresh: true }
-    });
-  });
 
   // Parallasse leggero sull'insegna
   gsap.fromTo('.family__photo img', { yPercent: -8 }, { yPercent: 4, ease: 'none', scrollTrigger: { trigger: '.family', start: 'top bottom', end: 'bottom top', scrub: true } });

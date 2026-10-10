@@ -176,11 +176,23 @@ p { margin: 0; }
 .services { background: var(--paper); }
 /* Su computer la sezione resta ferma mentre le schede scorrono: tutto deve stare in uno schermo,
    sotto al menu, con le schede dimensionate sull'altezza disponibile. */
-.services__pin { min-height: 100svh; display: grid; grid-template-columns: 100%; align-content: center; gap: clamp(20px, 3vh, 40px); padding-top: calc(var(--nav-h) + clamp(16px, 3vh, 36px)); padding-bottom: clamp(20px, 4vh, 48px); overflow: hidden; }
-.services__head { max-width: var(--maxw); width: 100%; margin-inline: auto; padding-inline: var(--gutter); display: grid; grid-template-columns: 1.1fr 1fr; gap: 16px 64px; align-items: end; }
+/* Fila orizzontale da scorrere col mouse (trascinando o con le frecce) o col dito:
+   la pagina scorre normalmente, niente blocchi legati allo scroll. */
+.services__pin { display: grid; grid-template-columns: 100%; gap: clamp(24px, 3vw, 40px); padding-block: clamp(72px, 9vw, 120px); overflow: hidden; }
+.services__head { max-width: var(--maxw); width: 100%; margin-inline: auto; padding-inline: var(--gutter); display: grid; grid-template-columns: 1.1fr 1fr auto; gap: 16px 48px; align-items: end; }
+.services__ctrl { display: flex; gap: 10px; }
+.round.round--dark { border-color: var(--brand); color: var(--brand); background: transparent; }
+.round.round--dark:hover:not(:disabled) { background: var(--brand); border-color: var(--brand); color: #fff; }
+.round.round--dark:disabled { opacity: .3; cursor: default; }
 .services__head p { color: var(--ink-soft); font-size: 1.08rem; max-width: 34em; }
-.services__track { display: flex; gap: clamp(18px, 2.4vw, 32px); padding-inline: max(var(--gutter), calc((100% - var(--maxw)) / 2 + var(--gutter))); width: max-content; will-change: transform; }
-.service { width: clamp(240px, min(30vw, (100svh - var(--nav-h) - 340px) * 0.76), 400px); display: grid; gap: 10px; align-content: start; }
+.services__track { --pad: max(var(--gutter), calc((100% - var(--maxw)) / 2 + var(--gutter)));
+  display: flex; gap: clamp(18px, 2.4vw, 32px); padding-inline: var(--pad); padding-bottom: 8px;
+  overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--pad); scroll-behavior: smooth;
+  overscroll-behavior-x: contain; scrollbar-width: none; cursor: grab; user-select: none; -webkit-user-select: none; }
+.services__track::-webkit-scrollbar { display: none; }
+.services__track.is-dragging { cursor: grabbing; scroll-snap-type: none; scroll-behavior: auto; }
+.services__track img { -webkit-user-drag: none; pointer-events: none; }
+.service { flex: none; width: clamp(260px, 27vw, 380px); display: grid; gap: 10px; align-content: start; scroll-snap-align: start; }
 .service__media { aspect-ratio: 4 / 5; overflow: hidden; border-radius: 999px 999px 8px 8px; background: var(--cream); }
 .service__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease); }
 .service:hover .service__media img { transform: scale(1.06); }
@@ -333,10 +345,9 @@ p { margin: 0; }
   .sala__pin { height: 86svh; }
   .sala__stage { height: 72svh; border-radius: 14px; }
   .services__head, .dishes__head { grid-template-columns: 1fr; }
-  .services__pin { min-height: 0; padding-top: clamp(56px, 9vw, 96px); padding-bottom: clamp(40px, 7vw, 80px); }
-  .services__track { width: auto; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; scrollbar-width: none; }
-  .services__track::-webkit-scrollbar { display: none; }
-  .service { width: 78vw; max-width: 360px; flex: none; scroll-snap-align: center; }
+  .services__ctrl { display: none; }
+  .services__track { cursor: auto; }
+  .service { width: 78vw; max-width: 360px; scroll-snap-align: center; }
   .family__inner, .dishes__layout, .butcher__inner, .visit__inner { grid-template-columns: 1fr; }
   .family__photo { max-width: 440px; box-shadow: 12px 12px 0 var(--gold); }
   .dishes__plate { position: relative; top: 0; max-width: 320px; }
