@@ -19,10 +19,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sorts+Mill+Goudy:ital@0;1&family=Figtree:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="style.css">
-<link rel="preload" as="image" href="img/titolare.jpg">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preload" as="image" href="fuoco/d/001.webp" media="(orientation: landscape)" fetchpriority="high">
+<link rel="preload" as="image" href="fuoco/m/001.webp" media="(orientation: portrait)" fetchpriority="high">
 <script type="importmap">
 { "imports": {
-  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js",
   "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
 } }
 </script>
@@ -128,7 +131,7 @@
         <div class="owner__frame" id="owner-frame">
           <div class="owner__ring" aria-hidden="true"></div>
           <div class="owner__photo">
-            <img src="img/titolare.jpg" alt="Il titolare di Alba Iulia, sorridente, nel suo locale" width="764" height="954" fetchpriority="high">
+            <img src="img/titolare.webp" alt="Il titolare di Alba Iulia, sorridente, nel suo locale" width="764" height="954" decoding="async">
             <span class="owner__glare" aria-hidden="true"></span>
           </div>
         </div>
@@ -152,7 +155,7 @@
     <div class="sala__pin">
       <div class="sala__stage">
         <figure class="sala__media" id="sala-media">
-          <div class="sala__img" id="sala-img"><img src="img/sala-hd.jpg" alt="La sala di Alba Iulia: parete capitonné bianca con il logo, tavoli apparecchiati e il bancone della caffetteria" width="2074" height="1508" loading="lazy" decoding="async"></div>
+          <div class="sala__img" id="sala-img"><img src="img/sala-hd.webp" alt="La sala di Alba Iulia: parete capitonné bianca con il logo, tavoli apparecchiati e il bancone della caffetteria" width="2074" height="1508" loading="lazy" decoding="async"></div>
         </figure>
         <div class="sala__shade" aria-hidden="true"></div>
         <div class="sala__text">
@@ -172,22 +175,22 @@
       </header>
       <div class="services__track" id="services-track">
         <article class="service">
-          <div class="service__media"><img src="img/ristorante.jpg" alt="Tavoli apparecchiati con tovaglie bianche nella sala del ristorante" loading="lazy" decoding="async"></div>
+          <div class="service__media"><img src="img/ristorante.webp" alt="Tavoli apparecchiati con tovaglie bianche nella sala del ristorante" loading="lazy" decoding="async"></div>
           <h3>Ristorante</h3>
           <p>Un menu tra le regioni romene e quelle italiane. Primi, secondi e contorni di nostra produzione, anche nel dehors.</p>
         </article>
         <article class="service">
-          <div class="service__media"><img src="img/caffe.jpg" alt="Vassoio di dolci al cioccolato e sfogliatine della pasticceria" loading="lazy" decoding="async"></div>
+          <div class="service__media"><img src="img/caffe.webp" alt="Vassoio di dolci al cioccolato e sfogliatine della pasticceria" loading="lazy" decoding="async"></div>
           <h3>Caffetteria</h3>
           <p>Colazione, pasticceria fresca e aperitivo. Dalle 9 del mattino, sette giorni su sette.</p>
         </article>
         <article class="service">
-          <div class="service__media"><img src="img/gastronomia.jpg" alt="Il banco della gastronomia con orchidee e piante" loading="lazy" decoding="async"></div>
+          <div class="service__media"><img src="img/gastronomia.webp" alt="Il banco della gastronomia con orchidee e piante" loading="lazy" decoding="async"></div>
           <h3>Gastronomia</h3>
           <p>I nostri piatti pronti da portare via e un piccolo market di prodotti tipici romeni, moldavi e italiani.</p>
         </article>
         <article class="service">
-          <div class="service__media"><img src="img/macelleria.jpg" alt="Taglio di carne bovina marezzata al banco" loading="lazy" decoding="async"></div>
+          <div class="service__media"><img src="img/macelleria.webp" alt="Taglio di carne bovina marezzata al banco" loading="lazy" decoding="async"></div>
           <h3>Macelleria</h3>
           <p>Carne fresca selezionata e salumi artigianali, tagliati al momento come li chiedi tu.</p>
         </article>
@@ -199,7 +202,7 @@
   <section class="family" id="famiglia">
     <div class="wrap family__inner">
       <figure class="family__photo">
-        <img src="img/insegna.jpg" alt="L'insegna ovale sulla parete capitonné: Caffetteria Alba Iulia Gastronomia, dal 2004 famiglia Sbuciumelea" loading="lazy" decoding="async">
+        <img src="img/insegna.webp" alt="L'insegna ovale sulla parete capitonné: Caffetteria Alba Iulia Gastronomia, dal 2004 famiglia Sbuciumelea" loading="lazy" decoding="async">
       </figure>
       <div class="family__copy">
         <h2>Vent'anni fa abbiamo aperto la porta. Da allora non l'abbiamo più chiusa.</h2>
@@ -223,7 +226,7 @@
       </header>
       <div class="dishes__layout">
         <figure class="dishes__plate">
-          <img src="img/piatto.jpg" alt="Pranzo in sala: ali di pollo glassate, patate al forno e insalata di cavolo" loading="lazy" decoding="async">
+          <img src="img/piatto.webp" alt="Pranzo in sala: ali di pollo glassate, patate al forno e insalata di cavolo" loading="lazy" decoding="async">
         </figure>
         <div class="menu" role="list">
           <details class="menu__item" role="listitem" open>
@@ -272,7 +275,7 @@
         </a>
       </div>
       <figure class="butcher__photo">
-        <img src="img/banco.jpg" alt="Un taglio di manzo marezzato affettato a mano al banco della macelleria" loading="lazy" decoding="async">
+        <img src="img/banco.webp" alt="Un taglio di manzo marezzato affettato a mano al banco della macelleria" loading="lazy" decoding="async">
       </figure>
     </div>
   </section>
@@ -310,16 +313,16 @@
     </div>
     <div class="carousel" id="carousel" tabindex="0" aria-roledescription="carosello" aria-label="Foto del locale. Usa le frecce per girare.">
       <div class="carousel__ring" id="ring">
-        <button type="button" class="carousel__item"><img src="img/bancone.jpg" alt="Il bancone con il titolare al lavoro" loading="lazy" decoding="async"></button>
-        <button type="button" class="carousel__item"><img src="img/sala.jpg" alt="La sala con la parete capitonné e il logo" loading="lazy" decoding="async"></button>
-        <button type="button" class="carousel__item"><img src="img/caffe.jpg" alt="Dolci al cioccolato e sfogliatine" loading="lazy" decoding="async"></button>
-        <button type="button" class="carousel__item"><img src="img/bar.jpg" alt="Il bar con la macchina del caffè e le bottiglie" loading="lazy" decoding="async"></button>
-        <button type="button" class="carousel__item"><img src="img/piatto.jpg" alt="Pranzo in sala" loading="lazy" decoding="async"></button>
-        <button type="button" class="carousel__item"><img src="img/ristorante.jpg" alt="La sala con le vetrate verso il dehors" loading="lazy" decoding="async"></button>
-        <button type="button" class="carousel__item"><img src="img/gastronomia.jpg" alt="Il banco della gastronomia" loading="lazy" decoding="async"></button>
-        <button type="button" class="carousel__item"><img src="img/insegna.jpg" alt="L'insegna: dal 2004 famiglia Sbuciumelea" loading="lazy" decoding="async"></button>
-        <button type="button" class="carousel__item"><img src="img/banco.jpg" alt="Un taglio di manzo al banco" loading="lazy" decoding="async"></button>
-        <button type="button" class="carousel__item"><img src="img/titolare-og.jpg" alt="Il titolare" loading="lazy" decoding="async"></button>
+        <button type="button" class="carousel__item"><img src="img/bancone.webp" alt="Il bancone con il titolare al lavoro" loading="lazy" decoding="async"></button>
+        <button type="button" class="carousel__item"><img src="img/sala.webp" alt="La sala con la parete capitonné e il logo" loading="lazy" decoding="async"></button>
+        <button type="button" class="carousel__item"><img src="img/caffe.webp" alt="Dolci al cioccolato e sfogliatine" loading="lazy" decoding="async"></button>
+        <button type="button" class="carousel__item"><img src="img/bar.webp" alt="Il bar con la macchina del caffè e le bottiglie" loading="lazy" decoding="async"></button>
+        <button type="button" class="carousel__item"><img src="img/piatto.webp" alt="Pranzo in sala" loading="lazy" decoding="async"></button>
+        <button type="button" class="carousel__item"><img src="img/ristorante.webp" alt="La sala con le vetrate verso il dehors" loading="lazy" decoding="async"></button>
+        <button type="button" class="carousel__item"><img src="img/gastronomia.webp" alt="Il banco della gastronomia" loading="lazy" decoding="async"></button>
+        <button type="button" class="carousel__item"><img src="img/insegna.webp" alt="L'insegna: dal 2004 famiglia Sbuciumelea" loading="lazy" decoding="async"></button>
+        <button type="button" class="carousel__item"><img src="img/banco.webp" alt="Un taglio di manzo al banco" loading="lazy" decoding="async"></button>
+        <button type="button" class="carousel__item"><img src="img/titolare-og.webp" alt="Il titolare" loading="lazy" decoding="async"></button>
       </div>
     </div>
     <div class="carousel__ctrl">

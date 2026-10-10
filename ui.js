@@ -92,13 +92,15 @@
 
   /* ---------- Il piatto gira quando scegli una specialità ---------- */
   var plateImg = document.querySelector('.dishes__plate img');
-  var turn = 0;
   document.querySelectorAll('.menu__item').forEach(function (d) {
     d.addEventListener('toggle', function () {
       if (!d.open) return;
       document.querySelectorAll('.menu__item[open]').forEach(function (o) { if (o !== d) o.open = false; });
-      turn += 40;
-      if (plateImg && !reduced) plateImg.style.transform = 'scale(1.1) rotate(' + turn + 'deg)';
+      // un giro completo: alla fine la foto torna sempre dritta
+      if (plateImg && !reduced && plateImg.animate) {
+        plateImg.animate([{ transform: 'scale(1.1) rotate(0deg)' }, { transform: 'scale(1.1) rotate(360deg)' }],
+          { duration: 900, easing: 'cubic-bezier(.2,.7,.2,1)' });
+      }
     });
   });
 
@@ -245,7 +247,8 @@
   var mm = gsap.matchMedia();
   mm.add('(min-width: 901px)', function () {
     var track = document.getElementById('services-track');
-    var dist = function () { return Math.max(0, track.scrollWidth - innerWidth); };
+    var pin = document.querySelector('.services__pin');
+    var dist = function () { return Math.max(0, track.scrollWidth - pin.clientWidth); };
     gsap.to(track, {
       x: function () { return -dist(); }, ease: 'none',
       scrollTrigger: { trigger: '.services__pin', start: 'top top', end: function () { return '+=' + dist(); }, scrub: 0.5, pin: true, anticipatePin: 1, invalidateOnRefresh: true }

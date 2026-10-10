@@ -174,11 +174,13 @@ p { margin: 0; }
 
 /* ---------- Servizi in orizzontale ---------- */
 .services { background: var(--paper); }
-.services__pin { min-height: 100svh; display: grid; grid-template-columns: 100%; align-content: center; gap: clamp(28px, 4vw, 48px); padding-block: clamp(72px, 9vw, 120px); overflow: hidden; }
+/* Su computer la sezione resta ferma mentre le schede scorrono: tutto deve stare in uno schermo,
+   sotto al menu, con le schede dimensionate sull'altezza disponibile. */
+.services__pin { min-height: 100svh; display: grid; grid-template-columns: 100%; align-content: center; gap: clamp(20px, 3vh, 40px); padding-top: calc(var(--nav-h) + clamp(16px, 3vh, 36px)); padding-bottom: clamp(20px, 4vh, 48px); overflow: hidden; }
 .services__head { max-width: var(--maxw); width: 100%; margin-inline: auto; padding-inline: var(--gutter); display: grid; grid-template-columns: 1.1fr 1fr; gap: 16px 64px; align-items: end; }
 .services__head p { color: var(--ink-soft); font-size: 1.08rem; max-width: 34em; }
-.services__track { display: flex; gap: clamp(18px, 2.4vw, 32px); padding-inline: max(var(--gutter), calc((100vw - var(--maxw)) / 2 + var(--gutter))); width: max-content; will-change: transform; }
-.service { width: clamp(280px, 30vw, 420px); display: grid; gap: 12px; align-content: start; }
+.services__track { display: flex; gap: clamp(18px, 2.4vw, 32px); padding-inline: max(var(--gutter), calc((100% - var(--maxw)) / 2 + var(--gutter))); width: max-content; will-change: transform; }
+.service { width: clamp(240px, min(30vw, (100svh - var(--nav-h) - 340px) * 0.76), 400px); display: grid; gap: 10px; align-content: start; }
 .service__media { aspect-ratio: 4 / 5; overflow: hidden; border-radius: 999px 999px 8px 8px; background: var(--cream); }
 .service__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease); }
 .service:hover .service__media img { transform: scale(1.06); }
@@ -331,7 +333,7 @@ p { margin: 0; }
   .sala__pin { height: 86svh; }
   .sala__stage { height: 72svh; border-radius: 14px; }
   .services__head, .dishes__head { grid-template-columns: 1fr; }
-  .services__pin { min-height: 0; }
+  .services__pin { min-height: 0; padding-top: clamp(56px, 9vw, 96px); padding-bottom: clamp(40px, 7vw, 80px); }
   .services__track { width: auto; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; scrollbar-width: none; }
   .services__track::-webkit-scrollbar { display: none; }
   .service { width: 78vw; max-width: 360px; flex: none; scroll-snap-align: center; }

@@ -79,8 +79,13 @@
       for (var k = 0; k < N; k += 8) order.push(k);
       for (var j = 0; j < N; j++) if (j % 8) order.push(j);
       var i = 0, inflight = 0, MAX = 6, my = gen, mine = frames, src = list;
+      var keys = Math.ceil(N / 8);                 // i fotogrammi principali
+      var ready = document.readyState === 'complete';
+      if (!ready) addEventListener('load', function () { ready = true; next(); }, { once: true });
       function next() {
-        while (my === gen && inflight < MAX && i < order.length) {
+        // prima della fine del caricamento della pagina scarica solo i fotogrammi principali,
+        // così foto, stile e 3D non devono contendersi la connessione
+        while (my === gen && inflight < MAX && i < order.length && (ready || i < keys)) {
           (function (idx) {
             var img = new Image();
             img.decoding = 'async';
