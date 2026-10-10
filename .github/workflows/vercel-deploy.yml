@@ -1,0 +1,98 @@
+name: Pubblica su Vercel (ristorante-alba-iulia)
+
+# Crea (se manca) il progetto Vercel "ristorante-alba-iulia", pubblica il sito in produzione
+# e collega albaiulia.it + www.albaiulia.it. Serve il segreto VERCEL_TOKEN nel repository.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+concurrency: vercel-production
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      PROJECT: ristorante-alba-iulia
+      DOMAIN: albaiulia.it
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Controlla il token
+        id: tok
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then echo "::warning::Manca il segreto VERCEL_TOKEN: pubblicazione saltata"; echo "ok=false" >> $GITHUB_OUTPUT; exit 0; fi
+          curl -sf -H "Authorization: Bearer $VERCEL_TOKEN" https://api.vercel.com/v2/user | jq -r '"Account Vercel: " + .user.username'
+          echo "ok=true" >> $GITHUB_OUTPUT
+
+      - name: Trova l'ambito (account personale o team)
+        if: steps.tok.outputs.ok == 'true'
+        id: scope
+        run: |
+          API=https://api.vercel.com; H="Authorization: Bearer $VERCEL_TOKEN"
+          TEAM=""
+          # usa lo stesso ambito del progetto andiamo-online, se esiste in un team
+          for t in $(curl -s -H "$H" "$API/v2/teams?limit=50" | jq -r '.teams[]?.id'); do
+            if curl -sf -H "$H" "$API/v9/projects/andiamo-online?teamId=$t" >/dev/null; then TEAM=$t; fi
+          done
+          echo "team=$TEAM" >> $GITHUB_OUTPUT
+          echo "Team: ${TEAM:-account personale}"
+
+      - name: Crea il progetto se non esiste
+        if: steps.tok.outputs.ok == 'true'
+        id: proj
+        env:
+          TEAM: ${{ steps.scope.outputs.team }}
+        run: |
+          API=https://api.vercel.com; H="Authorization: Bearer $VERCEL_TOKEN"; Q=${TEAM:+?teamId=$TEAM}
+          ID=$(curl -s -H "$H" "$API/v9/projects/$PROJECT$Q" | jq -r '.id // empty')
+          if [ -z "$ID" ]; then
+            ID=$(curl -s -X POST -H "$H" -H "Content-Type: application/json" "$API/v11/projects$Q" \
+              -d "{\"name\":\"$PROJECT\",\"framework\":null}" | tee /dev/stderr | jq -r '.id // empty')
+            echo "Progetto creato: $ID"
+          else echo "Progetto esistente: $ID"; fi
+          [ -n "$ID" ] || { echo "::error::Impossibile creare il progetto"; exit 1; }
+          echo "id=$ID" >> $GITHUB_OUTPUT
+
+      - name: Pubblica in produzione
+        if: steps.tok.outputs.ok == 'true'
+        env:
+          TEAM: ${{ steps.scope.outputs.team }}
+          PID: ${{ steps.proj.outputs.id }}
+        run: |
+          npm i -g vercel@latest >/dev/null 2>&1
+          mkdir -p .vercel
+          ORG=${TEAM:-$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" https://api.vercel.com/v2/user | jq -r '.user.id')}
+          echo "{\"orgId\":\"$ORG\",\"projectId\":\"$PID\"}" > .vercel/project.json
+          vercel deploy --prod --yes --token "$VERCEL_TOKEN" | tee deploy.txt
+
+      - name: Collega albaiulia.it e www (togliendolo da altri progetti)
+        if: steps.tok.outputs.ok == 'true'
+        env:
+          TEAM: ${{ steps.scope.outputs.team }}
+          PID: ${{ steps.proj.outputs.id }}
+        run: |
+          API=https://api.vercel.com; H="Authorization: Bearer $VERCEL_TOKEN"; Q=${TEAM:+?teamId=$TEAM}; A=${TEAM:+&teamId=$TEAM}
+          for d in "$DOMAIN" "www.$DOMAIN"; do
+            for p in $(curl -s -H "$H" "$API/v9/projects?limit=100$A" | jq -r '.projects[].id'); do
+              [ "$p" = "$PID" ] && continue
+              if curl -sf -H "$H" "$API/v9/projects/$p/domains/$d$Q" >/dev/null; then
+                echo "Rimuovo $d dal progetto $p"; curl -s -X DELETE -H "$H" "$API/v9/projects/$p/domains/$d$Q"; echo
+              fi
+            done
+          done
+          curl -s -X POST -H "$H" -H "Content-Type: application/json" "$API/v10/projects/$PID/domains$Q" -d "{\"name\":\"$DOMAIN\"}"; echo
+          curl -s -X POST -H "$H" -H "Content-Type: application/json" "$API/v10/projects/$PID/domains$Q" \
+            -d "{\"name\":\"www.$DOMAIN\",\"redirect\":\"$DOMAIN\",\"redirectStatusCode\":308}"; echo
+          echo "== stato domini"; curl -s -H "$H" "$API/v9/projects/$PID/domains$Q" | jq -r '.domains[] | "\(.name) verificato=\(.verified) redirect=\(.redirect // "-")"'
+
+      - name: Verifica il sito
+        if: steps.tok.outputs.ok == 'true'
+        run: |
+          sleep 20
+          for u in https://$DOMAIN/ https://www.$DOMAIN/; do
+            curl -sS -o body.html -w "$u -> %{http_code} %{redirect_url}\n" "$u" || true
+          done
+          grep -o "<title>[^<]*</title>" body.html || true
+          echo | openssl s_client -connect $DOMAIN:443 -servername $DOMAIN 2>/dev/null | grep -E "subject=|issuer=" || true
