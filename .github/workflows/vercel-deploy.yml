@@ -31,11 +31,13 @@ jobs:
         id: scope
         run: |
           API=https://api.vercel.com; H="Authorization: Bearer $VERCEL_TOKEN"
-          TEAM=""
-          # usa lo stesso ambito del progetto andiamo-online, se esiste in un team
-          for t in $(curl -s -H "$H" "$API/v2/teams?limit=50" | jq -r '.teams[]?.id'); do
-            if curl -sf -H "$H" "$API/v9/projects/andiamo-online?teamId=$t" >/dev/null; then TEAM=$t; fi
-          done
+          # il progetto ristorante-alba-iulia è nel team Vercel di Andiamo Online
+          TEAM="team_F8I2L0fG6J3zoA4CDFCJAWb2"
+          if ! curl -sf -H "$H" "$API/v9/projects/$PROJECT?teamId=$TEAM" >/dev/null; then
+            echo "::error::Il token non ha accesso al team Vercel dove si trova il progetto. Crea un token con ambito sul team (non sull'account personale) e aggiorna il segreto VERCEL_TOKEN."
+            curl -s -H "$H" "$API/v9/projects/$PROJECT?teamId=$TEAM" | head -c 400; echo
+            exit 1
+          fi
           echo "team=$TEAM" >> $GITHUB_OUTPUT
           echo "Team: ${TEAM:-account personale}"
 
