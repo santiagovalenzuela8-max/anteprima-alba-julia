@@ -306,6 +306,12 @@ p { margin: 0; }
 .footer__meta a { color: #fff; }
 .footer__bye { font: italic 1.8rem/1 var(--f-display); color: var(--gold-soft); display: grid; gap: 6px; text-align: right; }
 .footer__bye small { font: .8rem var(--f-body); color: #c9b2a8; font-style: normal; }
+/* "Sito creato da" con il logo Andiamo Online */
+.made-by { margin-top: 40px; padding-top: 26px; border-top: 1px solid rgba(255,255,255,.12); display: flex; justify-content: center; }
+.made-by__link { display: inline-flex; align-items: center; gap: 14px; text-decoration: none; color: #c9b2a8; font-size: .88rem; letter-spacing: .02em; opacity: .9; transition: opacity .25s, transform .25s; }
+.made-by__link:hover { opacity: 1; transform: translateY(-1px); }
+.made-by__link img { height: 24px; width: auto; }
+@media (max-width: 560px) { .made-by__link { flex-direction: column; gap: 10px; } .made-by__link img { height: 20px; } }
 
 /* ---------- WhatsApp fisso ---------- */
 .wa-float { position: fixed; right: 20px; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 70; display: flex; align-items: center; gap: 10px; height: 60px; padding: 0 18px; border-radius: 999px; background: var(--wa); color: #fff; text-decoration: none; font-weight: 700; box-shadow: 0 18px 40px -14px rgba(20,90,50,.75); transition: transform .3s var(--ease), box-shadow .3s; }
