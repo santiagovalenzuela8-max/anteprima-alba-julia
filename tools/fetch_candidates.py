@@ -1,14 +1,19 @@
 # Cerca foto con licenza libera per ogni piatto (Wikimedia Commons + Openverse)
-import json, os, re, sys, time, urllib.parse, urllib.request
+import urllib.error, json, os, re, sys, time, urllib.parse, urllib.request
 UA = "AlbaIuliaMenuBot/1.0 (restaurant site build; GitHub Actions)"
 OUT = "candidates"; os.makedirs(OUT, exist_ok=True)
 dishes = json.load(open("tools/dishes.json"))
-def get(url):
-    req = urllib.request.Request(url, headers={"User-Agent": UA})
-    with urllib.request.urlopen(req, timeout=40) as r: return r.read()
+def get(url, tries=3):
+    for t in range(tries):
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": UA})
+            with urllib.request.urlopen(req, timeout=20) as r: return r.read()
+        except urllib.error.HTTPError as e:
+            if e.code == 429 and t < tries - 1: time.sleep(5 * (t + 1)); continue
+            raise
 def commons(q, n=5):
     p = {"action":"query","format":"json","generator":"search","gsrnamespace":"6","gsrsearch":q+" filetype:bitmap",
-         "gsrlimit":str(n),"prop":"imageinfo","iiprop":"url|size|extmetadata","iiurlwidth":"1200"}
+         "gsrlimit":str(n),"prop":"imageinfo","iiprop":"url|size|extmetadata","iiurlwidth":"960"}
     d = json.loads(get("https://commons.wikimedia.org/w/api.php?"+urllib.parse.urlencode(p)))
     res = []
     for pg in sorted(d.get("query",{}).get("pages",{}).values(), key=lambda x: x.get("index",0)):
@@ -35,13 +40,13 @@ for slug, qs in dishes.items():
                 if r["thumb"] in seen: continue
                 seen.add(r["thumb"]); r["query"] = q; cands.append(r)
             time.sleep(0.4)
-    cands = cands[:14]
+    cands = cands[:9]
     for k, c in enumerate(cands):
         fn = f"{OUT}/{slug}-{k:02d}.jpg"
         try:
             open(fn, "wb").write(get(c["thumb"])); c["file"] = fn
         except Exception as e: print("DLERR", slug, k, e)
-        time.sleep(0.2)
+        time.sleep(0.5)
     meta[slug] = [c for c in cands if "file" in c]
     print(slug, len(meta[slug]))
 json.dump(meta, open(f"{OUT}/meta.json","w"), indent=1, ensure_ascii=False)

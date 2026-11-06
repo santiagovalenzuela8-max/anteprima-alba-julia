@@ -10,11 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: python3 tools/fetch_candidates.py
+      - run: python3 -u tools/fetch_candidates.py
+        timeout-minutes: 30
       - name: Riduci e salva
         run: |
           sudo apt-get -qq install -y imagemagick >/dev/null || true
           for f in candidates/*.jpg; do convert "$f" -resize '1200x1200>' -quality 86 "$f" || rm -f "$f"; done
           du -sh candidates
           git config user.name github-actions; git config user.email github-actions@users.noreply.github.com
-          git add candidates && git commit -qm "Candidati foto menu" && git push origin HEAD:tmp-menu-foto
+          git add candidates && git commit -qm "Candidati foto menu" && git pull -q --rebase origin tmp-menu-foto || true; git push origin HEAD:tmp-menu-foto
