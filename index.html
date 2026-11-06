@@ -81,6 +81,7 @@
       <a href="#titolare">Il titolare</a>
       <a href="#locale">Il locale</a>
       <a href="#specialita">Specialità</a>
+      <a href="#carta">Menu</a>
       <a href="#macelleria">Macelleria</a>
       <a href="#galleria">Galleria</a>
       <a href="#dove">Dove siamo</a>
@@ -259,6 +260,399 @@
           </details>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- IL MENU COMPLETO -->
+  <section class="carta" id="carta" aria-labelledby="carta-title">
+    <div class="wrap">
+      <header class="carta__head">
+        <div>
+          <p class="carta__kicker">Meniu · Il menu</p>
+          <h2 id="carta-title">Il nostro menu</h2>
+        </div>
+        <p>Cucina tradizionale romena, preparata ogni giorno dalla famiglia Sbuciumelea. Scegli una sezione e sfoglia i piatti.</p>
+      </header>
+      <div class="carta__tabs" role="tablist" aria-label="Sezioni del menu">
+        <button type="button" role="tab" class="carta__tab" id="tab-antipasti" aria-controls="cat-antipasti" aria-selected="true"><span>Antipasti</span><small>Gustări</small></button>
+        <button type="button" role="tab" class="carta__tab" id="tab-ciorbe" aria-controls="cat-ciorbe" aria-selected="false" tabindex="-1"><span>Primi piatti</span><small>Ciorbe</small></button>
+        <button type="button" role="tab" class="carta__tab" id="tab-secondi" aria-controls="cat-secondi" aria-selected="false" tabindex="-1"><span>Secondi piatti</span><small>Felul secund</small></button>
+        <button type="button" role="tab" class="carta__tab" id="tab-gratar" aria-controls="cat-gratar" aria-selected="false" tabindex="-1"><span>Grigliate</span><small>Grătar</small></button>
+        <button type="button" role="tab" class="carta__tab" id="tab-contorni" aria-controls="cat-contorni" aria-selected="false" tabindex="-1"><span>Contorni e insalate</span><small>Garnituri și salate</small></button>
+        <button type="button" role="tab" class="carta__tab" id="tab-dolci" aria-controls="cat-dolci" aria-selected="false" tabindex="-1"><span>Dolci</span><small>Deserturi</small></button>
+      </div>
+      <div class="carta__panel" role="tabpanel" id="cat-antipasti" aria-labelledby="tab-antipasti">
+        <h3 class="carta__cat">Antipasti <span>Gustări</span></h3>
+        <ul class="carta__grid">
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/platou-traditional.webp" alt="Platou Tradițional" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Platou Tradițional<span class="dish__qty">2–4 persone</span></h4>
+              <p class="dish__desc">Tagliere di affettati e formaggi tradizionali romeni.</p>
+              <p class="dish__price">€ 20,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/platou-degustare.webp" alt="Platou Degustare" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Platou Degustare<span class="dish__qty">1 persona</span></h4>
+              <p class="dish__desc">Porzione singola di degustazione di prodotti tradizionali.</p>
+              <p class="dish__price">€ 7,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/trio-salate.webp" alt="Trio de Salate" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Trio de Salate</h4>
+              <p class="dish__desc">Tris di antipasti: insalata di melanzane, insalata boeuf e insalata di funghi.</p>
+              <p class="dish__price">€ 10,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/salata-vinete.webp" alt="Salată de Vinete cu Roșii" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Salată de Vinete cu Roșii</h4>
+              <p class="dish__desc">Salsa tradizionale di melanzane grigliate servita con pomodori freschi.</p>
+              <p class="dish__price">€ 7,00</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="carta__panel" role="tabpanel" id="cat-ciorbe" aria-labelledby="tab-ciorbe" hidden>
+        <h3 class="carta__cat">Primi piatti <span>Ciorbe</span></h3>
+        <ul class="carta__grid">
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/ciorba-burta.webp" alt="Ciorbă de Burtă" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Ciorbă de Burtă</h4>
+              <p class="dish__desc">Zuppa tradizionale di trippa di manzo con panna acida, aglio e peperoncino.</p>
+              <p class="dish__price">€ 11,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/ciorba-vacuta.webp" alt="Ciorbă de Văcuță" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Ciorbă de Văcuță</h4>
+              <p class="dish__desc">Zuppa di manzo e verdure.</p>
+              <p class="dish__price">€ 11,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/ciorba-afumatura.webp" alt="Ciorbă cu Afumătură" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Ciorbă cu Afumătură</h4>
+              <p class="dish__desc">Zuppa densa con carne affumicata.</p>
+              <p class="dish__price">€ 10,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/ciorba-perisoare.webp" alt="Ciorbă de Perișoare" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Ciorbă de Perișoare</h4>
+              <p class="dish__desc">Zuppa con polpette di carne trita e verdure.</p>
+              <p class="dish__price">€ 10,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/ciorba-fasole.webp" alt="Ciorbă de Fasole cu Afumătură" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Ciorbă de Fasole cu Afumătură</h4>
+              <p class="dish__desc">Zuppa di fagioli e carne affumicata.</p>
+              <p class="dish__price">€ 10,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/ciorba-radauteana.webp" alt="Ciorbă Rădăuțeană" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Ciorbă Rădăuțeană</h4>
+              <p class="dish__desc">Zuppa tipica di pollo acida con aglio, uovo e panna acida.</p>
+              <p class="dish__price">€ 10,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/bors-porc.webp" alt="Borș de Porc" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Borș de Porc</h4>
+              <p class="dish__desc">Zuppa agra tradizionale con carne di maiale e verdure.</p>
+              <p class="dish__price">€ 10,00</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="carta__panel" role="tabpanel" id="cat-secondi" aria-labelledby="tab-secondi" hidden>
+        <h3 class="carta__cat">Secondi piatti <span>Felul secund</span></h3>
+        <ul class="carta__grid">
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/sarmale.webp" alt="Sarmale cu Mămăliguță și Smântână" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Sarmale cu Mămăliguță și Smântână</h4>
+              <p class="dish__desc">Involtini di carne tritata in foglia di verza cotti al forno, serviti con polenta, panna acida e peperoncino.</p>
+              <p class="dish__price">€ 16,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/tochitura.webp" alt="Tochitură cu Mămăligă, Brânză Rasă și Ou" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Tochitură cu Mămăligă, Brânză Rasă și Ou</h4>
+              <p class="dish__desc">Spezzatino tradizionale di maiale e salsicce, servito con polenta calda, formaggio grattugiato e uovo al tegamino.</p>
+              <p class="dish__price">€ 16,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/gulas.webp" alt="Gulaș de Vită" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Gulaș de Vită</h4>
+              <p class="dish__desc">Spezzatino denso di manzo cotto a fuoco lento con spezie e verdure.</p>
+              <p class="dish__price">€ 16,00</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="carta__panel" role="tabpanel" id="cat-gratar" aria-labelledby="tab-gratar" hidden>
+        <h3 class="carta__cat">Grigliate <span>Grătar</span></h3>
+        <ul class="carta__grid">
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/mici.webp" alt="Mici producție proprie" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Mici producție proprie<span class="dish__qty">al pezzo</span></h4>
+              <p class="dish__desc">Polpette cilindriche di carne macinata speziata alla griglia, di nostra produzione.</p>
+              <p class="dish__price">€ 3,50</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/cabanos.webp" alt="Cabanos la grătar" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Cabanos la grătar<span class="dish__qty">2 pz</span></h4>
+              <p class="dish__desc">Salsicce affumicate tipo Cabanos alla griglia.</p>
+              <p class="dish__price">€ 6,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/pancetta.webp" alt="Pancetta" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Pancetta<span class="dish__qty">2 pz</span></h4>
+              <p class="dish__desc">Pancetta di maiale tagliata fine e grigliata.</p>
+              <p class="dish__price">€ 6,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/carnat.webp" alt="Cârnat proaspăt" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Cârnat proaspăt<span class="dish__qty">300 g</span></h4>
+              <p class="dish__desc">Salsiccia fresca artigianale alla griglia.</p>
+              <p class="dish__price">€ 12,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/pulpe-pui.webp" alt="Pulpe de pui la grătar" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Pulpe de pui la grătar<span class="dish__qty">2 pz</span></h4>
+              <p class="dish__desc">Cosce di pollo disossate alla griglia.</p>
+              <p class="dish__price">€ 12,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/piept-pui.webp" alt="Piept de pui la grătar" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Piept de pui la grătar<span class="dish__qty">300 g</span></h4>
+              <p class="dish__desc">Petto di pollo succulento alla griglia.</p>
+              <p class="dish__price">€ 12,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/ceafa-porc.webp" alt="Ceafă de porc la grătar" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Ceafă de porc la grătar<span class="dish__qty">400 g</span></h4>
+              <p class="dish__desc">Coppa di maiale marinata e cotta alla griglia.</p>
+              <p class="dish__price">€ 14,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/bisteca.webp" alt="Bistecă de mânzat" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Bistecă de mânzat<span class="dish__qty">300 g</span></h4>
+              <p class="dish__desc">Bistecca di manzo ai ferri.</p>
+              <p class="dish__price">€ 14,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/costata.webp" alt="Costată de mânzat" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Costată de mânzat<span class="dish__qty">500 g</span></h4>
+              <p class="dish__desc">Costata di manzo pregiata ai ferri.</p>
+              <p class="dish__price">€ 22,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/grill-mix.webp" alt="Grill mix" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Grill mix<span class="dish__qty">1 persona</span></h4>
+              <p class="dish__desc">Selezione assortita monoporzione di carni alla griglia.</p>
+              <p class="dish__price">€ 22,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/platou-alba-iulia.webp" alt="Platou Alba Iulia" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Platou Alba Iulia<span class="dish__qty">2–4 persone</span></h4>
+              <p class="dish__desc">Tagliere misto gigante con specialità di carne alla griglia.</p>
+              <p class="dish__price">€ 49,00</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="carta__panel" role="tabpanel" id="cat-contorni" aria-labelledby="tab-contorni" hidden>
+        <h3 class="carta__cat">Contorni e insalate <span>Garnituri și salate</span></h3>
+        <ul class="carta__grid">
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/cartofi-prajiti.webp" alt="Cartofi prăjiți" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Cartofi prăjiți</h4>
+              <p class="dish__desc">Patatine fritte.</p>
+              <p class="dish__price">€ 4,50</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/piure.webp" alt="Piure de cartofi" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Piure de cartofi</h4>
+              <p class="dish__desc">Purè di patate.</p>
+              <p class="dish__price">€ 4,50</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/salata-varza.webp" alt="Salată de varză" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Salată de varză</h4>
+              <p class="dish__desc">Insalata di cavolo.</p>
+              <p class="dish__price">€ 4,50</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/salata-vara.webp" alt="Salată de vară" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Salată de vară</h4>
+              <p class="dish__desc">Insalata estiva.</p>
+              <p class="dish__price">€ 4,50</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/salata-mixta.webp" alt="Salată mixtă" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Salată mixtă</h4>
+              <p class="dish__desc">Insalata mista.</p>
+              <p class="dish__price">€ 4,50</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/muraturi.webp" alt="Murături mixte" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Murături mixte</h4>
+              <p class="dish__desc">Verdure miste in salamoia.</p>
+              <p class="dish__price">€ 4,50</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/varza-murata.webp" alt="Varză murată" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Varză murată</h4>
+              <p class="dish__desc">Cavolo in salamoia.</p>
+              <p class="dish__price">€ 4,50</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/verdura-coapta.webp" alt="Verdură coaptă / gătită" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Verdură coaptă / gătită</h4>
+              <p class="dish__desc">Verdura cotta.</p>
+              <p class="dish__price">€ 5,50</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/cartofi-branza.webp" alt="Cartofi prăjiți cu brânză rasă" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Cartofi prăjiți cu brânză rasă</h4>
+              <p class="dish__desc">Patatine fritte con formaggio grattugiato.</p>
+              <p class="dish__price">€ 7,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/mamaliga-branza.webp" alt="Mămăligă cu brânză, smântână și ou" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Mămăligă cu brânză, smântână și ou</h4>
+              <p class="dish__desc">Polenta con formaggio, panna acida e uovo.</p>
+              <p class="dish__price">€ 12,00</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="carta__panel" role="tabpanel" id="cat-dolci" aria-labelledby="tab-dolci" hidden>
+        <h3 class="carta__cat">Dolci <span>Deserturi</span></h3>
+        <ul class="carta__grid">
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/papanasi.webp" alt="Papanași" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Papanași</h4>
+              <p class="dish__desc">Frittelle dolci della casa a base di formaggio fresco, servite con panna acida e confettura di frutta.</p>
+              <p class="dish__price">€ 5,00</p>
+            </div>
+          </li>
+          <li class="dish">
+            <figure class="dish__media"><img src="img/menu/clatite-ana-lugojana.webp" alt="Clătite Ana Lugojana" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h4 class="dish__name">Clătite Ana Lugojana</h4>
+              <p class="dish__desc">Crêpes tradizionali cotte al forno e ripiene di ricotta dolce e uvetta.</p>
+              <p class="dish__price">€ 8,00</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <footer class="carta__foot">
+        <p>Coperto € 2,00 a persona. Per allergie e intolleranze chiedi al personale.</p>
+        <a class="btn btn--solid js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei prenotare un tavolo da Alba Iulia."><svg aria-hidden="true"><use href="#wa"/></svg>Prenota un tavolo</a>
+      </footer>
+      <details class="carta__credits">
+        <summary>Le foto sono indicative del piatto servito · Crediti fotografici</summary>
+        <ul>
+          <li>Platou Tradițional: <a href="https://commons.wikimedia.org/wiki/File:Charcuterie_and_cheese_board_from_restaurant_Au_Bureau_at_Velizy_in_France_-_2019-09-25.jpg" target="_blank" rel="noopener nofollow">Bretwa</a>, CC BY-SA 4.0</li>
+          <li>Platou Degustare: <a href="https://commons.wikimedia.org/wiki/File:Cheese_%26_meat_plate_-_Sarah_Stierch.jpg" target="_blank" rel="noopener nofollow">Sarah Stierch</a>, CC BY 4.0</li>
+          <li>Trio de Salate: <a href="https://commons.wikimedia.org/wiki/File:2023_Sa%C5%82atka_jarzynowa_(1).jpg" target="_blank" rel="noopener nofollow">Jacek Halicki</a>, CC BY-SA 4.0</li>
+          <li>Salată de Vinete cu Roșii: <a href="https://commons.wikimedia.org/wiki/File:Salat%C4%83_de_vinete.jpg" target="_blank" rel="noopener nofollow">Sacha47</a>, CC BY-SA 4.0</li>
+          <li>Ciorbă de Burtă: <a href="https://commons.wikimedia.org/wiki/File:Ciorba_de_burta_2.jpg" target="_blank" rel="noopener nofollow">Sacha47</a>, CC BY-SA 4.0</li>
+          <li>Ciorbă de Văcuță: <a href="https://commons.wikimedia.org/wiki/File:Ciorba_de_vacuta.jpg" target="_blank" rel="noopener nofollow">Nicubunu</a>, CC BY-SA 3.0</li>
+          <li>Ciorbă cu Afumătură: <a href="https://commons.wikimedia.org/wiki/File:Ciorb%C4%83_%C8%9B%C4%83r%C4%83neasc%C4%83.png" target="_blank" rel="noopener nofollow">Sacha47</a>, CC BY-SA 4.0</li>
+          <li>Ciorbă de Perișoare: <a href="https://commons.wikimedia.org/wiki/File:Ciorb%C4%83_cu_peri%C8%99oare.jpg" target="_blank" rel="noopener nofollow">Sacha47</a>, CC BY-SA 4.0</li>
+          <li>Ciorbă de Fasole cu Afumătură: <a href="https://commons.wikimedia.org/wiki/File:Ciorba_de_fasole_cu_afumatora_IMG_20260707_163453.jpg" target="_blank" rel="noopener nofollow">Korinna</a>, CC0</li>
+          <li>Ciorbă Rădăuțeană: <a href="https://commons.wikimedia.org/wiki/File:Ciorba_radauteana.jpg" target="_blank" rel="noopener nofollow">Romaniancook</a>, CC BY-SA 4.0</li>
+          <li>Borș de Porc: <a href="https://commons.wikimedia.org/wiki/File:Inalsumang_Karne_(Sour_Soup_Pork).jpg" target="_blank" rel="noopener nofollow">MarvinBikolano</a>, CC BY-SA 4.0</li>
+          <li>Sarmale cu Mămăliguță și Smântână: <a href="https://commons.wikimedia.org/wiki/File:Sarmale_with_mamalig%C4%83.jpg" target="_blank" rel="noopener nofollow">Nicubunu</a>, CC BY-SA 3.0</li>
+          <li>Tochitură cu Mămăligă, Brânză Rasă și Ou: <a href="https://commons.wikimedia.org/wiki/File:Tochitura-moldoveneasca.jpg" target="_blank" rel="noopener nofollow">Nicubunu</a>, CC BY-SA 3.0</li>
+          <li>Gulaș de Vită: <a href="https://commons.wikimedia.org/wiki/File:Hungarian_Goulash_Recipe.png" target="_blank" rel="noopener nofollow">Valeva1010</a>, CC BY-SA 4.0</li>
+          <li>Mici producție proprie: <a href="https://commons.wikimedia.org/wiki/File:Mititei_or_mici.jpg" target="_blank" rel="noopener nofollow">Marcmiquel</a>, CC BY-SA 4.0</li>
+          <li>Cabanos la grătar: <a href="https://commons.wikimedia.org/wiki/File:Kabanosy_pepperoni.jpg" target="_blank" rel="noopener nofollow">Ming44</a>, CC BY 3.0</li>
+          <li>Pancetta: <a href="https://commons.wikimedia.org/wiki/File:Panceta_Asada-_Perejil_y_ajo.JPG" target="_blank" rel="noopener nofollow">Tamorlan</a>, CC BY 3.0</li>
+          <li>Cârnat proaspăt: <a href="https://commons.wikimedia.org/wiki/File:Savory_breakfast_plate_with_sausages,_eggs,_and_fresh_vegetables_on_a_wooden_table.jpg" target="_blank" rel="noopener nofollow">Shixart1985</a>, CC BY 2.0</li>
+          <li>Pulpe de pui la grătar: <a href="https://wordpress.org/photos/photo/1636a16e72/" target="_blank" rel="noopener nofollow">Vishnu Chandra</a>, CC0 1.0</li>
+          <li>Piept de pui la grătar: <a href="https://commons.wikimedia.org/wiki/File:Grilled_Chicken_Breasts_(28905381261).jpg" target="_blank" rel="noopener nofollow">Sharon Chen from Austin, United States</a>, CC BY 2.0</li>
+          <li>Ceafă de porc la grătar: <a href="https://commons.wikimedia.org/wiki/File:Grilled_pork_chops.jpg" target="_blank" rel="noopener nofollow">Roderick Suñaz Sumalinog</a>, CC BY-SA 4.0</li>
+          <li>Bistecă de mânzat: <a href="https://commons.wikimedia.org/wiki/File:Steak_auf_Grill.jpg" target="_blank" rel="noopener nofollow">Jon Sullivan</a>, Public domain</li>
+          <li>Costată de mânzat: <a href="https://commons.wikimedia.org/wiki/File:Bistecca_alla_fiorentina-01.jpg" target="_blank" rel="noopener nofollow">mike packard</a>, CC BY-SA 2.0</li>
+          <li>Grill mix: <a href="https://commons.wikimedia.org/wiki/File:Mixed_meat_platter_in_a_restaurant_in_Mostar_-_Bosnia_and_Herzegovina_(2025)-bs.jpg" target="_blank" rel="noopener nofollow">Minja Klarić</a>, CC BY-SA 4.0</li>
+          <li>Platou Alba Iulia: <a href="https://commons.wikimedia.org/wiki/File:Mixed_meat_platter_at_Bella_Vista_Restaurant_in_Mostar,_Bosnia_and_Herzegovina_(2025).jpg" target="_blank" rel="noopener nofollow">Minja Klarić</a>, CC BY-SA 4.0</li>
+          <li>Cartofi prăjiți: <a href="https://www.flickr.com/photos/35034346243@N01/2932206250" target="_blank" rel="noopener nofollow">stu_spivack</a>, CC BY-SA 2.0</li>
+          <li>Piure de cartofi: <a href="https://commons.wikimedia.org/wiki/File:Sous_vide_mashed_potatoes.jpg" target="_blank" rel="noopener nofollow">sousvideguy</a>, CC BY 2.0</li>
+          <li>Salată de varză: <a href="https://commons.wikimedia.org/wiki/File:Salat%C4%83_de_varz%C4%83_alb%C4%83_cu_ro%C8%99ii.jpg" target="_blank" rel="noopener nofollow">Ioanairinciuc</a>, CC BY-SA 4.0</li>
+          <li>Salată de vară: <a href="https://commons.wikimedia.org/wiki/File:Summer_salad_(3598895404).jpg" target="_blank" rel="noopener nofollow">Karen and Brad Emerson</a>, CC BY 2.0</li>
+          <li>Salată mixtă: <a href="https://commons.wikimedia.org/wiki/File:Insalata_mista.jpg" target="_blank" rel="noopener nofollow">Thomas Wenger from near Bern, Switzerland</a>, CC BY-SA 2.0</li>
+          <li>Murături mixte: <a href="https://commons.wikimedia.org/wiki/File:Mur%C4%83turi_asortate.jpg" target="_blank" rel="noopener nofollow">Anila58</a>, CC BY-SA 4.0</li>
+          <li>Varză murată: <a href="https://commons.wikimedia.org/wiki/File:Belarusian-Russian_Sauerkraut-1.jpg" target="_blank" rel="noopener nofollow">Eugene Zelenko</a>, CC BY-SA 4.0</li>
+          <li>Verdură coaptă / gătită: <a href="https://commons.wikimedia.org/wiki/File:Grilled_vegetables_(6373328369).jpg" target="_blank" rel="noopener nofollow">Karen and Brad Emerson</a>, CC BY 2.0</li>
+          <li>Cartofi prăjiți cu brânză rasă: <a href="https://commons.wikimedia.org/wiki/File:Cheese_Fries.jpg" target="_blank" rel="noopener nofollow">David Goehring</a>, CC BY 2.0</li>
+          <li>Mămăligă cu brânză, smântână și ou: <a href="https://commons.wikimedia.org/wiki/File:Bulz_cu_ou.jpg" target="_blank" rel="noopener nofollow">Nicubunu</a>, CC BY-SA 3.0</li>
+          <li>Papanași: <a href="https://commons.wikimedia.org/wiki/File:Papanasi_cu_cirese.jpg" target="_blank" rel="noopener nofollow">Nicubunu</a>, CC BY-SA 3.0</li>
+          <li>Clătite Ana Lugojana: <a href="https://commons.wikimedia.org/wiki/File:Blintzes_in_frying_pan.jpg" target="_blank" rel="noopener nofollow">Andrevan</a>, CC BY-SA 2.5</li>
+        </ul>
+      </details>
     </div>
   </section>
 

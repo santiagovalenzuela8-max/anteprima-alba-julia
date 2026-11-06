@@ -289,3 +289,34 @@
 
   addEventListener('load', function () { window.ScrollTrigger.refresh(); });
 })();
+
+// Il menu: una sezione alla volta (Antipasti, Ciorbe, ...), con frecce da tastiera
+(function () {
+  var tabs = [].slice.call(document.querySelectorAll('.carta__tab'));
+  if (!tabs.length) return;
+  var bar = tabs[0].parentNode;
+  function show(tab, focus) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (focus) tab.focus();
+    // la scheda scelta resta visibile nella fila che scorre
+    bar.scrollTo({ left: tab.offsetLeft - bar.offsetLeft - 16, behavior: 'smooth' });
+    // se si è già scesi nel menu, si torna all'inizio della sezione scelta
+    var top = bar.getBoundingClientRect().top;
+    if (top < 0) window.scrollBy({ top: top - 90, behavior: 'smooth' });
+    if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { show(t); });
+    t.addEventListener('keydown', function (e) {
+      var j = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : null;
+      if (j === null) return;
+      e.preventDefault();
+      show(tabs[(j + tabs.length) % tabs.length], true);
+    });
+  });
+})();
