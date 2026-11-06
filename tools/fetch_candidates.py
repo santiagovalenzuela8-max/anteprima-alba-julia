@@ -1,7 +1,7 @@
 # Cerca foto con licenza libera per ogni piatto (Wikimedia Commons + Openverse)
 import urllib.error, json, os, re, sys, time, urllib.parse, urllib.request
 UA = "AlbaIuliaMenuBot/1.0 (restaurant site build; GitHub Actions)"
-OUT = "candidates"; os.makedirs(OUT, exist_ok=True)
+OUT = "candidates2"; os.makedirs(OUT, exist_ok=True)
 dishes = json.load(open("tools/dishes.json"))
 def get(url, tries=3):
     for t in range(tries):
@@ -40,7 +40,7 @@ for slug, qs in dishes.items():
                 if r["thumb"] in seen: continue
                 seen.add(r["thumb"]); r["query"] = q; cands.append(r)
             time.sleep(0.4)
-    cands = cands[:9]
+    cands = cands[:16]
     for k, c in enumerate(cands):
         fn = f"{OUT}/{slug}-{k:02d}.jpg"
         try:
