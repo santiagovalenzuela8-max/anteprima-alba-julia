@@ -130,20 +130,6 @@
     track.addEventListener('click', function (e) { if (moved > 6) { e.preventDefault(); e.stopPropagation(); } }, true);
   })();
 
-  /* ---------- Il piatto gira quando scegli una specialità ---------- */
-  var plateImg = document.querySelector('.dishes__plate img');
-  document.querySelectorAll('.menu__item').forEach(function (d) {
-    d.addEventListener('toggle', function () {
-      if (!d.open) return;
-      document.querySelectorAll('.menu__item[open]').forEach(function (o) { if (o !== d) o.open = false; });
-      // un giro completo: alla fine la foto torna sempre dritta
-      if (plateImg && !reduced && plateImg.animate) {
-        plateImg.animate([{ transform: 'scale(1.1) rotate(0deg)' }, { transform: 'scale(1.1) rotate(360deg)' }],
-          { duration: 900, easing: 'cubic-bezier(.2,.7,.2,1)' });
-      }
-    });
-  });
-
   /* ---------- Aperto adesso? (ora di Verona, tutti i giorni 9–20) ---------- */
   var status = document.getElementById('open-status');
   try {

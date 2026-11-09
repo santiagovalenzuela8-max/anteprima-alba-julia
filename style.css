@@ -224,25 +224,6 @@ p { margin: 0; }
 .timeline b { font: 2rem/1 var(--f-display); font-weight: 400; color: var(--gold-soft); }
 .timeline span { font-size: .9rem; color: #f0dcd4; }
 
-/* ---------- Specialità ---------- */
-.dishes { padding-block: clamp(80px, 10vw, 140px); }
-.dishes__head { display: grid; grid-template-columns: 1.1fr 1fr; gap: 16px 64px; align-items: end; margin-bottom: clamp(36px, 5vw, 64px); }
-.dishes__head p { color: var(--ink-soft); font-size: 1.08rem; max-width: 34em; }
-.dishes__layout { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(32px, 5vw, 80px); align-items: start; }
-.dishes__plate { position: sticky; top: calc(var(--nav-h) + 24px); aspect-ratio: 1; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 10px var(--paper), 0 0 0 11.5px var(--brand), 0 50px 80px -40px rgba(63,22,19,.6); }
-.dishes__plate img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 82%; transform: scale(1.1); transition: transform 1.2s var(--ease); }
-.menu { display: grid; }
-.menu__item { border-top: 1px solid var(--line); }
-.menu__item:last-child { border-bottom: 1px solid var(--line); }
-.menu__item summary { list-style: none; cursor: pointer; display: flex; align-items: baseline; gap: 16px; padding-block: 20px; }
-.menu__item summary::-webkit-details-marker { display: none; }
-.menu__item summary::after { content: "+"; margin-left: auto; font: 1.6rem/1 var(--f-display); color: var(--gold); transition: transform .35s var(--ease); }
-.menu__item[open] summary::after { transform: rotate(45deg); }
-.menu__name { font: clamp(1.9rem, 1.3rem + 1.4vw, 2.6rem)/1 var(--f-display); color: var(--brand); transition: transform .35s var(--ease); }
-.menu__item summary:hover .menu__name { transform: translateX(6px); }
-.menu__ro { font: italic 1.05rem var(--f-display); color: var(--muted); }
-.menu__item p { color: var(--ink-soft); max-width: 34em; padding-bottom: 22px; font-size: 1.04rem; }
-
 /* ---------- Il menu completo ---------- */
 .carta { --c-ink: #f6ece2; --c-soft: #d7c3b6; background: radial-gradient(120% 80% at 50% 0%, #4a1c18 0%, var(--brand-deep) 55%, #2b0f0d 100%); color: var(--c-ink); padding-block: clamp(80px, 10vw, 140px); }
 .carta__head { display: grid; grid-template-columns: 1.1fr 1fr; gap: 16px 64px; align-items: end; margin-bottom: clamp(30px, 4vw, 48px); }
@@ -399,13 +380,12 @@ p { margin: 0; }
 
   .sala__pin { height: 86svh; }
   .sala__stage { height: 72svh; border-radius: 14px; }
-  .services__head, .dishes__head, .carta__head { grid-template-columns: 1fr; }
+  .services__head, .carta__head { grid-template-columns: 1fr; }
   .services__ctrl { display: none; }
   .services__track { cursor: auto; }
   .service { width: 78vw; max-width: 360px; scroll-snap-align: center; }
-  .family__inner, .dishes__layout, .butcher__inner, .visit__inner { grid-template-columns: 1fr; }
+  .family__inner, .butcher__inner, .visit__inner { grid-template-columns: 1fr; }
   .family__photo { max-width: 440px; box-shadow: 12px 12px 0 var(--gold); }
-  .dishes__plate { position: relative; top: 0; max-width: 320px; }
   .butcher__photo { box-shadow: -12px 12px 0 var(--brand); margin-left: 12px; }
   .reviews__inner { grid-template-columns: 1fr; }
   .reviews__score { grid-row: auto; border-right: 0; padding-right: 0; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
@@ -417,7 +397,6 @@ p { margin: 0; }
   body { font-size: 16px; }
   .hero__actions .btn { flex: 1 1 100%; }
   .timeline { grid-template-columns: 1fr; }
-  .menu__ro { display: none; }
   .carta__tabs { margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); }
   .carta__grid { gap: 12px; }
   .dish { flex-direction: row; align-items: stretch; }
