@@ -342,7 +342,7 @@ p { margin: 0; }
 .wa-float__label { max-width: 0; overflow: hidden; white-space: nowrap; transition: max-width .45s var(--ease); }
 .wa-float:hover .wa-float__label, .wa-float:focus-visible .wa-float__label, .wa-float.is-peek .wa-float__label { max-width: 220px; }
 .wa-float:hover { transform: translateY(-2px); }
-.wa-float::before { content: ""; position: absolute; left: 0; top: 0; width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--wa); animation: ping 2.6s var(--ease) 3; pointer-events: none; }
+.wa-float::before { content: ""; position: absolute; left: 0; top: 0; width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--wa); opacity: 0; animation: ping 2.6s var(--ease) 3; pointer-events: none; }
 @keyframes ping { from { transform: scale(1); opacity: .8; } to { transform: scale(1.7); opacity: 0; } }
 
 /* ---------- Lightbox ---------- */

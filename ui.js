@@ -47,8 +47,13 @@
       if (id) history.replaceState(null, '', location.pathname + '#' + id);
     });
   });
+  // Le voci della barra aprono le pagine; nella home si evidenzia la voce della sezione che si sta guardando
+  var SECTION = { titolare: '/il-titolare', famiglia: '/il-titolare', locale: '/il-locale', carta: '/menu',
+                  macelleria: '/macelleria', galleria: '/galleria', dove: '/dove-siamo' };
   var links = {};
-  document.querySelectorAll('.nav__links a').forEach(function (a) { links[a.getAttribute('href').slice(1)] = a; });
+  document.querySelectorAll('.nav__links a').forEach(function (a) {
+    Object.keys(SECTION).forEach(function (id) { if (SECTION[id] === a.getAttribute('href')) links[id] = a; });
+  });
   if ('IntersectionObserver' in window) {
     var spy = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
@@ -255,7 +260,16 @@
   var salaImg = document.getElementById('sala-img');
   var salaShade = document.querySelector('.sala__shade');
   var salaText = document.querySelector('.sala__text');
-  var K0x = 0.42, K0y = 0.48, Z0 = 1.06;   // zoom iniziale leggero: la foto non va ingrandita troppo
+  // L'ovale di partenza ha le proporzioni del logo (largo, non alto) anche sui telefoni in verticale.
+  // Il riquadro animato è il 142% della scena, quindi l'ovale visibile misura K0 × 1,42 × scena.
+  var K0x, K0y, Z0 = 1.06;   // zoom iniziale leggero: la foto non va ingrandita troppo
+  var salaStage = document.querySelector('.sala__stage');
+  function salaSize() {
+    var W = salaStage.clientWidth, H = salaStage.clientHeight;
+    var ovalH = Math.min(H * 0.62, (W * 0.88) / 1.7), ovalW = ovalH * 1.7;
+    K0x = ovalW / (1.42 * W); K0y = ovalH / (1.42 * H);
+  }
+  salaSize();
   function salaAt(p) {
     var kx = K0x + (1 - K0x) * p, ky = K0y + (1 - K0y) * p, z = Z0 + (1 - Z0) * p;
     salaBox.style.transform = 'scale(' + kx.toFixed(4) + ',' + ky.toFixed(4) + ')';
@@ -266,7 +280,8 @@
   salaAt(0);
   window.ScrollTrigger.create({
     trigger: '.sala__pin', start: 'top top', end: '+=110%', pin: true, anticipatePin: 1,
-    onUpdate: function (st) { salaAt(st.progress); }
+    onUpdate: function (st) { salaAt(st.progress); },
+    onRefresh: function (st) { salaSize(); salaAt(st.progress); }
   });
 
 
