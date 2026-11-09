@@ -1,0 +1,503 @@
+{
+ "coperto": "2.00",
+ "categories": [
+  {
+   "id": "antipasti",
+   "slug": "antipasti",
+   "it": "Antipasti",
+   "ro": "Gustări",
+   "intro": "Per cominciare come si fa a casa nostra: taglieri di salumi e formaggi romeni e le insalate fredde della tradizione, da mettere al centro del tavolo e dividere.",
+   "dishes": [
+    {
+     "img": "platou-traditional",
+     "name": "Platou Tradițional",
+     "qty": "2–4 persone",
+     "desc": "Tagliere di affettati e formaggi tradizionali romeni.",
+     "price": "20.00",
+     "credit": {
+      "author": "Bretwa",
+      "license": "CC BY-SA 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Charcuterie_and_cheese_board_from_restaurant_Au_Bureau_at_Velizy_in_France_-_2019-09-25.jpg"
+     }
+    },
+    {
+     "img": "platou-degustare",
+     "name": "Platou Degustare",
+     "qty": "1 persona",
+     "desc": "Porzione singola di degustazione di prodotti tradizionali.",
+     "price": "7.00",
+     "credit": {
+      "author": "Sarah Stierch",
+      "license": "CC BY 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Cheese_%26_meat_plate_-_Sarah_Stierch.jpg"
+     }
+    },
+    {
+     "img": "trio-salate",
+     "name": "Trio de Salate",
+     "qty": "",
+     "desc": "Tris di antipasti: insalata di melanzane, insalata boeuf e insalata di funghi.",
+     "price": "10.00",
+     "credit": {
+      "author": "Jacek Halicki",
+      "license": "CC BY-SA 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:2023_Sa%C5%82atka_jarzynowa_(1).jpg"
+     }
+    },
+    {
+     "img": "salata-vinete",
+     "name": "Salată de Vinete cu Roșii",
+     "qty": "",
+     "desc": "Salsa tradizionale di melanzane grigliate servita con pomodori freschi.",
+     "price": "7.00",
+     "credit": {
+      "author": "Sacha47",
+      "license": "CC BY-SA 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Salat%C4%83_de_vinete.jpg"
+     }
+    }
+   ]
+  },
+  {
+   "id": "ciorbe",
+   "slug": "ciorbe",
+   "it": "Primi piatti",
+   "ro": "Ciorbe",
+   "intro": "La ciorbă è il cuore della cucina romena: una zuppa dal gusto leggermente acidulo, servita bollente con panna acida, peperoncino fresco e pane. Di trippa, di manzo, di fagioli, con le polpette: le prepariamo come da tradizione.",
+   "dishes": [
+    {
+     "img": "ciorba-burta",
+     "name": "Ciorbă de Burtă",
+     "qty": "",
+     "desc": "Zuppa tradizionale di trippa di manzo con panna acida, aglio e peperoncino.",
+     "price": "11.00",
+     "credit": {
+      "author": "Sacha47",
+      "license": "CC BY-SA 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Ciorba_de_burta_2.jpg"
+     }
+    },
+    {
+     "img": "ciorba-vacuta",
+     "name": "Ciorbă de Văcuță",
+     "qty": "",
+     "desc": "Zuppa di manzo e verdure.",
+     "price": "11.00",
+     "credit": {
+      "author": "Nicubunu",
+      "license": "CC BY-SA 3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Ciorba_de_vacuta.jpg"
+     }
+    },
+    {
+     "img": "ciorba-afumatura",
+     "name": "Ciorbă cu Afumătură",
+     "qty": "",
+     "desc": "Zuppa densa con carne affumicata.",
+     "price": "10.00",
+     "credit": {
+      "author": "Sacha47",
+      "license": "CC BY-SA 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Ciorb%C4%83_%C8%9B%C4%83r%C4%83neasc%C4%83.png"
+     }
+    },
+    {
+     "img": "ciorba-perisoare",
+     "name": "Ciorbă de Perișoare",
+     "qty": "",
+     "desc": "Zuppa con polpette di carne trita e verdure.",
+     "price": "10.00",
+     "credit": {
+      "author": "Sacha47",
+      "license": "CC BY-SA 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Ciorb%C4%83_cu_peri%C8%99oare.jpg"
+     }
+    },
+    {
+     "img": "ciorba-fasole",
+     "name": "Ciorbă de Fasole cu Afumătură",
+     "qty": "",
+     "desc": "Zuppa di fagioli e carne affumicata.",
+     "price": "10.00",
+     "credit": {
+      "author": "Korinna",
+      "license": "CC0",
+      "page": "https://commons.wikimedia.org/wiki/File:Ciorba_de_fasole_cu_afumatora_IMG_20260707_163453.jpg"
+     }
+    },
+    {
+     "img": "ciorba-radauteana",
+     "name": "Ciorbă Rădăuțeană",
+     "qty": "",
+     "desc": "Zuppa tipica di pollo acida con aglio, uovo e panna acida.",
+     "price": "10.00",
+     "credit": {
+      "author": "Romaniancook",
+      "license": "CC BY-SA 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Ciorba_radauteana.jpg"
+     }
+    },
+    {
+     "img": "bors-porc",
+     "name": "Borș de Porc",
+     "qty": "",
+     "desc": "Zuppa agra tradizionale con carne di maiale e verdure.",
+     "price": "10.00",
+     "credit": {
+      "author": "MarvinBikolano",
+      "license": "CC BY-SA 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Inalsumang_Karne_(Sour_Soup_Pork).jpg"
+     }
+    }
+   ]
+  },
+  {
+   "id": "secondi",
+   "slug": "secondi",
+   "it": "Secondi piatti",
+   "ro": "Felul secund",
+   "intro": "I piatti della domenica romena: sarmale cotte lentamente, tochitură con polenta e uovo, gulaș di manzo. Porzioni generose e sapori di casa.",
+   "dishes": [
+    {
+     "img": "sarmale",
+     "name": "Sarmale cu Mămăliguță și Smântână",
+     "qty": "",
+     "desc": "Involtini di carne tritata in foglia di verza cotti al forno, serviti con polenta, panna acida e peperoncino.",
+     "price": "16.00",
+     "credit": {
+      "author": "Nicubunu",
+      "license": "CC BY-SA 3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Sarmale_with_mamalig%C4%83.jpg"
+     }
+    },
+    {
+     "img": "tochitura",
+     "name": "Tochitură cu Mămăligă, Brânză Rasă și Ou",
+     "qty": "",
+     "desc": "Spezzatino tradizionale di maiale e salsicce, servito con polenta calda, formaggio grattugiato e uovo al tegamino.",
+     "price": "16.00",
+     "credit": {
+      "author": "Nicubunu",
+      "license": "CC BY-SA 3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Tochitura-moldoveneasca.jpg"
+     }
+    },
+    {
+     "img": "gulas",
+     "name": "Gulaș de Vită",
+     "qty": "",
+     "desc": "Spezzatino denso di manzo cotto a fuoco lento con spezie e verdure.",
+     "price": "16.00",
+     "credit": {
+      "author": "Valeva1010",
+      "license": "CC BY-SA 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Hungarian_Goulash_Recipe.png"
+     }
+    }
+   ]
+  },
+  {
+   "id": "gratar",
+   "slug": "grigliate",
+   "it": "Grigliate",
+   "ro": "Grătar",
+   "intro": "Dalla nostra macelleria alla griglia: mici di nostra produzione, salsicce, coppa, pollo e tagli di manzo. Per due o più persone ci sono i taglieri misti, fino al Platou Alba Iulia.",
+   "dishes": [
+    {
+     "img": "mici",
+     "name": "Mici producție proprie",
+     "qty": "al pezzo",
+     "desc": "Polpette cilindriche di carne macinata speziata alla griglia, di nostra produzione.",
+     "price": "3.50",
+     "credit": {
+      "author": "Marcmiquel",
+      "license": "CC BY-SA 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Mititei_or_mici.jpg"
+     }
+    },
+    {
+     "img": "cabanos",
+     "name": "Cabanos la grătar",
+     "qty": "2 pz",
+     "desc": "Salsicce affumicate tipo Cabanos alla griglia.",
+     "price": "6.00",
+     "credit": {
+      "author": "Ming44",
+      "license": "CC BY 3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Kabanosy_pepperoni.jpg"
+     }
+    },
+    {
+     "img": "pancetta",
+     "name": "Pancetta",
+     "qty": "2 pz",
+     "desc": "Pancetta di maiale tagliata fine e grigliata.",
+     "price": "6.00",
+     "credit": {
+      "author": "Tamorlan",
+      "license": "CC BY 3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Panceta_Asada-_Perejil_y_ajo.JPG"
+     }
+    },
+    {
+     "img": "carnat",
+     "name": "Cârnat proaspăt",
+     "qty": "300 g",
+     "desc": "Salsiccia fresca artigianale alla griglia.",
+     "price": "12.00",
+     "credit": {
+      "author": "Shixart1985",
+      "license": "CC BY 2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Savory_breakfast_plate_with_sausages,_eggs,_and_fresh_vegetables_on_a_wooden_table.jpg"
+     }
+    },
+    {
+     "img": "pulpe-pui",
+     "name": "Pulpe de pui la grătar",
+     "qty": "2 pz",
+     "desc": "Cosce di pollo disossate alla griglia.",
+     "price": "12.00",
+     "credit": {
+      "author": "Vishnu Chandra",
+      "license": "CC0 1.0",
+      "page": "https://wordpress.org/photos/photo/1636a16e72/"
+     }
+    },
+    {
+     "img": "piept-pui",
+     "name": "Piept de pui la grătar",
+     "qty": "300 g",
+     "desc": "Petto di pollo succulento alla griglia.",
+     "price": "12.00",
+     "credit": {
+      "author": "Sharon Chen from Austin, United States",
+      "license": "CC BY 2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Grilled_Chicken_Breasts_(28905381261).jpg"
+     }
+    },
+    {
+     "img": "ceafa-porc",
+     "name": "Ceafă de porc la grătar",
+     "qty": "400 g",
+     "desc": "Coppa di maiale marinata e cotta alla griglia.",
+     "price": "14.00",
+     "credit": {
+      "author": "Roderick Suñaz Sumalinog",
+      "license": "CC BY-SA 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Grilled_pork_chops.jpg"
+     }
+    },
+    {
+     "img": "bisteca",
+     "name": "Bistecă de mânzat",
+     "qty": "300 g",
+     "desc": "Bistecca di manzo ai ferri.",
+     "price": "14.00",
+     "credit": {
+      "author": "Jon Sullivan",
+      "license": "Public domain",
+      "page": "https://commons.wikimedia.org/wiki/File:Steak_auf_Grill.jpg"
+     }
+    },
+    {
+     "img": "costata",
+     "name": "Costată de mânzat",
+     "qty": "500 g",
+     "desc": "Costata di manzo pregiata ai ferri.",
+     "price": "22.00",
+     "credit": {
+      "author": "mike packard",
+      "license": "CC BY-SA 2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Bistecca_alla_fiorentina-01.jpg"
+     }
+    },
+    {
+     "img": "grill-mix",
+     "name": "Grill mix",
+     "qty": "1 persona",
+     "desc": "Selezione assortita monoporzione di carni alla griglia.",
+     "price": "22.00",
+     "credit": {
+      "author": "Minja Klarić",
+      "license": "CC BY-SA 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Mixed_meat_platter_in_a_restaurant_in_Mostar_-_Bosnia_and_Herzegovina_(2025)-bs.jpg"
+     }
+    },
+    {
+     "img": "platou-alba-iulia",
+     "name": "Platou Alba Iulia",
+     "qty": "2–4 persone",
+     "desc": "Tagliere misto gigante con specialità di carne alla griglia.",
+     "price": "49.00",
+     "credit": {
+      "author": "Minja Klarić",
+      "license": "CC BY-SA 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Mixed_meat_platter_at_Bella_Vista_Restaurant_in_Mostar,_Bosnia_and_Herzegovina_(2025).jpg"
+     }
+    }
+   ]
+  },
+  {
+   "id": "contorni",
+   "slug": "contorni",
+   "it": "Contorni e insalate",
+   "ro": "Garnituri și salate",
+   "intro": "Per accompagnare carni e ciorbe: patate, insalate fresche, verdure e i sottaceti della tradizione romena, fino alla mămăligă con brânză, smântână e uovo.",
+   "dishes": [
+    {
+     "img": "cartofi-prajiti",
+     "name": "Cartofi prăjiți",
+     "qty": "",
+     "desc": "Patatine fritte.",
+     "price": "4.50",
+     "credit": {
+      "author": "stu_spivack",
+      "license": "BY-SA 2.0",
+      "page": "https://www.flickr.com/photos/35034346243@N01/2932206250"
+     }
+    },
+    {
+     "img": "piure",
+     "name": "Piure de cartofi",
+     "qty": "",
+     "desc": "Purè di patate.",
+     "price": "4.50",
+     "credit": {
+      "author": "sousvideguy",
+      "license": "CC BY 2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Sous_vide_mashed_potatoes.jpg"
+     }
+    },
+    {
+     "img": "salata-varza",
+     "name": "Salată de varză",
+     "qty": "",
+     "desc": "Insalata di cavolo.",
+     "price": "4.50",
+     "credit": {
+      "author": "Ioanairinciuc",
+      "license": "CC BY-SA 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Salat%C4%83_de_varz%C4%83_alb%C4%83_cu_ro%C8%99ii.jpg"
+     }
+    },
+    {
+     "img": "salata-vara",
+     "name": "Salată de vară",
+     "qty": "",
+     "desc": "Insalata estiva.",
+     "price": "4.50",
+     "credit": {
+      "author": "Karen and Brad Emerson",
+      "license": "CC BY 2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Summer_salad_(3598895404).jpg"
+     }
+    },
+    {
+     "img": "salata-mixta",
+     "name": "Salată mixtă",
+     "qty": "",
+     "desc": "Insalata mista.",
+     "price": "4.50",
+     "credit": {
+      "author": "Thomas Wenger from near Bern, Switzerland",
+      "license": "CC BY-SA 2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Insalata_mista.jpg"
+     }
+    },
+    {
+     "img": "muraturi",
+     "name": "Murături mixte",
+     "qty": "",
+     "desc": "Verdure miste in salamoia.",
+     "price": "4.50",
+     "credit": {
+      "author": "Anila58",
+      "license": "CC BY-SA 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Mur%C4%83turi_asortate.jpg"
+     }
+    },
+    {
+     "img": "varza-murata",
+     "name": "Varză murată",
+     "qty": "",
+     "desc": "Cavolo in salamoia.",
+     "price": "4.50",
+     "credit": {
+      "author": "Eugene Zelenko",
+      "license": "CC BY-SA 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Belarusian-Russian_Sauerkraut-1.jpg"
+     }
+    },
+    {
+     "img": "verdura-coapta",
+     "name": "Verdură coaptă / gătită",
+     "qty": "",
+     "desc": "Verdura cotta.",
+     "price": "5.50",
+     "credit": {
+      "author": "Karen and Brad Emerson",
+      "license": "CC BY 2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Grilled_vegetables_(6373328369).jpg"
+     }
+    },
+    {
+     "img": "cartofi-branza",
+     "name": "Cartofi prăjiți cu brânză rasă",
+     "qty": "",
+     "desc": "Patatine fritte con formaggio grattugiato.",
+     "price": "7.00",
+     "credit": {
+      "author": "David Goehring",
+      "license": "CC BY 2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Cheese_Fries.jpg"
+     }
+    },
+    {
+     "img": "mamaliga-branza",
+     "name": "Mămăligă cu brânză, smântână și ou",
+     "qty": "",
+     "desc": "Polenta con formaggio, panna acida e uovo.",
+     "price": "12.00",
+     "credit": {
+      "author": "Nicubunu",
+      "license": "CC BY-SA 3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Bulz_cu_ou.jpg"
+     }
+    }
+   ]
+  },
+  {
+   "id": "dolci",
+   "slug": "dolci",
+   "it": "Dolci",
+   "ro": "Deserturi",
+   "intro": "Per chiudere in dolcezza: i papanași, frittelle di formaggio fresco con panna acida e confettura, e le crêpes Ana Lugojana cotte al forno.",
+   "dishes": [
+    {
+     "img": "papanasi",
+     "name": "Papanași",
+     "qty": "",
+     "desc": "Frittelle dolci della casa a base di formaggio fresco, servite con panna acida e confettura di frutta.",
+     "price": "5.00",
+     "credit": {
+      "author": "Nicubunu",
+      "license": "CC BY-SA 3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Papanasi_cu_cirese.jpg"
+     }
+    },
+    {
+     "img": "clatite-ana-lugojana",
+     "name": "Clătite Ana Lugojana",
+     "qty": "",
+     "desc": "Crêpes tradizionali cotte al forno e ripiene di ricotta dolce e uvetta.",
+     "price": "8.00",
+     "credit": {
+      "author": "Andrevan",
+      "license": "CC BY-SA 2.5",
+      "page": "https://commons.wikimedia.org/wiki/File:Blintzes_in_frying_pan.jpg"
+     }
+    }
+   ]
+  }
+ ]
+}

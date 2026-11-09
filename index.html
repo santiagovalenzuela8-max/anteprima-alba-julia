@@ -221,7 +221,7 @@
     </div>
   </section>
 
-  <!-- IL MENU COMPLETO -->
+  <!-- IL MENU COMPLETO (generato da tools/build_menu.py) -->
   <section class="carta" id="carta" aria-labelledby="carta-title">
     <div class="wrap">
       <header class="carta__head">
@@ -229,7 +229,10 @@
           <p class="carta__kicker">Meniu · Il menu</p>
           <h2 id="carta-title">Il nostro menu</h2>
         </div>
-        <p>Cucina tradizionale romena, preparata ogni giorno dalla famiglia Sbuciumelea. Scegli una sezione e sfoglia i piatti.</p>
+        <div class="carta__lead">
+          <p>Cucina tradizionale romena, preparata ogni giorno dalla famiglia Sbuciumelea. Scegli una sezione e sfoglia i piatti.</p>
+          <a class="carta__all" href="menu">Apri il menu completo <span aria-hidden="true">→</span></a>
+        </div>
       </header>
       <div class="carta__tabs" role="tablist" aria-label="Sezioni del menu">
         <button type="button" role="tab" class="carta__tab" id="tab-antipasti" aria-controls="cat-antipasti" aria-selected="true"><span>Antipasti</span><small>Gustări</small></button>
@@ -275,6 +278,7 @@
             </div>
           </li>
         </ul>
+        <a class="carta__more" href="menu/antipasti">Vai alla pagina Antipasti <span aria-hidden="true">→</span></a>
       </div>
       <div class="carta__panel" role="tabpanel" id="cat-ciorbe" aria-labelledby="tab-ciorbe" hidden>
         <h3 class="carta__cat">Primi piatti <span>Ciorbe</span></h3>
@@ -336,6 +340,7 @@
             </div>
           </li>
         </ul>
+        <a class="carta__more" href="menu/ciorbe">Vai alla pagina Primi piatti <span aria-hidden="true">→</span></a>
       </div>
       <div class="carta__panel" role="tabpanel" id="cat-secondi" aria-labelledby="tab-secondi" hidden>
         <h3 class="carta__cat">Secondi piatti <span>Felul secund</span></h3>
@@ -365,6 +370,7 @@
             </div>
           </li>
         </ul>
+        <a class="carta__more" href="menu/secondi">Vai alla pagina Secondi piatti <span aria-hidden="true">→</span></a>
       </div>
       <div class="carta__panel" role="tabpanel" id="cat-gratar" aria-labelledby="tab-gratar" hidden>
         <h3 class="carta__cat">Grigliate <span>Grătar</span></h3>
@@ -458,6 +464,7 @@
             </div>
           </li>
         </ul>
+        <a class="carta__more" href="menu/grigliate">Vai alla pagina Grigliate <span aria-hidden="true">→</span></a>
       </div>
       <div class="carta__panel" role="tabpanel" id="cat-contorni" aria-labelledby="tab-contorni" hidden>
         <h3 class="carta__cat">Contorni e insalate <span>Garnituri și salate</span></h3>
@@ -543,6 +550,7 @@
             </div>
           </li>
         </ul>
+        <a class="carta__more" href="menu/contorni">Vai alla pagina Contorni e insalate <span aria-hidden="true">→</span></a>
       </div>
       <div class="carta__panel" role="tabpanel" id="cat-dolci" aria-labelledby="tab-dolci" hidden>
         <h3 class="carta__cat">Dolci <span>Deserturi</span></h3>
@@ -564,6 +572,7 @@
             </div>
           </li>
         </ul>
+        <a class="carta__more" href="menu/dolci">Vai alla pagina Dolci <span aria-hidden="true">→</span></a>
       </div>
       <footer class="carta__foot">
         <p>Coperto € 2,00 a persona. Per allergie e intolleranze chiedi al personale.</p>

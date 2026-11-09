@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://albaiulia.it/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://albaiulia.it/menu</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://albaiulia.it/menu/antipasti</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://albaiulia.it/menu/ciorbe</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://albaiulia.it/menu/secondi</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://albaiulia.it/menu/grigliate</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://albaiulia.it/menu/contorni</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://albaiulia.it/menu/dolci</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>
