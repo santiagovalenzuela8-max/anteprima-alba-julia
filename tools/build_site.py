@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Genera le pagine del menu e la sezione "Il nostro menu" della home da tools/menu.json.
+"""Genera le pagine interne del sito (stessa intestazione, footer e stile per tutte).
 
-    python3 tools/build_menu.py
+    python3 tools/build_site.py
 
-Scrive menu/index.html (/menu), una pagina per sezione (/menu/antipasti, /menu/ciorbe, ...)
-e aggiorna in index.html la parte tra <!-- IL MENU COMPLETO --> e <!-- MACELLERIA -->.
+- una pagina per ogni voce della barra: /il-titolare, /il-locale, /menu, /macelleria,
+  /galleria, /dove-siamo (testi in tools/site_pages.py)
+- le pagine del menu dei piatti: /menu/antipasti, /menu/ciorbe, ... da tools/menu.json
+- in index.html la parte tra <!-- IL MENU COMPLETO --> e <!-- MACELLERIA -->, e sitemap.xml
 Per cambiare un piatto o un prezzo basta modificare menu.json e rilanciare lo script.
 """
 import html
@@ -18,6 +20,24 @@ WA = "https://wa.me/393456967120"
 DATA = json.load(open(os.path.join(ROOT, "tools", "menu.json"), encoding="utf-8"))
 CATS = DATA["categories"]
 e = html.escape
+
+
+def img_size(rel):
+    """Larghezza e altezza di un'immagine WebP in /img (letta dall'intestazione del file)."""
+    with open(os.path.join(ROOT, "img", rel), "rb") as f:
+        b = f.read(30)
+    kind = b[12:16]
+    if kind == b"VP8X":
+        return 1 + int.from_bytes(b[24:27], "little"), 1 + int.from_bytes(b[27:30], "little")
+    if kind == b"VP8L":
+        n = int.from_bytes(b[21:25], "little")
+        return 1 + (n & 0x3FFF), 1 + ((n >> 14) & 0x3FFF)
+    return int.from_bytes(b[26:28], "little") & 0x3FFF, int.from_bytes(b[28:30], "little") & 0x3FFF
+
+
+def dims(rel):
+    w, h = img_size(rel)
+    return f'width="{w}" height="{h}"'
 
 
 def euro(p):
@@ -49,7 +69,19 @@ SPRITE = SPRITE[:SPRITE.index("</svg>") + 6]
 FP = ' fetchpriority="high"'
 
 
-def head(title, desc, path, image, ld):
+NAV = [("Il titolare", "/il-titolare"), ("Il locale", "/il-locale"), ("Menu", "/menu"),
+       ("Macelleria", "/macelleria"), ("Galleria", "/galleria"), ("Dove siamo", "/dove-siamo")]
+
+
+def nav_links(active, ind="      "):
+    out = []
+    for label, href in NAV:
+        on = ' class="is-active" aria-current="page"' if href == active else ""
+        out.append(f'{ind}<a href="{href}"{on}>{label}</a>')
+    return "\n".join(out)
+
+
+def head(title, desc, path, image, ld, active=None, body_class="page-menu"):
     return f"""<!doctype html>
 <html lang="it">
 <head>
@@ -74,7 +106,7 @@ def head(title, desc, path, image, ld):
 {json.dumps(ld, ensure_ascii=False, indent=1)}
 </script>
 </head>
-<body class="page-menu">
+<body class="{body_class}">
 
 {SPRITE}
 
@@ -86,12 +118,7 @@ def head(title, desc, path, image, ld):
       <svg class="brand__logo" aria-hidden="true"><use href="#logo"/></svg>
     </a>
     <nav class="nav__links" id="menu" aria-label="Sezioni">
-      <a href="/#titolare">Il titolare</a>
-      <a href="/#locale">Il locale</a>
-      <a href="/menu" class="is-active">Menu</a>
-      <a href="/#macelleria">Macelleria</a>
-      <a href="/#galleria">Galleria</a>
-      <a href="/#dove">Dove siamo</a>
+{nav_links(active)}
     </nav>
     <a class="nav__wa js-wa" href="{WA}" target="_blank" rel="noopener" aria-label="Scrivici su WhatsApp">
       <svg aria-hidden="true"><use href="#wa"/></svg><span>WhatsApp</span>
@@ -109,6 +136,9 @@ FOOT = f"""
     <p class="footer__meta">Ristorante, caffetteria, gastronomia e macelleria<br>Via Luigi Prina 21, 37136 Verona<br><a href="tel:+390458626014">045 862 6014</a> <span aria-hidden="true">/</span> <a href="https://www.facebook.com/albajuliaverona/" target="_blank" rel="noopener">Facebook</a></p>
     <p class="footer__bye">Poftă bună!<small>Buon appetito, in romeno</small></p>
   </div>
+  <nav class="wrap footer__nav" aria-label="Pagine del sito">
+{nav_links(None, "    ")}
+  </nav>
   <div class="wrap made-by">
     <a class="made-by__link" href="https://andiamonline.eu/" target="_blank" rel="noopener">
       <span>Sito creato da</span>
@@ -117,7 +147,7 @@ FOOT = f"""
   </div>
 </footer>
 
-<a class="wa-float js-wa" href="{WA}" target="_blank" rel="noopener" data-msg="Ciao Alba Iulia! Vorrei qualche informazione sul menu." aria-label="Scrivici su WhatsApp">
+<a class="wa-float js-wa" href="{WA}" target="_blank" rel="noopener" data-msg="Ciao Alba Iulia! Vorrei qualche informazione." aria-label="Scrivici su WhatsApp">
   <svg aria-hidden="true"><use href="#wa"/></svg>
   <span class="wa-float__label">Scrivici su WhatsApp</span>
 </a>
@@ -254,7 +284,7 @@ def category_page(i, c):
   </div>
 </main>
 """
-    return head(title, desc, path, f"/img/menu/{c['dishes'][0]['img']}.webp", ld) + body + FOOT
+    return head(title, desc, path, f"/img/menu/{c['dishes'][0]['img']}.webp", ld, "/menu") + body + FOOT
 
 
 # ---------------------------------------------------------------- /menu
@@ -313,7 +343,7 @@ def menu_index():
 {cta("Ciao! Vorrei prenotare un tavolo da Alba Iulia.")}
 </main>
 """
-    return head(title, desc, path, "/img/menu/platou-alba-iulia.webp", ld) + body + FOOT
+    return head(title, desc, path, "/img/menu/platou-alba-iulia.webp", ld, "/menu") + body + FOOT
 
 
 # ---------------------------------------------------------------- sezione della home
@@ -368,24 +398,45 @@ def home_section():
     return "\n".join(o)
 
 
+IMG_TAG = re.compile(r'(<img src="/img/([^"]+\.webp)"[^>]*?)width="\d+" height="\d+"')
+
+
+def fix_dims(text):
+    """Mette a ogni <img> di /img la larghezza e l'altezza vere (niente salti durante il caricamento)."""
+    return IMG_TAG.sub(lambda m: m.group(1) + dims(m.group(2)), text)
+
+
 def write(rel, text):
     p = os.path.join(ROOT, rel)
     os.makedirs(os.path.dirname(p), exist_ok=True)
     with open(p, "w", encoding="utf-8") as f:
-        f.write(text)
+        f.write(fix_dims(text))
     print("scritto", rel)
 
 
 if __name__ == "__main__":
+    import sys
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import site_pages
+
+    pages = site_pages.build_all({os.path.basename(f): img_size(os.path.basename(f))
+                                  for f in os.listdir(os.path.join(ROOT, "img")) if f.endswith(".webp")})
+    for rel, text in pages:
+        write(rel, text)
     write("menu/index.html", menu_index())
     for i, c in enumerate(CATS):
         write(f"menu/{c['slug']}.html", category_page(i, c))
     idx = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
     a = idx.index("  <!-- IL MENU COMPLETO")
     b = idx.index("  <!-- MACELLERIA -->")
-    write("index.html", idx[:a] + home_section() + idx[b:])
-    sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-          f'  <url><loc>{SITE}/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>',
-          f'  <url><loc>{SITE}/menu</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>']
-    sm += [f'  <url><loc>{SITE}/menu/{c["slug"]}</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>' for c in CATS]
+    idx = idx[:a] + home_section() + idx[b:]
+    # nella home la barra porta alle pagine
+    n0 = idx.index('<nav class="nav__links" id="menu" aria-label="Sezioni">')
+    n1 = idx.index("</nav>", n0)
+    idx = idx[:n0] + '<nav class="nav__links" id="menu" aria-label="Sezioni">\n' + nav_links(None) + "\n    " + idx[n1:]
+    write("index.html", idx)
+    url = lambda path, pr: f"  <url><loc>{SITE}{path}</loc><changefreq>monthly</changefreq><priority>{pr}</priority></url>"
+    sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', url("/", "1.0")]
+    sm += [url(href, "0.9") for _, href in NAV]
+    sm += [url(f"/menu/{c['slug']}", "0.8") for c in CATS]
     write("sitemap.xml", "\n".join(sm + ["</urlset>", ""]))
