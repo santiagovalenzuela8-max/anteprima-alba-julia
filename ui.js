@@ -146,6 +146,34 @@
     status.classList.add(open ? 'is-open' : 'is-closed');
   } catch (e) {}
 
+  /* ---------- Dove siamo: il giorno di oggi negli orari ---------- */
+  var hoursList = document.querySelector('.ed-hours');
+  if (hoursList) {
+    try {
+      var wd = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Rome', weekday: 'short' }).format(new Date());
+      var dayN = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].indexOf(wd) + 1;
+      var today = hoursList.querySelector('[data-day="' + dayN + '"]');
+      if (today) today.classList.add('is-today');
+    } catch (e) {}
+  }
+
+  /* ---------- Menu: la foto del piatto segue il mouse sull'elenco delle sezioni ---------- */
+  var follow = document.querySelector('.ed-follow');
+  if (follow && fine && !reduced) {
+    var fImg = follow.querySelector('img');
+    document.querySelectorAll('.ed-index__row').forEach(function (row) {
+      row.addEventListener('pointerenter', function () {
+        fImg.src = row.getAttribute('data-img');
+        follow.classList.add('is-on');
+      });
+      row.addEventListener('pointerleave', function () { follow.classList.remove('is-on'); });
+      row.addEventListener('pointermove', function (e) {
+        follow.style.setProperty('--x', (e.clientX + 170) + 'px');
+        follow.style.setProperty('--y', e.clientY + 'px');
+      });
+    });
+  }
+
   /* ---------- Lightbox ---------- */
   var box = document.getElementById('lightbox');
   var boxImg = document.getElementById('lightbox-img');
@@ -265,6 +293,46 @@
     gsap.from('.crumbs, .hero__kicker, .hero__lead, .hero__actions, .hero__facts', { y: 20, opacity: 0, duration: .9, ease: 'power3.out', stagger: .07, delay: d0 + 0.25 });
     gsap.from('.owner', { scale: .9, opacity: 0, duration: 1.1, ease: 'power3.out', delay: d0 + 0.05 });
   }
+  // Titoli delle pagine interne: le parole salgono da una maschera, una dopo l'altra
+  function splitWords(el) {
+    Array.prototype.slice.call(el.childNodes).forEach(function (n) {
+      if (n.nodeType === 3) {
+        var frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(function (part) {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(' ')); return; }
+          var m = document.createElement('span'); m.className = 'm';
+          var w = document.createElement('span'); w.textContent = part;
+          m.appendChild(w); frag.appendChild(m);
+        });
+        n.parentNode.replaceChild(frag, n);
+      } else if (n.nodeType === 1) splitWords(n);
+    });
+  }
+  gsap.utils.toArray('.ed-split').forEach(function (el, i) {
+    splitWords(el);
+    var words = el.querySelectorAll('.m > span');
+    var inHero = !!el.closest('.ed-hero');
+    gsap.from(words, { yPercent: 110, duration: 1.1, ease: 'power4.out', stagger: 0.045, delay: inHero ? 0.15 : 0,
+      scrollTrigger: inHero ? null : { trigger: el, start: 'top 88%', once: true } });
+  });
+  gsap.from('.ed-hero .crumbs, .ed-hero .ed-label, .ed-hero .ed-lead, .ed-hero .ed-actions, .ed-hero__foot', { y: 24, opacity: 0, duration: 1, ease: 'power3.out', stagger: .08, delay: .35 });
+  gsap.from('.ed-badge', { scale: .4, opacity: 0, duration: 1.2, ease: 'back.out(1.6)', delay: .9 });
+  gsap.from('.ed-float', { y: 60, opacity: 0, duration: 1.4, ease: 'power3.out', stagger: .12, delay: .3 });
+  // Le foto si scoprono dal basso, con un leggero zoom che rientra
+  gsap.utils.toArray('.ed-img').forEach(function (el) {
+    var inHero = !!el.closest('.ed-hero');
+    var st = inHero ? null : { trigger: el, start: 'top 88%', once: true };
+    gsap.fromTo(el, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.4, ease: 'power4.inOut', delay: inHero ? .2 : 0, scrollTrigger: st,
+      onComplete: function () { el.style.clipPath = ''; } });
+    var pic = el.querySelector('img');
+    if (pic && !pic.hasAttribute('data-speed')) gsap.from(pic, { scale: 1.25, duration: 1.8, ease: 'power3.out', delay: inHero ? .2 : 0, scrollTrigger: st, clearProps: 'transform' });
+  });
+  // Profondità: alcuni elementi scorrono più lenti della pagina
+  gsap.utils.toArray('[data-speed]').forEach(function (el) {
+    var sp = parseFloat(el.getAttribute('data-speed')) || 0;
+    gsap.fromTo(el, { yPercent: 0 }, { yPercent: sp, ease: 'none', scrollTrigger: { trigger: el.closest('section') || el, start: 'top bottom', end: 'bottom top', scrub: true } });
+  });
   // Nelle pagine interne i blocchi entrano dal basso quando arrivano sullo schermo
   gsap.utils.toArray('.reveal').forEach(function (el) {
     gsap.from(el, { y: 36, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%', once: true } });

@@ -18,15 +18,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sorts+Mill+Goudy:ital@0;1&family=Figtree:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="/style.css">
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <link rel="preload" as="image" href="/img/menu/cartofi-prajiti.webp" fetchpriority="high">
-<script type="importmap">
-{ "imports": {
-  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js",
-  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
-} }
-</script>
 <script type="application/ld+json">
 {
  "@context": "https://schema.org",
@@ -252,150 +245,88 @@
 </header>
 
 <main id="contenuto">
-  <section class="hero hero--page" id="hero">
-    <canvas class="hero__gl" id="gl" aria-hidden="true"></canvas>
-    <div class="hero__inner">
-      <div class="hero__copy">
+  <section class="ed-hero ed-hero--arch">
+    <span class="ed-ghost" aria-hidden="true">Garnituri și salate</span>
+    <div class="wrap ed-hero__grid">
+      <div class="ed-hero__copy">
         <nav class="crumbs" aria-label="Sei qui"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/menu">Menu</a><span aria-hidden="true">/</span><span aria-current="page">Contorni e insalate</span></nav>
-        <p class="hero__kicker">Meniu · Garnituri și salate</p>
-        <h1 class="hero__title" id="hero-title">Contorni e insalate.</h1>
-        <p class="hero__lead">Per accompagnare carni e ciorbe: patate, insalate fresche, verdure e i sottaceti della tradizione romena, fino alla mămăligă con brânză, smântână e uovo.</p>
-        <div class="hero__actions">
-          <a class="btn btn--solid btn--lg magnetic js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei prenotare un tavolo da Alba Iulia. Ho visto il menu: Contorni e insalate.">
-            <svg aria-hidden="true"><use href="#wa"/></svg>Prenota un tavolo
-          </a>
-          <a class="btn btn--ghost btn--lg magnetic" href="#piatti">Vedi i piatti</a>
-        </div>
+        <p class="ed-label"><span>05/06</span>Il menu</p>
+        <h1 class="ed-title ed-split">Contorni e insalate.</h1>
+        <p class="ed-lead">Per accompagnare carni e ciorbe: patate, insalate fresche, verdure e i sottaceti della tradizione romena, fino alla mămăligă con brânză, smântână e uovo.</p>
+        <div class="ed-actions"><a class="btn btn--solid btn--lg magnetic js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei prenotare un tavolo da Alba Iulia. Ho visto il menu: Contorni e insalate."><svg aria-hidden="true"><use href="#wa"/></svg>Prenota un tavolo</a><a class="btn btn--ghost btn--lg magnetic" href="#piatti">Vedi i piatti</a></div>
       </div>
-
-      <figure class="owner">
-        <div class="owner__frame" id="owner-frame">
-          <div class="owner__ring" aria-hidden="true"></div>
-          <div class="owner__photo">
-            <img src="/img/menu/cartofi-prajiti.webp" alt="Cartofi prăjiți" width="800" height="600" style="object-position:50% 50%" fetchpriority="high" decoding="async">
-            <span class="owner__glare" aria-hidden="true"></span>
-          </div>
-        </div>
-        <figcaption class="owner__tag">
-          <b>Garnituri și salate</b>
-          <span>10 piatti, da € 4,50 a € 12,00.</span>
-        </figcaption>
+      <figure class="ed-arch ed-arch--oval">
+        <div class="ed-arch__img ed-img"><img src="/img/menu/cartofi-prajiti.webp" alt="Cartofi prăjiți" width="800" height="600" fetchpriority="high" decoding="async" style="object-position:50% 50%"></div>
+        <svg class="ed-badge" viewBox="0 0 200 200" aria-hidden="true">
+          <defs><path id="badge-05/06" d="M100,100 m-74,0 a74,74 0 1,1 148,0 a74,74 0 1,1 -148,0"/></defs>
+          <circle cx="100" cy="100" r="98"/>
+          <text><textPath href="#badge-05/06">GARNITURI ȘI SALATE · ALBA IULIA · VERONA · </textPath></text>
+          <ellipse cx="100" cy="100" rx="34" ry="20"/>
+        </svg>
       </figure>
     </div>
-
-    <dl class="hero__facts">
-      <div><dt>Piatti</dt><dd><strong>10</strong> in questa sezione</dd></div>
-      <div><dt>Prezzi</dt><dd><strong>da € 4,50 a € 12,00</strong> </dd></div>
-      <div><dt>Coperto</dt><dd><strong>€ 2,00</strong> a persona</dd></div>
-    </dl>
+    <div class="wrap ed-hero__foot"><dl class="ed-facts"><div><dt>Piatti</dt><dd>10</dd></div><div><dt>Prezzi</dt><dd>da € 4,50 a € 12,00</dd></div><div><dt>Coperto</dt><dd>€ 2,00</dd></div></dl></div>
   </section>
 
-  <section class="carta" id="piatti" aria-labelledby="carta-title">
+  <section class="ed-sec" id="piatti">
     <div class="wrap">
-      <header class="carta__head reveal">
-        <div>
-          <p class="carta__kicker">Meniu · Il menu</p>
-          <h2 id="carta-title">Contorni e insalate <span class="carta__ro">Garnituri și salate</span></h2>
-        </div>
-        <div class="carta__lead"><p>Per accompagnare carni e ciorbe: patate, insalate fresche, verdure e i sottaceti della tradizione romena, fino alla mămăligă con brânză, smântână e uovo.</p></div>
+      <header class="ed-head">
+        <p class="ed-label"><span>—</span>Garnituri și salate</p>
+        <h2 class="ed-h2 ed-split">10 piatti, da gustare in sala o da portare <em>via.</em></h2>
       </header>
-      <nav class="carta__tabs" aria-label="Sezioni del menu">
-        <a class="carta__tab" href="/menu/antipasti"><span>Antipasti</span><small>Gustări</small></a>
-        <a class="carta__tab" href="/menu/ciorbe"><span>Primi piatti</span><small>Ciorbe</small></a>
-        <a class="carta__tab" href="/menu/secondi"><span>Secondi piatti</span><small>Felul secund</small></a>
-        <a class="carta__tab" href="/menu/grigliate"><span>Grigliate</span><small>Grătar</small></a>
-        <a class="carta__tab" href="/menu/contorni" aria-current="page"><span>Contorni e insalate</span><small>Garnituri și salate</small></a>
-        <a class="carta__tab" href="/menu/dolci"><span>Dolci</span><small>Deserturi</small></a>
-      </nav>
-      <div class="carta__panel">
-        <ul class="carta__grid">
-          <li class="dish reveal">
-            <figure class="dish__media"><img src="/img/menu/cartofi-prajiti.webp" alt="Cartofi prăjiți" width="800" height="600" loading="lazy" decoding="async"></figure>
-            <div class="dish__body">
-              <h3 class="dish__name">Cartofi prăjiți</h3>
-              <p class="dish__desc">Patatine fritte.</p>
-              <p class="dish__price">€ 4,50</p>
-            </div>
-          </li>
-          <li class="dish reveal">
-            <figure class="dish__media"><img src="/img/menu/piure.webp" alt="Piure de cartofi" width="800" height="600" loading="lazy" decoding="async"></figure>
-            <div class="dish__body">
-              <h3 class="dish__name">Piure de cartofi</h3>
-              <p class="dish__desc">Purè di patate.</p>
-              <p class="dish__price">€ 4,50</p>
-            </div>
-          </li>
-          <li class="dish reveal">
-            <figure class="dish__media"><img src="/img/menu/salata-varza.webp" alt="Salată de varză" width="800" height="600" loading="lazy" decoding="async"></figure>
-            <div class="dish__body">
-              <h3 class="dish__name">Salată de varză</h3>
-              <p class="dish__desc">Insalata di cavolo.</p>
-              <p class="dish__price">€ 4,50</p>
-            </div>
-          </li>
-          <li class="dish reveal">
-            <figure class="dish__media"><img src="/img/menu/salata-vara.webp" alt="Salată de vară" width="800" height="600" loading="lazy" decoding="async"></figure>
-            <div class="dish__body">
-              <h3 class="dish__name">Salată de vară</h3>
-              <p class="dish__desc">Insalata estiva.</p>
-              <p class="dish__price">€ 4,50</p>
-            </div>
-          </li>
-          <li class="dish reveal">
-            <figure class="dish__media"><img src="/img/menu/salata-mixta.webp" alt="Salată mixtă" width="800" height="600" loading="lazy" decoding="async"></figure>
-            <div class="dish__body">
-              <h3 class="dish__name">Salată mixtă</h3>
-              <p class="dish__desc">Insalata mista.</p>
-              <p class="dish__price">€ 4,50</p>
-            </div>
-          </li>
-          <li class="dish reveal">
-            <figure class="dish__media"><img src="/img/menu/muraturi.webp" alt="Murături mixte" width="800" height="600" loading="lazy" decoding="async"></figure>
-            <div class="dish__body">
-              <h3 class="dish__name">Murături mixte</h3>
-              <p class="dish__desc">Verdure miste in salamoia.</p>
-              <p class="dish__price">€ 4,50</p>
-            </div>
-          </li>
-          <li class="dish reveal">
-            <figure class="dish__media"><img src="/img/menu/varza-murata.webp" alt="Varză murată" width="800" height="600" loading="lazy" decoding="async"></figure>
-            <div class="dish__body">
-              <h3 class="dish__name">Varză murată</h3>
-              <p class="dish__desc">Cavolo in salamoia.</p>
-              <p class="dish__price">€ 4,50</p>
-            </div>
-          </li>
-          <li class="dish reveal">
-            <figure class="dish__media"><img src="/img/menu/verdura-coapta.webp" alt="Verdură coaptă / gătită" width="800" height="600" loading="lazy" decoding="async"></figure>
-            <div class="dish__body">
-              <h3 class="dish__name">Verdură coaptă / gătită</h3>
-              <p class="dish__desc">Verdura cotta.</p>
-              <p class="dish__price">€ 5,50</p>
-            </div>
-          </li>
-          <li class="dish reveal">
-            <figure class="dish__media"><img src="/img/menu/cartofi-branza.webp" alt="Cartofi prăjiți cu brânză rasă" width="800" height="600" loading="lazy" decoding="async"></figure>
-            <div class="dish__body">
-              <h3 class="dish__name">Cartofi prăjiți cu brânză rasă</h3>
-              <p class="dish__desc">Patatine fritte con formaggio grattugiato.</p>
-              <p class="dish__price">€ 7,00</p>
-            </div>
-          </li>
-          <li class="dish reveal">
-            <figure class="dish__media"><img src="/img/menu/mamaliga-branza.webp" alt="Mămăligă cu brânză, smântână și ou" width="800" height="600" loading="lazy" decoding="async"></figure>
-            <div class="dish__body">
-              <h3 class="dish__name">Mămăligă cu brânză, smântână și ou</h3>
-              <p class="dish__desc">Polenta con formaggio, panna acida e uovo.</p>
-              <p class="dish__price">€ 12,00</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <footer class="carta__foot">
-        <p>Coperto € 2,00 a persona. Per allergie e intolleranze chiedi al personale.</p>
-        <a class="btn btn--solid js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei prenotare un tavolo da Alba Iulia."><svg aria-hidden="true"><use href="#wa"/></svg>Prenota un tavolo</a>
-      </footer>
-      <details class="carta__credits">
+      <ul class="ed-dishes ed-dishes--3">
+        <li class="ed-dish reveal">
+          <figure class="ed-dish__img"><span class="ed-dish__frame"><img src="/img/menu/cartofi-prajiti.webp" alt="Cartofi prăjiți" width="800" height="600" loading="lazy" decoding="async"></span><span class="ed-seal">€ 4,50</span></figure>
+          <h3>Cartofi prăjiți</h3>
+          <p class="ed-dish__desc">Patatine fritte.</p>
+        </li>
+        <li class="ed-dish reveal">
+          <figure class="ed-dish__img"><span class="ed-dish__frame"><img src="/img/menu/piure.webp" alt="Piure de cartofi" width="800" height="600" loading="lazy" decoding="async"></span><span class="ed-seal">€ 4,50</span></figure>
+          <h3>Piure de cartofi</h3>
+          <p class="ed-dish__desc">Purè di patate.</p>
+        </li>
+        <li class="ed-dish reveal">
+          <figure class="ed-dish__img"><span class="ed-dish__frame"><img src="/img/menu/salata-varza.webp" alt="Salată de varză" width="800" height="600" loading="lazy" decoding="async"></span><span class="ed-seal">€ 4,50</span></figure>
+          <h3>Salată de varză</h3>
+          <p class="ed-dish__desc">Insalata di cavolo.</p>
+        </li>
+        <li class="ed-dish reveal">
+          <figure class="ed-dish__img"><span class="ed-dish__frame"><img src="/img/menu/salata-vara.webp" alt="Salată de vară" width="800" height="600" loading="lazy" decoding="async"></span><span class="ed-seal">€ 4,50</span></figure>
+          <h3>Salată de vară</h3>
+          <p class="ed-dish__desc">Insalata estiva.</p>
+        </li>
+        <li class="ed-dish reveal">
+          <figure class="ed-dish__img"><span class="ed-dish__frame"><img src="/img/menu/salata-mixta.webp" alt="Salată mixtă" width="800" height="600" loading="lazy" decoding="async"></span><span class="ed-seal">€ 4,50</span></figure>
+          <h3>Salată mixtă</h3>
+          <p class="ed-dish__desc">Insalata mista.</p>
+        </li>
+        <li class="ed-dish reveal">
+          <figure class="ed-dish__img"><span class="ed-dish__frame"><img src="/img/menu/muraturi.webp" alt="Murături mixte" width="800" height="600" loading="lazy" decoding="async"></span><span class="ed-seal">€ 4,50</span></figure>
+          <h3>Murături mixte</h3>
+          <p class="ed-dish__desc">Verdure miste in salamoia.</p>
+        </li>
+        <li class="ed-dish reveal">
+          <figure class="ed-dish__img"><span class="ed-dish__frame"><img src="/img/menu/varza-murata.webp" alt="Varză murată" width="800" height="600" loading="lazy" decoding="async"></span><span class="ed-seal">€ 4,50</span></figure>
+          <h3>Varză murată</h3>
+          <p class="ed-dish__desc">Cavolo in salamoia.</p>
+        </li>
+        <li class="ed-dish reveal">
+          <figure class="ed-dish__img"><span class="ed-dish__frame"><img src="/img/menu/verdura-coapta.webp" alt="Verdură coaptă / gătită" width="800" height="600" loading="lazy" decoding="async"></span><span class="ed-seal">€ 5,50</span></figure>
+          <h3>Verdură coaptă / gătită</h3>
+          <p class="ed-dish__desc">Verdura cotta.</p>
+        </li>
+        <li class="ed-dish reveal">
+          <figure class="ed-dish__img"><span class="ed-dish__frame"><img src="/img/menu/cartofi-branza.webp" alt="Cartofi prăjiți cu brânză rasă" width="800" height="600" loading="lazy" decoding="async"></span><span class="ed-seal">€ 7,00</span></figure>
+          <h3>Cartofi prăjiți cu brânză rasă</h3>
+          <p class="ed-dish__desc">Patatine fritte con formaggio grattugiato.</p>
+        </li>
+        <li class="ed-dish reveal">
+          <figure class="ed-dish__img"><span class="ed-dish__frame"><img src="/img/menu/mamaliga-branza.webp" alt="Mămăligă cu brânză, smântână și ou" width="800" height="600" loading="lazy" decoding="async"></span><span class="ed-seal">€ 12,00</span></figure>
+          <h3>Mămăligă cu brânză, smântână și ou</h3>
+          <p class="ed-dish__desc">Polenta con formaggio, panna acida e uovo.</p>
+        </li>
+      </ul>
+      <details class="carta__credits ed-credits">
         <summary>Le foto sono indicative del piatto servito · Crediti fotografici</summary>
         <ul>
           <li>Cartofi prăjiți: <a href="https://www.flickr.com/photos/35034346243@N01/2932206250" target="_blank" rel="noopener nofollow">stu_spivack</a>, CC BY-SA 2.0</li>
@@ -413,79 +344,79 @@
     </div>
   </section>
 
-  <section class="services">
-    <div class="services__pin">
-      <header class="services__head reveal">
-        <h2>Le altre sezioni del menu</h2>
-        <p>Continuate a sfogliare: ogni sezione ha la sua pagina.<br><a class="more-link" href="/menu">Tutto il menu <span aria-hidden="true">→</span></a></p>
-        <div class="services__ctrl">
-          <button type="button" class="round round--dark" id="svc-prev" aria-label="Scheda precedente" disabled>‹</button>
-          <button type="button" class="round round--dark" id="svc-next" aria-label="Scheda successiva">›</button>
-        </div>
+  <section class="ed-sec ed-sec--cream">
+    <div class="wrap">
+      <header class="ed-head">
+        <p class="ed-label"><span>—</span>Il menu</p>
+        <h2 class="ed-h2 ed-split">Le altre <em>sezioni.</em></h2>
       </header>
-      <div class="services__track services__track--6" id="services-track">
-        <a class="service service--link" href="/menu/antipasti">
-          <div class="service__media"><img src="/img/menu/platou-traditional.webp" alt="Platou Tradițional" width="800" height="600" loading="lazy" decoding="async"><span class="service__badge">4 piatti</span></div>
-          <h3>Antipasti</h3>
-          <p>Gustări · da € 7,00 a € 20,00</p>
-          <span class="service__go">Scopri <span aria-hidden="true">→</span></span>
-        </a>
-        <a class="service service--link" href="/menu/ciorbe">
-          <div class="service__media"><img src="/img/menu/ciorba-burta.webp" alt="Ciorbă de Burtă" width="800" height="600" loading="lazy" decoding="async"><span class="service__badge">7 piatti</span></div>
-          <h3>Primi piatti</h3>
-          <p>Ciorbe · da € 10,00 a € 11,00</p>
-          <span class="service__go">Scopri <span aria-hidden="true">→</span></span>
-        </a>
-        <a class="service service--link" href="/menu/secondi">
-          <div class="service__media"><img src="/img/menu/sarmale.webp" alt="Sarmale cu Mămăliguță și Smântână" width="800" height="600" loading="lazy" decoding="async"><span class="service__badge">3 piatti</span></div>
-          <h3>Secondi piatti</h3>
-          <p>Felul secund · € 16,00</p>
-          <span class="service__go">Scopri <span aria-hidden="true">→</span></span>
-        </a>
-        <a class="service service--link" href="/menu/grigliate">
-          <div class="service__media"><img src="/img/menu/mici.webp" alt="Mici producție proprie" width="800" height="600" loading="lazy" decoding="async"><span class="service__badge">11 piatti</span></div>
-          <h3>Grigliate</h3>
-          <p>Grătar · da € 3,50 a € 49,00</p>
-          <span class="service__go">Scopri <span aria-hidden="true">→</span></span>
-        </a>
-        <a class="service service--link" href="/menu/contorni">
-          <div class="service__media"><img src="/img/menu/cartofi-prajiti.webp" alt="Cartofi prăjiți" width="800" height="600" loading="lazy" decoding="async"><span class="service__badge">Sei qui</span></div>
-          <h3>Contorni e insalate</h3>
-          <p>Garnituri și salate · da € 4,50 a € 12,00</p>
-          <span class="service__go">Scopri <span aria-hidden="true">→</span></span>
-        </a>
-        <a class="service service--link" href="/menu/dolci">
-          <div class="service__media"><img src="/img/menu/papanasi.webp" alt="Papanași" width="800" height="600" loading="lazy" decoding="async"><span class="service__badge">2 piatti</span></div>
-          <h3>Dolci</h3>
-          <p>Deserturi · da € 5,00 a € 8,00</p>
-          <span class="service__go">Scopri <span aria-hidden="true">→</span></span>
-        </a>
+      <ul class="ed-index">
+        <li><a class="ed-index__row" href="/menu/antipasti" data-img="/img/menu/platou-traditional.webp">
+          <span class="ed-index__num">01</span>
+          <span class="ed-index__thumb"><img src="/img/menu/platou-traditional.webp" alt="Platou Tradițional" width="800" height="600" loading="lazy" decoding="async"></span>
+          <span class="ed-index__name">Antipasti <em>Gustări</em></span>
+          <span class="ed-index__meta">4 piatti<br>da € 7,00 a € 20,00</span>
+          <span class="ed-index__arrow" aria-hidden="true">→</span>
+        </a></li>
+        <li><a class="ed-index__row" href="/menu/ciorbe" data-img="/img/menu/ciorba-burta.webp">
+          <span class="ed-index__num">02</span>
+          <span class="ed-index__thumb"><img src="/img/menu/ciorba-burta.webp" alt="Ciorbă de Burtă" width="800" height="600" loading="lazy" decoding="async"></span>
+          <span class="ed-index__name">Primi piatti <em>Ciorbe</em></span>
+          <span class="ed-index__meta">7 piatti<br>da € 10,00 a € 11,00</span>
+          <span class="ed-index__arrow" aria-hidden="true">→</span>
+        </a></li>
+        <li><a class="ed-index__row" href="/menu/secondi" data-img="/img/menu/sarmale.webp">
+          <span class="ed-index__num">03</span>
+          <span class="ed-index__thumb"><img src="/img/menu/sarmale.webp" alt="Sarmale cu Mămăliguță și Smântână" width="800" height="600" loading="lazy" decoding="async"></span>
+          <span class="ed-index__name">Secondi piatti <em>Felul secund</em></span>
+          <span class="ed-index__meta">3 piatti<br>€ 16,00</span>
+          <span class="ed-index__arrow" aria-hidden="true">→</span>
+        </a></li>
+        <li><a class="ed-index__row" href="/menu/grigliate" data-img="/img/menu/mici.webp">
+          <span class="ed-index__num">04</span>
+          <span class="ed-index__thumb"><img src="/img/menu/mici.webp" alt="Mici producție proprie" width="800" height="600" loading="lazy" decoding="async"></span>
+          <span class="ed-index__name">Grigliate <em>Grătar</em></span>
+          <span class="ed-index__meta">11 piatti<br>da € 3,50 a € 49,00</span>
+          <span class="ed-index__arrow" aria-hidden="true">→</span>
+        </a></li>
+        <li><a class="ed-index__row" href="/menu/contorni" data-img="/img/menu/cartofi-prajiti.webp" aria-current="page">
+          <span class="ed-index__num">05</span>
+          <span class="ed-index__thumb"><img src="/img/menu/cartofi-prajiti.webp" alt="Cartofi prăjiți" width="800" height="600" loading="lazy" decoding="async"></span>
+          <span class="ed-index__name">Contorni e insalate <em>Garnituri și salate</em></span>
+          <span class="ed-index__meta">10 piatti<br>da € 4,50 a € 12,00</span>
+          <span class="ed-index__arrow" aria-hidden="true">→</span>
+        </a></li>
+        <li><a class="ed-index__row" href="/menu/dolci" data-img="/img/menu/papanasi.webp">
+          <span class="ed-index__num">06</span>
+          <span class="ed-index__thumb"><img src="/img/menu/papanasi.webp" alt="Papanași" width="800" height="600" loading="lazy" decoding="async"></span>
+          <span class="ed-index__name">Dolci <em>Deserturi</em></span>
+          <span class="ed-index__meta">2 piatti<br>da € 5,00 a € 8,00</span>
+          <span class="ed-index__arrow" aria-hidden="true">→</span>
+        </a></li>
+      </ul>
+      <div class="ed-follow" aria-hidden="true"><img alt=""></div>
+    </div>
+  </section>
+
+  <section class="ed-cta">
+    <svg class="ed-cta__logo" viewBox="0 0 240 140" aria-hidden="true"><ellipse cx="120" cy="70" rx="116" ry="66" fill="none" stroke="currentColor" stroke-width=".7"/><ellipse cx="120" cy="70" rx="108" ry="59" fill="none" stroke="currentColor" stroke-width=".35"/></svg>
+    <div class="wrap ed-cta__inner">
+      <p class="ed-label ed-label--light ed-label--center"><span>—</span>Prenotazioni e ordini</p>
+      <h2 class="ed-split">Vi aspettiamo a <em>tavola.</em></h2>
+      <p>Via Luigi Prina 21, Verona · tutti i giorni dalle 9 alle 20</p>
+      <div class="ed-actions ed-actions--center">
+        <a class="btn btn--gold btn--lg magnetic js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei prenotare un tavolo da Alba Iulia. Ho visto il menu: Contorni e insalate."><svg aria-hidden="true"><use href="#wa"/></svg>Scrivici su WhatsApp</a>
+        <a class="btn btn--line btn--lg magnetic" href="tel:+390458626014"><svg aria-hidden="true"><use href="#tel"/></svg>045 862 6014</a>
       </div>
     </div>
   </section>
 
-  <section class="visit" id="contatti">
-    <div class="wrap visit__inner">
-      <div class="visit__info reveal">
-        <h2>Via Luigi Prina 21, Verona</h2>
-        <dl class="visit__list">
-          <div><dt>Orari</dt><dd>Tutti i giorni, 09:00 – 20:00<span class="visit__status" id="open-status" aria-live="polite"></span></dd></div>
-          <div><dt>Telefono</dt><dd><a class="link" href="tel:+390458626014">045 862 6014</a></dd></div>
-          <div><dt>WhatsApp</dt><dd><a class="link js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei prenotare un tavolo da Alba Iulia.">345 696 7120</a></dd></div>
-          <div><dt>Indirizzo</dt><dd>Via Luigi Prina, 21, 37136 Verona</dd></div>
-          <div><dt>Servizi</dt><dd>Sala, dehors, asporto e consegna a domicilio</dd></div>
-        </dl>
-        <div class="visit__actions">
-          <a class="btn btn--wa btn--lg magnetic js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei prenotare un tavolo da Alba Iulia.">
-            <svg aria-hidden="true"><use href="#wa"/></svg>Scrivici su WhatsApp
-          </a>
-          <a class="btn btn--ghost btn--lg magnetic" href="https://www.google.com/maps/dir/?api=1&amp;destination=Via+Luigi+Prina+21+37136+Verona" target="_blank" rel="noopener">Indicazioni stradali</a>
-        </div>
-      </div>
-      <div class="visit__map reveal">
-        <iframe title="Mappa: Alba Iulia, Via Luigi Prina 21, Verona" src="https://maps.google.com/maps?q=Via%20Luigi%20Prina%2021%2C%2037136%20Verona&amp;z=16&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      </div>
-    </div>
+  <section class="ed-next-sec">
+    <a class="wrap ed-next" href="/menu/dolci">
+      <span class="ed-next__label">Sezione successiva</span>
+      <span class="ed-next__title">Dolci <i aria-hidden="true">→</i></span>
+      <span class="ed-next__img"><img src="/img/menu/papanasi.webp" alt="" width="800" height="600" loading="lazy" decoding="async"></span>
+    </a>
   </section>
 </main>
 
@@ -524,6 +455,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="/ui.js"></script>
-<script type="module" src="/wall.js"></script>
 </body>
 </html>

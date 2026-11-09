@@ -1,18 +1,25 @@
-"""Le pagine interne del sito, costruite con gli stessi blocchi della home.
+"""Le pagine interne del sito, con un impianto editoriale (come la rivista di un ristorante).
 
-Stessa apertura della home (parete capitonné in 3D, ritratto nell'ovale che si inclina,
-titolo che entra parola per parola, pulsanti magnetici), stesse sezioni (famiglia in rosso
-con la linea del tempo, schede ad arco, macelleria, recensioni, giostra 3D, dove siamo)
-e gli stessi script (ui.js, wall.js). I testi riprendono solo informazioni vere del locale:
-se qualcosa cambia si corregge qui e si rilancia python3 tools/build_site.py.
+Stesso linguaggio della home (bordeaux e oro, capitonné, l'ovale del logo, Sorts Mill Goudy),
+ma ogni pagina ha una composizione sua:
+- /il-titolare  titolo grande, ritratto ad arco con sigillo rotante, la storia con gli anni giganti
+- /il-locale    sala in panoramica, quattro capitoli sfalsati, la giornata, nastro di foto
+- /menu         indice delle sezioni con la foto che segue il mouse, e la carta "stampata"
+- /menu/...     i piatti di una sezione con il prezzo nel sigillo
+- /macelleria   apertura scura, il banco ad archi sfalsati, tre passi con i numeri giganti
+- /galleria     mosaico di foto da ingrandire
+- /dove-siamo   indirizzo in grande, orari con il giorno di oggi, mappa ad arco
+In fondo a ogni pagina: l'invito a tavola e il link grande alla pagina successiva.
+I testi riprendono solo informazioni vere del locale; si rigenera con python3 tools/build_site.py.
 """
 import json
 
-from build_site import (CATS, DATA, SITE, SPRITE, WA, credits, e, euro, nav_links, plural,
-                        price_range)
+from build_site import CATS, DATA, SITE, SPRITE, WA, credits, e, euro, nav_links, plural, price_range
 
 TEL = "tel:+390458626014"
 MAPS_DIR = "https://www.google.com/maps/dir/?api=1&amp;destination=Via+Luigi+Prina+21+37136+Verona"
+MAP_SRC = "https://maps.google.com/maps?q=Via%20Luigi%20Prina%2021%2C%2037136%20Verona&amp;z=16&amp;output=embed"
+BOOK = "Ciao! Vorrei prenotare un tavolo da Alba Iulia."
 RESTAURANT = {
     "@type": "Restaurant", "@id": SITE + "/#ristorante", "name": "Alba Iulia", "url": SITE + "/",
     "image": SITE + "/img/sala-hd.jpg", "telephone": "+39 045 862 6014",
@@ -22,15 +29,37 @@ RESTAURANT = {
     "openingHours": "Mo-Su 09:00-20:00",
     "aggregateRating": {"@type": "AggregateRating", "ratingValue": "4.7", "reviewCount": "232"},
 }
+# ordine delle pagine: numero nell'etichetta e "pagina successiva"
+ORDER = [("/il-titolare", "Il titolare", "titolare.webp"), ("/il-locale", "Il locale", "sala.webp"),
+         ("/menu", "Il menu", "menu/tochitura.webp"), ("/macelleria", "La macelleria", "banco.webp"),
+         ("/galleria", "La galleria", "bancone.webp"), ("/dove-siamo", "Dove siamo", "insegna.webp")]
 
 
-def wa_attr(msg):
+def num(path):
+    return f"{[p for p, *_ in ORDER].index(path) + 1:02d}"
+
+
+def wa(msg):
     return f'href="{WA}" target="_blank" rel="noopener" data-msg="{e(msg)}"'
 
 
-# ---------------------------------------------------------------- cornice comune
+def img(src, alt="", cls="", lazy=True, extra=""):
+    c = f' class="{cls}"' if cls else ""
+    load = ' loading="lazy"' if lazy else ' fetchpriority="high"'
+    return f'<img{c} src="/img/{src}" alt="{e(alt)}" width="800" height="600"{load} decoding="async"{extra}>'
 
-def head(title, desc, path, image, ld, active, preload):
+
+def btn_wa(label, msg, cls="btn--solid"):
+    return f'<a class="btn {cls} btn--lg magnetic js-wa" {wa(msg)}><svg aria-hidden="true"><use href="#wa"/></svg>{e(label)}</a>'
+
+
+def btn_tel(cls="btn--ghost"):
+    return f'<a class="btn {cls} btn--lg magnetic" href="{TEL}"><svg aria-hidden="true"><use href="#tel"/></svg>045 862 6014</a>'
+
+
+# ---------------------------------------------------------------- cornice
+
+def head(title, desc, path, og, ld, active, preload, dark=False):
     return f"""<!doctype html>
 <html lang="it">
 <head>
@@ -38,11 +67,11 @@ def head(title, desc, path, image, ld, active, preload):
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{e(title)}</title>
 <meta name="description" content="{e(desc)}">
-<meta name="theme-color" content="#6e2a26">
+<meta name="theme-color" content="{'#1d0b0a' if dark else '#6e2a26'}">
 <meta property="og:type" content="website">
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(desc)}">
-<meta property="og:image" content="{SITE}{image}">
+<meta property="og:image" content="{SITE}{og}">
 <meta property="og:url" content="{SITE}{path}">
 <meta property="og:locale" content="it_IT">
 <link rel="canonical" href="{SITE}{path}">
@@ -51,20 +80,13 @@ def head(title, desc, path, image, ld, active, preload):
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sorts+Mill+Goudy:ital@0;1&family=Figtree:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="/style.css">
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <link rel="preload" as="image" href="{preload}" fetchpriority="high">
-<script type="importmap">
-{{ "imports": {{
-  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js",
-  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
-}} }}
-</script>
 <script type="application/ld+json">
 {json.dumps(ld, ensure_ascii=False, indent=1)}
 </script>
 </head>
-<body class="page-inner">
+<body class="page-inner{' page-dark' if dark else ''}">
 
 {SPRITE}
 
@@ -121,7 +143,6 @@ FOOT = f"""</main>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="/ui.js"></script>
-<script type="module" src="/wall.js"></script>
 </body>
 </html>
 """
@@ -137,487 +158,549 @@ def ld(path, crumbs, extra=None):
     return {"@context": "https://schema.org", "@graph": g}
 
 
-def page(path, crumbs, title, desc, og, body, hero_img, extra_ld=None, active=None):
-    return head(title, desc, path, og, ld(path, crumbs, extra_ld), active or path, "/img/" + hero_img) + body + FOOT
+def page(path, crumbs, title, desc, og, preload, body, extra_ld=None, active=None, dark=False):
+    return head(title, desc, path, og, ld(path, crumbs, extra_ld), active or path, "/img/" + preload, dark) + body + FOOT
 
 
-# ---------------------------------------------------------------- blocchi della home
-
-def hero(crumbs, kicker, title, lead, img, alt, tag, facts, wa_label, wa_msg, second=None, pos="50% 40%"):
-    """Apertura come quella della home: parete 3D, testo a sinistra, foto nell'ovale a destra."""
-    trail = ['<a href="/">Home</a>']
+def crumbs_html(crumbs):
+    out = ['<a href="/">Home</a>']
     for i, (n, h) in enumerate(crumbs):
-        trail.append(f'<span aria-current="page">{e(n)}</span>' if i == len(crumbs) - 1 else f'<a href="{h}">{e(n)}</a>')
-    sep = '<span aria-hidden="true">/</span>'
-    if second is None:
-        second = f'<a class="btn btn--ghost btn--lg magnetic" href="{TEL}"><svg aria-hidden="true"><use href="#tel"/></svg>045 862 6014</a>'
-    dl = "\n".join(f"      <div><dt>{e(dt)}</dt><dd><strong>{e(st)}</strong> {e(dd)}</dd></div>" for dt, st, dd in facts)
-    return f"""  <section class="hero hero--page" id="hero">
-    <canvas class="hero__gl" id="gl" aria-hidden="true"></canvas>
-    <div class="hero__inner">
-      <div class="hero__copy">
-        <nav class="crumbs" aria-label="Sei qui">{sep.join(trail)}</nav>
-        <p class="hero__kicker">{e(kicker)}</p>
-        <h1 class="hero__title" id="hero-title">{e(title)}</h1>
-        <p class="hero__lead">{lead}</p>
-        <div class="hero__actions">
-          <a class="btn btn--solid btn--lg magnetic js-wa" {wa_attr(wa_msg)}>
-            <svg aria-hidden="true"><use href="#wa"/></svg>{e(wa_label)}
-          </a>
-          {second}
-        </div>
-      </div>
+        out.append(f'<span aria-current="page">{e(n)}</span>' if i == len(crumbs) - 1 else f'<a href="{h}">{e(n)}</a>')
+    return '<nav class="crumbs" aria-label="Sei qui">' + '<span aria-hidden="true">/</span>'.join(out) + "</nav>"
 
-      <figure class="owner">
-        <div class="owner__frame" id="owner-frame">
-          <div class="owner__ring" aria-hidden="true"></div>
-          <div class="owner__photo">
-            <img src="/img/{img}" alt="{e(alt)}" width="800" height="600" style="object-position:{pos}" fetchpriority="high" decoding="async">
-            <span class="owner__glare" aria-hidden="true"></span>
-          </div>
-        </div>
-        <figcaption class="owner__tag">
-          <b>{e(tag[0])}</b>
-          <span>{e(tag[1])}</span>
-        </figcaption>
+
+def facts(items):
+    return '<dl class="ed-facts">' + "".join(f"<div><dt>{e(a)}</dt><dd>{e(b)}</dd></div>" for a, b in items) + "</dl>"
+
+
+def badge(text, uid):
+    return f"""<svg class="ed-badge" viewBox="0 0 200 200" aria-hidden="true">
+          <defs><path id="badge-{uid}" d="M100,100 m-74,0 a74,74 0 1,1 148,0 a74,74 0 1,1 -148,0"/></defs>
+          <circle cx="100" cy="100" r="98"/>
+          <text><textPath href="#badge-{uid}">{e(text)}</textPath></text>
+          <ellipse cx="100" cy="100" rx="34" ry="20"/>
+        </svg>"""
+
+
+# ---------------------------------------------------------------- aperture (tre composizioni)
+
+def hero_arch(crumbs, label, title, lead, pic, alt, actions, fx, ghost, badge_text, oval=False, dark=False, pos="50% 40%"):
+    """Testo a sinistra, foto ad arco (o ovale) a destra con il filetto dorato e il sigillo rotante."""
+    return f"""  <section class="ed-hero ed-hero--arch{' ed-hero--dark' if dark else ''}">
+    <span class="ed-ghost" aria-hidden="true">{e(ghost)}</span>
+    <div class="wrap ed-hero__grid">
+      <div class="ed-hero__copy">
+        {crumbs_html(crumbs)}
+        <p class="ed-label"><span>{label[0]}</span>{e(label[1])}</p>
+        <h1 class="ed-title ed-split">{title}</h1>
+        <p class="ed-lead">{lead}</p>
+        <div class="ed-actions">{actions}</div>
+      </div>
+      <figure class="ed-arch{' ed-arch--oval' if oval else ''}">
+        <div class="ed-arch__img ed-img">{img(pic, alt, lazy=False, extra=f' style="object-position:{pos}"')}</div>
+        {badge(badge_text, label[0])}
       </figure>
     </div>
-
-    <dl class="hero__facts">
-{dl}
-    </dl>
+    <div class="wrap ed-hero__foot">{facts(fx)}</div>
   </section>
 """
 
 
-def family(img, alt, h2, paras, steps, link=None, kicker=None):
-    """Sezione rossa come "La famiglia" della home: foto con ombra dorata, testo e linea del tempo."""
-    ps = "\n".join(f"        <p>{p}</p>" for p in paras)
-    tl = "\n".join(f"          <li><b>{e(b)}</b><span>{e(t)}</span></li>" for b, t in steps)
-    k = f'\n        <p class="sec-kicker sec-kicker--light">{e(kicker)}</p>' if kicker else ""
-    more = f'\n        <a class="more-link more-link--light" href="{link[0]}">{e(link[1])} <span aria-hidden="true">→</span></a>' if link else ""
-    n = f" timeline--{len(steps)}" if len(steps) != 3 else ""
-    return f"""
-  <section class="family">
-    <div class="wrap family__inner">
-      <figure class="family__photo reveal">
-        <img src="/img/{img}" alt="{e(alt)}" width="800" height="600" loading="lazy" decoding="async">
-      </figure>
-      <div class="family__copy reveal">{k}
-        <h2>{e(h2)}</h2>
-{ps}
-        <ol class="timeline{n}">
-{tl}
-        </ol>{more}
-      </div>
-    </div>
-  </section>
-"""
-
-
-def services(h2, lead, cards, link=None):
-    """Schede ad arco come "Quattro modi di stare a tavola" della home.
-    cards: (img, alt, titolo, testo, href o None, etichetta o None)"""
-    arts = []
-    for img, alt, t, p, href, badge in cards:
-        b = f'<span class="service__badge">{e(badge)}</span>' if badge else ""
-        inner = f"""<div class="service__media"><img src="/img/{img}" alt="{e(alt)}" width="800" height="600" loading="lazy" decoding="async">{b}</div>
-          <h3>{e(t)}</h3>
-          <p>{e(p)}</p>"""
-        if href:
-            arts.append(f"""        <a class="service service--link" href="{href}">
-          {inner}
-          <span class="service__go">Scopri <span aria-hidden="true">→</span></span>
-        </a>""")
-        else:
-            arts.append(f"""        <article class="service">
-          {inner}
-        </article>""")
-    more = f'<br><a class="more-link" href="{link[0]}">{e(link[1])} <span aria-hidden="true">→</span></a>' if link else ""
-    return f"""
-  <section class="services">
-    <div class="services__pin">
-      <header class="services__head reveal">
-        <h2>{e(h2)}</h2>
-        <p>{e(lead)}{more}</p>
-        <div class="services__ctrl">
-          <button type="button" class="round round--dark" id="svc-prev" aria-label="Scheda precedente" disabled>‹</button>
-          <button type="button" class="round round--dark" id="svc-next" aria-label="Scheda successiva">›</button>
-        </div>
-      </header>
-      <div class="services__track services__track--{len(cards)}" id="services-track">
-{chr(10).join(arts)}
-      </div>
-    </div>
-  </section>
-"""
-
-
-def butcher(h2, text, checks, img, alt, msg, label, cream=True):
-    li = "\n".join(f"          <li>{e(c)}</li>" for c in checks)
-    return f"""
-  <section class="butcher{'' if cream else ' butcher--paper'}">
-    <div class="wrap butcher__inner">
-      <div class="butcher__copy reveal">
-        <h2>{e(h2)}</h2>
-        <p>{e(text)}</p>
-        <ul class="checks">
-{li}
-        </ul>
-        <a class="btn btn--solid magnetic js-wa" {wa_attr(msg)}>
-          <svg aria-hidden="true"><use href="#wa"/></svg>{e(label)}
-        </a>
-      </div>
-      <figure class="butcher__photo reveal">
-        <img src="/img/{img}" alt="{e(alt)}" width="800" height="600" loading="lazy" decoding="async">
-      </figure>
-    </div>
-  </section>
-"""
-
-
-REVIEWS = """
-  <section class="reviews">
-    <div class="wrap reviews__inner reveal">
-      <p class="reviews__score"><strong>4,7</strong><span class="reviews__stars" aria-label="4,7 su 5"><i style="--fill:94%"></i></span><small>232 recensioni su Google</small></p>
-      <p class="reviews__big">Cucina di famiglia, porzioni generose e un'accoglienza che fa tornare. Per tanti romeni a Verona è il sapore di casa. Per tanti veronesi è la scoperta di una cucina nuova.</p>
-      <a class="link" href="https://www.google.com/maps/search/?api=1&amp;query=Alba+Iulia+Via+Luigi+Prina+21+Verona" target="_blank" rel="noopener">Leggi le recensioni su Google</a>
-    </div>
-  </section>
-"""
-
-
-def visit(h2="Via Luigi Prina 21, Verona", msg="Ciao! Vorrei prenotare un tavolo da Alba Iulia.", week=False):
-    rows = ""
-    if week:
-        giorni = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"]
-        rows = "\n".join(f'            <tr><th scope="row">{g}</th><td>09:00 – 20:00</td></tr>' for g in giorni)
-        rows = f"""
-        <table class="hours">
-          <caption class="sr-only">Orari di apertura</caption>
-          <tbody>
-{rows}
-          </tbody>
-        </table>"""
-    return f"""
-  <section class="visit" id="contatti">
-    <div class="wrap visit__inner">
-      <div class="visit__info reveal">
-        <h2>{e(h2)}</h2>
-        <dl class="visit__list">
-          <div><dt>Orari</dt><dd>Tutti i giorni, 09:00 – 20:00<span class="visit__status" id="open-status" aria-live="polite"></span></dd></div>
-          <div><dt>Telefono</dt><dd><a class="link" href="{TEL}">045 862 6014</a></dd></div>
-          <div><dt>WhatsApp</dt><dd><a class="link js-wa" {wa_attr(msg)}>345 696 7120</a></dd></div>
-          <div><dt>Indirizzo</dt><dd>Via Luigi Prina, 21, 37136 Verona</dd></div>
-          <div><dt>Servizi</dt><dd>Sala, dehors, asporto e consegna a domicilio</dd></div>
-        </dl>{rows}
-        <div class="visit__actions">
-          <a class="btn btn--wa btn--lg magnetic js-wa" {wa_attr(msg)}>
-            <svg aria-hidden="true"><use href="#wa"/></svg>Scrivici su WhatsApp
-          </a>
-          <a class="btn btn--ghost btn--lg magnetic" href="{MAPS_DIR}" target="_blank" rel="noopener">Indicazioni stradali</a>
-        </div>
-      </div>
-      <div class="visit__map reveal">
-        <iframe title="Mappa: Alba Iulia, Via Luigi Prina 21, Verona" src="https://maps.google.com/maps?q=Via%20Luigi%20Prina%2021%2C%2037136%20Verona&amp;z=16&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      </div>
-    </div>
-  </section>
-"""
-
-
-SALA = """
-  <section class="sala" id="sala">
-    <div class="sala__pin">
-      <div class="sala__stage">
-        <figure class="sala__media" id="sala-media">
-          <div class="sala__img" id="sala-img"><img src="/img/sala-hd.webp" alt="La sala di Alba Iulia: parete capitonné bianca con il logo, tavoli apparecchiati e il bancone della caffetteria" width="2074" height="1508" loading="lazy" decoding="async"></div>
-        </figure>
-        <div class="sala__shade" aria-hidden="true"></div>
-        <div class="sala__text">
-          <h2>Entrate pure.</h2>
-          <p>La parete capitonné, i lampadari di cristallo, il bancone della caffetteria e la sala apparecchiata. Tutto sotto lo stesso tetto, dal mattino alla sera.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-"""
-
-FOTO = [
-    ("bancone.webp", "Il bancone con il titolare al lavoro"),
-    ("sala.webp", "La sala con la parete capitonné e il logo"),
-    ("caffe.webp", "Dolci al cioccolato e sfogliatine"),
-    ("bar.webp", "Il bar con la macchina del caffè e le bottiglie"),
-    ("piatto.webp", "Pranzo in sala"),
-    ("ristorante.webp", "La sala con le vetrate verso il dehors"),
-    ("gastronomia.webp", "Il banco della gastronomia"),
-    ("insegna.webp", "L'insegna: dal 2004 famiglia Sbuciumelea"),
-    ("banco.webp", "Un taglio di manzo al banco"),
-    ("titolare.webp", "Il titolare"),
-]
-
-
-def carousel(h2="Un giro nel locale", lead="Trascina per girare, tocca una foto per ingrandirla."):
-    items = "\n".join(f'        <button type="button" class="carousel__item"><img src="/img/{f}" alt="{e(a)}" width="800" height="600" loading="lazy" decoding="async"></button>' for f, a in FOTO)
-    return f"""
-  <section class="gallery" id="galleria-3d">
-    <div class="wrap gallery__head">
-      <h2>{e(h2)}</h2>
-      <p>{e(lead)}</p>
-    </div>
-    <div class="carousel" id="carousel" tabindex="0" aria-roledescription="carosello" aria-label="Foto del locale. Usa le frecce per girare.">
-      <div class="carousel__ring" id="ring">
-{items}
-      </div>
-    </div>
-    <div class="carousel__ctrl">
-      <button type="button" class="round" id="prev" aria-label="Foto precedente">‹</button>
-      <button type="button" class="round" id="next" aria-label="Foto successiva">›</button>
-    </div>
-  </section>
-"""
-
-
-def carta(c=None):
-    """Il menu scuro della home. Con una sezione: solo quei piatti e le altre sezioni come link."""
-    tabs = []
-    for k in CATS:
-        cur = ' aria-current="page"' if k is c else ""
-        tabs.append(f'        <a class="carta__tab" href="/menu/{k["slug"]}"{cur}><span>{e(k["it"])}</span><small>{e(k["ro"])}</small></a>')
-    shown = [c] if c else CATS
-    panels = []
-    for k in shown:
-        dishes = []
-        for d in k["dishes"]:
-            q = f'<span class="dish__qty">{e(d["qty"])}</span>' if d["qty"] else ""
-            dishes.append(f"""          <li class="dish reveal">
-            <figure class="dish__media"><img src="/img/menu/{d["img"]}.webp" alt="{e(d["name"])}" width="800" height="600" loading="lazy" decoding="async"></figure>
-            <div class="dish__body">
-              <h3 class="dish__name">{e(d["name"])}{q}</h3>
-              <p class="dish__desc">{e(d["desc"])}</p>
-              <p class="dish__price">{euro(d["price"])}</p>
-            </div>
-          </li>""")
-        head_ = "" if c else f'        <h2 class="carta__cat" id="{k["slug"]}">{e(k["it"])} <span>{e(k["ro"])}</span></h2>\n'
-        more = "" if c else f'\n        <a class="carta__more" href="/menu/{k["slug"]}">Vai alla pagina {e(k["it"])} <span aria-hidden="true">→</span></a>'
-        panels.append(f"""      <div class="carta__panel">
-{head_}        <ul class="carta__grid">
-{chr(10).join(dishes)}
-        </ul>{more}
-      </div>""")
-    title = f'{e(c["it"])} <span class="carta__ro">{e(c["ro"])}</span>' if c else "Tutti i piatti"
-    lead = e(c["intro"]) if c else "Cucina tradizionale romena, preparata ogni giorno dalla famiglia Sbuciumelea. Tocca una sezione per aprire la sua pagina."
-    return f"""
-  <section class="carta" id="piatti" aria-labelledby="carta-title">
+def hero_wide(crumbs, label, title, lead, pic, alt, actions, ghost):
+    """Titolo su tutta la larghezza, poi la foto in panoramica che scorre più lenta."""
+    return f"""  <section class="ed-hero ed-hero--wide">
+    <span class="ed-ghost" aria-hidden="true">{e(ghost)}</span>
     <div class="wrap">
-      <header class="carta__head reveal">
-        <div>
-          <p class="carta__kicker">Meniu · Il menu</p>
-          <h2 id="carta-title">{title}</h2>
-        </div>
-        <div class="carta__lead"><p>{lead}</p></div>
-      </header>
-      <nav class="carta__tabs" aria-label="Sezioni del menu">
-{chr(10).join(tabs)}
-      </nav>
-{chr(10).join(panels)}
-      <footer class="carta__foot">
-        <p>Coperto {euro(DATA["coperto"])} a persona. Per allergie e intolleranze chiedi al personale.</p>
-        <a class="btn btn--solid js-wa" {wa_attr("Ciao! Vorrei prenotare un tavolo da Alba Iulia.")}><svg aria-hidden="true"><use href="#wa"/></svg>Prenota un tavolo</a>
-      </footer>
-{credits([d for k in shown for d in k["dishes"]], "", "      ")}
+      {crumbs_html(crumbs)}
+      <p class="ed-label"><span>{label[0]}</span>{e(label[1])}</p>
+      <h1 class="ed-title ed-title--xl ed-split">{title}</h1>
+      <div class="ed-hero__row">
+        <p class="ed-lead">{lead}</p>
+        <div class="ed-actions">{actions}</div>
+      </div>
+      <figure class="ed-pano ed-img"><img src="/img/{pic}" alt="{e(alt)}" width="800" height="600" fetchpriority="high" decoding="async" data-speed="-12"></figure>
     </div>
   </section>
 """
 
 
-# ---------------------------------------------------------------- le pagine
+def hero_center(crumbs, label, title, lead, actions, pics, ghost):
+    """Titolo al centro, tre foto sospese intorno che si muovono a velocità diverse."""
+    fl = "\n".join(f'      <figure class="ed-float ed-float--{i + 1}" data-speed="{s}">{img(p, a, lazy=False)}</figure>'
+                   for i, ((p, a), s) in enumerate(zip(pics, (-18, -30, -10))))
+    return f"""  <section class="ed-hero ed-hero--center">
+    <span class="ed-ghost" aria-hidden="true">{e(ghost)}</span>
+{fl}
+    <div class="wrap ed-hero__center">
+      {crumbs_html(crumbs)}
+      <p class="ed-label ed-label--center"><span>{label[0]}</span>{e(label[1])}</p>
+      <h1 class="ed-title ed-split">{title}</h1>
+      <p class="ed-lead">{lead}</p>
+      <div class="ed-actions">{actions}</div>
+    </div>
+  </section>
+"""
+
+
+# ---------------------------------------------------------------- blocchi
+
+def sec_head(label, h2, intro=None, center=False):
+    i = f'\n        <p class="ed-intro">{intro}</p>' if intro else ""
+    return f"""      <header class="ed-head{' ed-head--center' if center else ''}">
+        <p class="ed-label"><span>—</span>{e(label)}</p>
+        <h2 class="ed-h2 ed-split">{h2}</h2>{i}
+      </header>"""
+
+
+def quote(text, meta=None, link=None):
+    m = f'\n      <p class="ed-quote__meta">{meta}</p>' if meta else ""
+    a = ""
+    if link:
+        ext = ' target="_blank" rel="noopener"' if link[0].startswith("http") else ""
+        a = f'\n      <a class="ed-quote__link" href="{link[0]}"{ext}>{e(link[1])} <span aria-hidden="true">→</span></a>'
+    return f"""
+  <section class="ed-quote">
+    <svg class="ed-quote__logo" viewBox="0 0 240 140" aria-hidden="true"><ellipse cx="120" cy="70" rx="116" ry="66" fill="none" stroke="currentColor" stroke-width=".7"/><ellipse cx="120" cy="70" rx="108" ry="59" fill="none" stroke="currentColor" stroke-width=".35"/></svg>
+    <div class="wrap">
+      <p class="ed-quote__text ed-split">{text}</p>{m}{a}
+    </div>
+  </section>
+"""
+
+
+def cta(msg=BOOK, title="Vi aspettiamo a <em>tavola.</em>", lead="Via Luigi Prina 21, Verona · tutti i giorni dalle 9 alle 20"):
+    return f"""
+  <section class="ed-cta">
+    <svg class="ed-cta__logo" viewBox="0 0 240 140" aria-hidden="true"><ellipse cx="120" cy="70" rx="116" ry="66" fill="none" stroke="currentColor" stroke-width=".7"/><ellipse cx="120" cy="70" rx="108" ry="59" fill="none" stroke="currentColor" stroke-width=".35"/></svg>
+    <div class="wrap ed-cta__inner">
+      <p class="ed-label ed-label--light ed-label--center"><span>—</span>Prenotazioni e ordini</p>
+      <h2 class="ed-split">{title}</h2>
+      <p>{lead}</p>
+      <div class="ed-actions ed-actions--center">
+        {btn_wa("Scrivici su WhatsApp", msg, "btn--gold")}
+        {btn_tel("btn--line")}
+      </div>
+    </div>
+  </section>
+"""
+
+
+def next_link(href, title, pic, label="Pagina successiva"):
+    return f"""
+  <section class="ed-next-sec">
+    <a class="wrap ed-next" href="{href}">
+      <span class="ed-next__label">{e(label)}</span>
+      <span class="ed-next__title">{e(title)} <i aria-hidden="true">→</i></span>
+      <span class="ed-next__img">{img(pic)}</span>
+    </a>
+  </section>
+"""
+
+
+def next_page(path):
+    paths = [p for p, *_ in ORDER]
+    p, t, pic = ORDER[(paths.index(path) + 1) % len(ORDER)]
+    return next_link(p, t, pic)
+
+
+def marquee(pics):
+    row = "".join(f'<li>{img(p, a)}</li>' for p, a in pics)
+    return f"""
+  <section class="ed-marquee" aria-label="Foto del locale">
+    <ul class="ed-marquee__track">{row}{row.replace('alt="', 'aria-hidden="true" alt="')}</ul>
+  </section>
+"""
+
+
+# ---------------------------------------------------------------- /il-titolare
 
 def titolare():
-    body = hero([("Il titolare", "/il-titolare")], "Dal 2004 · Famiglia Sbuciumelea", "Il titolare e la sua famiglia.",
-                "Ogni giorno in sala e al banco, per accogliervi di persona. Alba Iulia è un locale di famiglia: chi vi accoglie è chi l'ha costruito, un pezzo alla volta.",
-                "titolare.webp", "Il titolare di Alba Iulia, sorridente, nel suo locale",
-                ("Il titolare", "Ogni giorno in sala e al banco, per accogliervi di persona."),
-                [("Dal 2004", "Il primo", "locale romeno a Verona"), ("La famiglia", "Sbuciumelea", "in sala e al banco"), ("Su Google", "4,7", "su 5, 232 recensioni")],
-                "Prenota su WhatsApp", "Ciao! Vorrei prenotare un tavolo da Alba Iulia.", pos="50% 30%")
-    body += family("insegna.webp", "L'insegna ovale sulla parete capitonné: Caffetteria Alba Iulia Gastronomia, dal 2004 famiglia Sbuciumelea",
-                   "Vent'anni fa abbiamo aperto la porta. Da allora non l'abbiamo più chiusa.",
-                   ["Nel 2004 Alba Iulia è stato il primo locale di Verona dedicato alla gastronomia tipica romena, e il secondo in tutta Italia. Porta il nome della città simbolo della nostra terra, e l'abbiamo costruito come si costruisce una casa: un pezzo alla volta.",
-                    "Oggi in sala e al banco c'è ancora la famiglia Sbuciumelea. Nel 2022 abbiamo inaugurato i nuovi spazi di caffetteria e gastronomia, con lo stesso spirito del primo giorno."],
-                   [("2004", "Apre Alba Iulia in Via Luigi Prina"), ("2022", "Nuovi spazi di caffetteria e gastronomia"), ("Oggi", "Ristorante, caffè, gastronomia e macelleria")],
-                   kicker="La nostra storia")
-    body += services("Quello che ci chiedete di non cambiare mai", "Tre cose che la famiglia Sbuciumelea porta in tavola ogni giorno, dal 2004.", [
-        ("menu/sarmale.webp", "Sarmale con mămăligă e smântână", "Ricette di famiglia", "Sarmale, mici, ciorbe e tochitură come si preparano a casa in Romania, accanto ai piatti della cucina italiana.", "/menu", None),
-        ("banco.webp", "Un taglio di manzo al banco della macelleria", "Fatto da noi", "I mici sono di nostra produzione e la carne arriva dal nostro banco di macelleria, la stessa che potete portare a casa.", "/macelleria", None),
-        ("bancone.webp", "Il bancone con il titolare al lavoro", "Accoglienza", "Porzioni generose e un'accoglienza che fa tornare: per tanti romeni a Verona è il sapore di casa.", None, None),
-    ])
-    body += REVIEWS + visit()
-    return page("/il-titolare", [("Il titolare", "/il-titolare")], "Il titolare e la famiglia Sbuciumelea · Alba Iulia Verona",
+    path = "/il-titolare"
+    body = hero_arch([("Il titolare", path)], (num(path), "Il titolare"), "La famiglia dietro il <em>bancone.</em>",
+                     "Ogni giorno in sala e al banco, per accogliervi di persona. Alba Iulia è un locale di famiglia: chi vi accoglie è chi l'ha costruito, un pezzo alla volta.",
+                     "titolare.webp", "Il titolare di Alba Iulia, sorridente, nel suo locale",
+                     btn_wa("Prenota un tavolo", BOOK) + btn_tel(),
+                     [("Dal", "2004"), ("Famiglia", "Sbuciumelea"), ("Su Google", "4,7 / 5")], "Familia",
+                     "FAMIGLIA SBUCIUMELEA · DAL 2004 · VERONA · ", pos="50% 28%")
+    story = [
+        ("2004", "Si apre la porta", "Alba Iulia nasce in Via Luigi Prina: il primo locale di Verona dedicato alla gastronomia tipica romena, e il secondo in tutta Italia. Porta il nome della città simbolo della nostra terra.", "insegna.webp", "L'insegna di Alba Iulia sulla parete capitonné"),
+        ("2022", "I nuovi spazi", "Inauguriamo la nuova caffetteria e la gastronomia: il bancone, la parete capitonné, i lampadari di cristallo. Con lo stesso spirito del primo giorno.", "bancone.webp", "Il bancone della caffetteria"),
+        ("Oggi", "Una casa per tutti", "Ristorante, caffetteria, gastronomia e macelleria sotto lo stesso tetto, aperti sette giorni su sette. In sala e al banco c'è ancora la famiglia Sbuciumelea.", "sala.webp", "La sala con la parete capitonné"),
+    ]
+    items = "\n".join(f"""        <li class="ed-story__item">
+          <span class="ed-story__year" data-speed="-8">{y}</span>
+          <div class="ed-story__text reveal"><h3>{e(h)}</h3><p>{e(t)}</p></div>
+          <figure class="ed-story__img ed-img">{img(p, a)}</figure>
+        </li>""" for y, h, t, p, a in story)
+    body += f"""
+  <section class="ed-sec">
+    <div class="wrap">
+{sec_head("La nostra storia", "Vent'anni fa abbiamo aperto la porta. Da allora non l'abbiamo più <em>chiusa.</em>", "L'abbiamo costruito come si costruisce una casa: un pezzo alla volta.")}
+      <ol class="ed-story">
+{items}
+      </ol>
+    </div>
+  </section>
+"""
+    body += quote("Per tanti romeni a Verona è il sapore di casa. Per tanti veronesi, la scoperta di una cucina <em>nuova.</em>",
+                  "4,7 su 5 · 232 recensioni su Google",
+                  ("https://www.google.com/maps/search/?api=1&amp;query=Alba+Iulia+Via+Luigi+Prina+21+Verona", "Leggi le recensioni"))
+    vals = [("Ricette di famiglia", "Sarmale, mici, ciorbe e tochitură come si preparano a casa in Romania, accanto ai piatti della cucina italiana."),
+            ("Fatto da noi", "I mici sono di nostra produzione e la carne arriva dal nostro banco di macelleria: la stessa che potete portare a casa."),
+            ("Accoglienza", "Porzioni generose e un'accoglienza che fa tornare. Chi vi serve al tavolo è chi il locale l'ha costruito.")]
+    li = "\n".join(f'        <li class="reveal"><span class="ed-num">0{i + 1}</span><h3>{e(h)}</h3><p>{e(t)}</p></li>' for i, (h, t) in enumerate(vals))
+    body += f"""
+  <section class="ed-sec ed-sec--cream">
+    <div class="wrap">
+{sec_head("Come lavoriamo", "Quello che ci chiedete di non cambiare <em>mai.</em>")}
+      <ol class="ed-values">
+{li}
+      </ol>
+    </div>
+  </section>
+"""
+    body += cta() + next_page(path)
+    return page(path, [("Il titolare", path)], "Il titolare e la famiglia Sbuciumelea · Alba Iulia Verona",
                 "La storia di Alba Iulia a Verona: dal 2004 la famiglia Sbuciumelea accoglie in sala e al banco, nel primo locale di gastronomia romena della città.",
-                "/img/titolare-og.webp", body, "titolare.webp")
+                "/img/titolare-og.webp", "titolare.webp", body)
 
+
+# ---------------------------------------------------------------- /il-locale
 
 ANIME = [
-    ("ristorante.webp", "Tavoli apparecchiati con tovaglie bianche nella sala del ristorante", "Ristorante",
-     "Un menu tra le regioni romene e quelle italiane. Primi, secondi e contorni di nostra produzione, anche nel dehors.", "/menu", None),
-    ("caffe.webp", "Vassoio di dolci al cioccolato e sfogliatine della pasticceria", "Caffetteria",
-     "Colazione, pasticceria fresca e aperitivo. Dalle 9 del mattino, sette giorni su sette.", None, None),
+    ("ristorante.webp", "La sala del ristorante con le tovaglie bianche e le vetrate", "Ristorante",
+     "Un menu tra le regioni romene e quelle italiane: ciorbe, sarmale, grigliate e contorni di nostra produzione, in sala o nel dehors.",
+     ("Sala", "Dehors", "Cucina romena e italiana"), ("/menu", "Sfoglia il menu")),
+    ("caffe.webp", "Dolci al cioccolato e sfogliatine della pasticceria", "Caffetteria",
+     "Colazione con caffè e pasticceria fresca, poi il bancone si prepara per l'aperitivo. Dalle 9 del mattino, sette giorni su sette.",
+     ("Colazione", "Pasticceria", "Aperitivo"), None),
     ("gastronomia.webp", "Il banco della gastronomia con orchidee e piante", "Gastronomia",
-     "I nostri piatti pronti da portare via e un piccolo market di prodotti tipici romeni, moldavi e italiani.", None, None),
+     "I nostri piatti pronti da portare via e un piccolo market di prodotti tipici romeni, moldavi e italiani.",
+     ("Piatti pronti", "Prodotti tipici", "Asporto"), None),
     ("macelleria.webp", "Taglio di carne bovina marezzata al banco", "Macelleria",
-     "Carne fresca selezionata e salumi artigianali, tagliati al momento come li chiedi tu.", "/macelleria", None),
+     "Carne fresca selezionata e salumi artigianali, tagliati al momento come li chiedete. La stessa carne che cuciniamo in sala.",
+     ("Carne fresca", "Salumi", "Consegna a domicilio"), ("/macelleria", "Scopri la macelleria")),
 ]
 
 
 def locale():
-    body = hero([("Il locale", "/il-locale")], "Via Luigi Prina 21 · Verona", "Un locale, quattro anime.",
-                "La parete capitonné, i lampadari di cristallo, il bancone della caffetteria e la sala apparecchiata. Tutto sotto lo stesso tetto, dal mattino alla sera.",
-                "sala-hd.webp", "La sala di Alba Iulia con la parete capitonné e il logo",
-                ("Il locale", "Ristorante, caffetteria, gastronomia e macelleria."),
-                [("Aperti", "7 giorni su 7", "dalle 9 alle 20"), ("Servizi", "Sala e dehors", "asporto e consegna"), ("Dal 2004", "Via Luigi Prina", "21, Verona")],
-                "Prenota un tavolo", "Ciao! Vorrei prenotare un tavolo da Alba Iulia.", pos="40% 50%")
-    body += SALA
-    body += services("Quattro modi di stare a tavola con noi", "Un caffè con la brioche la mattina, il pranzo in sala, e prima di tornare a casa la carne per domani.", ANIME)
-    body += family("bar.webp", "Il bar con la macchina del caffè e le bottiglie", "Una giornata da Alba Iulia",
-                   ["Dalle 9 alle 20, tutti i giorni: il locale cambia con le ore, la famiglia resta la stessa."],
-                   [("Mattina", "Caffè e pasticceria fresca al bancone"), ("Pranzo", "In sala o nel dehors, cucina romena e italiana"),
-                    ("Pomeriggio", "Gastronomia, prodotti tipici e carne fresca al banco"), ("Sera", "L'aperitivo e i piatti pronti da portare a casa")],
-                   link=("/galleria", "Guarda le foto del locale"), kicker="Dalle 9 alle 20")
-    body += visit()
-    return page("/il-locale", [("Il locale", "/il-locale")], "Il locale · Ristorante, caffetteria, gastronomia e macelleria a Verona",
-                "Alba Iulia in Via Luigi Prina 21 a Verona: ristorante con dehors, caffetteria, gastronomia con prodotti tipici e macelleria, aperti tutti i giorni dalle 9 alle 20.",
-                "/img/sala-hd.jpg", body, "sala-hd.webp")
-
-
-def macelleria():
-    msg = "Ciao! Vorrei ordinare dalla macelleria di Alba Iulia."
-    body = hero([("Macelleria", "/macelleria")], "Macelleria e prodotti tipici", "Il banco della nostra macelleria.",
-                "La stessa carne che cuciniamo in sala, pronta per la vostra cucina. Tagli freschi, macinato per i mici, salsicce e salumi artigianali, tagliati al momento come li chiedete.",
-                "banco.webp", "Un taglio di manzo marezzato affettato a mano al banco della macelleria",
-                ("La macelleria", "Tagliata al momento, come la chiedete voi."),
-                [("Ogni giorno", "Carne fresca", "selezionata"), ("Da noi", "Salumi", "artigianali"), ("Ordini", "WhatsApp", "ritiro o consegna a domicilio")],
-                "Ordina su WhatsApp", msg, pos="50% 50%")
-    body += butcher("Macelleria e prodotti tipici",
-                    "La stessa carne che cuciniamo in sala, pronta per la tua cucina. Tagli freschi, macinato per i mici, salsicce e salumi artigianali. E poi formaggi, conserve, dolci e bevande per una tavola romena o moldava.",
-                    ["Carne fresca selezionata ogni giorno", "Salumi artigianali", "Prodotti tipici romeni, moldavi e italiani", "Asporto e consegna a domicilio"],
-                    "macelleria.webp", "Taglio di carne bovina marezzata al banco", msg, "Ordina su WhatsApp")
-    body += services("Cosa trovate al banco", "Dalla carne per la griglia ai prodotti per una tavola romena, moldava o italiana.", [
-        ("menu/costata.webp", "Costata di manzo", "Carne fresca", "Tagli selezionati ogni giorno, preparati al momento come li chiedete.", None, None),
-        ("menu/mici.webp", "Mici alla griglia con senape", "Per i mici", "Il macinato speziato per i mici, come lo usiamo nella nostra cucina.", None, None),
-        ("menu/carnat.webp", "Salsiccia fresca alla griglia", "Salsicce e salumi", "Salsicce fresche e salumi artigianali, da cuocere o da affettare.", None, None),
-        ("gastronomia.webp", "Il banco della gastronomia", "Prodotti tipici", "Formaggi, conserve, dolci e bevande romeni, moldavi e italiani.", None, None),
-    ])
-    body += family("insegna.webp", "L'insegna di Alba Iulia sulla parete capitonné", "Ditecelo su WhatsApp, al resto pensiamo noi.",
-                   ["Ordinare è semplice: scrivete cosa vi serve, prepariamo l'ordine e lo ritirate in negozio oppure ve lo portiamo a casa."],
-                   [("1", "Scrivete il taglio, il peso o quante persone siete"), ("2", "Tagliamo e confezioniamo la carne al momento"), ("3", "Ritiro in Via Luigi Prina 21 o consegna a domicilio")],
-                   link=("/menu/grigliate", "Assaggiatela in sala: le grigliate"), kicker="Ordinare è semplice")
-    body += visit(msg=msg)
-    return page("/macelleria", [("Macelleria", "/macelleria")], "Macelleria e prodotti tipici romeni · Alba Iulia Verona",
-                "La macelleria di Alba Iulia a Verona: carne fresca selezionata, macinato per i mici, salsicce, salumi artigianali e prodotti tipici romeni e moldavi. Ordini su WhatsApp, asporto e consegna.",
-                "/img/banco.webp", body, "banco.webp")
-
-
-GRIGLIA = ["sala-hd.webp", "bancone.webp", "titolare.webp", "caffe.webp", "bar.webp", "insegna.webp",
-           "ristorante.webp", "piatto.webp", "gastronomia.webp", "banco.webp", "macelleria.webp", "sala.webp"]
-ALT = dict(FOTO) | {"sala-hd.webp": "La sala con la parete capitonné, il logo e i tavoli apparecchiati", "macelleria.webp": "Carne bovina marezzata"}
-
-
-def galleria():
-    body = hero([("Galleria", "/galleria")], "Un giro nel locale", "Benvenuti da Alba Iulia.",
-                "La sala, il bancone, la caffetteria, la gastronomia e la macelleria: le foto del nostro locale in Via Luigi Prina. Fate girare la giostra o toccate una foto per ingrandirla.",
-                "bancone.webp", "Il bancone con il titolare al lavoro", ("La galleria", f"{len(GRIGLIA)} foto del nostro locale."),
-                [("Sala", "Capitonné", "e lampadari di cristallo"), ("Bancone", "Caffetteria", "e aperitivo"), ("Banco", "Gastronomia", "e macelleria")],
-                "Prenota un tavolo", "Ciao! Vorrei prenotare un tavolo da Alba Iulia.", pos="50% 35%")
-    body += carousel()
-    items = "\n".join(f"""      <li class="reveal"><button type="button" class="photo-grid__item" data-full="/img/{f}" aria-label="Ingrandisci: {e(ALT[f])}">
-        <img src="/img/{f}" alt="{e(ALT[f])}" width="800" height="600" loading="lazy" decoding="async">
-      </button></li>""" for f in GRIGLIA)
+    path = "/il-locale"
+    body = hero_wide([("Il locale", path)], (num(path), "Il locale"), "Un locale, quattro <em>anime.</em>",
+                     "La parete capitonné, i lampadari di cristallo, il bancone della caffetteria e la sala apparecchiata. Tutto sotto lo stesso tetto, dal mattino alla sera.",
+                     "sala-hd.webp", "La sala di Alba Iulia: parete capitonné bianca con il logo, tavoli apparecchiati e il bancone della caffetteria",
+                     btn_wa("Prenota un tavolo", BOOK) + btn_tel(), "Acasă")
+    ch = []
+    for i, (p, a, t, txt, tags, link) in enumerate(ANIME):
+        tg = "".join(f"<li>{e(x)}</li>" for x in tags)
+        lk = f'\n          <a class="ed-arrow" href="{link[0]}">{e(link[1])} <span aria-hidden="true">→</span></a>' if link else ""
+        ch.append(f"""      <article class="ed-chapter{' ed-chapter--rev' if i % 2 else ''}">
+        <figure class="ed-chapter__img ed-img">{img(p, a, extra=' data-speed="-6"')}</figure>
+        <div class="ed-chapter__copy reveal">
+          <span class="ed-chapter__num">0{i + 1}</span>
+          <h3 class="ed-h3">{e(t)}</h3>
+          <p>{e(txt)}</p>
+          <ul class="ed-tags">{tg}</ul>{lk}
+        </div>
+      </article>""")
     body += f"""
-  <section class="photo-grid-sec">
-    <div class="wrap services__head reveal">
-      <h2>Tutte le foto</h2>
-      <p>Toccate una foto per vederla a schermo intero.</p>
+  <section class="ed-sec">
+    <div class="wrap">
+{sec_head("Quattro anime", "Quattro modi di stare a tavola con <em>noi.</em>", "Un caffè con la brioche la mattina, il pranzo in sala, e prima di tornare a casa la carne per domani.")}
+      <div class="ed-chapters">
+{chr(10).join(ch)}
+      </div>
     </div>
-    <ul class="wrap photo-grid">
-{items}
-    </ul>
   </section>
 """
-    body += visit()
-    return page("/galleria", [("Galleria", "/galleria")], "Galleria fotografica · Alba Iulia Verona",
-                "Le foto di Alba Iulia a Verona: la sala con la parete capitonné, il bancone della caffetteria, la gastronomia e la macelleria.",
-                "/img/sala-hd.jpg", body, "bancone.webp")
+    day = [("Mattina", "Il caffè e la pasticceria fresca al bancone della caffetteria."),
+           ("Pranzo", "In sala o nel dehors, con la cucina romena e quella italiana."),
+           ("Pomeriggio", "La gastronomia, i prodotti tipici e la carne fresca al banco."),
+           ("Sera", "L'aperitivo al bancone e i piatti pronti da portare a casa.")]
+    li = "\n".join(f'        <li class="reveal"><b>{e(h)}</b><p>{e(t)}</p></li>' for h, t in day)
+    body += f"""
+  <section class="ed-day">
+    <div class="wrap">
+{sec_head("Una giornata da Alba Iulia", "Dalle 9 alle 20, tutti i <em>giorni.</em>", "Il locale cambia con le ore, la famiglia resta la stessa.")}
+      <ol class="ed-day__line">
+{li}
+      </ol>
+    </div>
+  </section>
+"""
+    body += marquee([("bancone.webp", "Il bancone"), ("caffe.webp", "La pasticceria"), ("insegna.webp", "L'insegna"),
+                     ("ristorante.webp", "La sala"), ("bar.webp", "Il bar"), ("gastronomia.webp", "La gastronomia"),
+                     ("piatto.webp", "Pranzo in sala"), ("sala.webp", "La parete capitonné")])
+    body += cta() + next_page(path)
+    return page(path, [("Il locale", path)], "Il locale · Ristorante, caffetteria, gastronomia e macelleria a Verona",
+                "Alba Iulia in Via Luigi Prina 21 a Verona: ristorante con dehors, caffetteria, gastronomia con prodotti tipici e macelleria, aperti tutti i giorni dalle 9 alle 20.",
+                "/img/sala-hd.jpg", "sala-hd.webp", body)
 
 
-def dove():
-    body = hero([("Dove siamo", "/dove-siamo")], "Via Luigi Prina 21 · 37136 Verona", "Vi aspettiamo in Via Luigi Prina.",
-                "Tutti i giorni dalle 9 alle 20. Per prenotare un tavolo, ordinare dalla macelleria o chiedere un'informazione, scriveteci su WhatsApp o chiamateci.",
-                "insegna.webp", "L'insegna ovale di Alba Iulia sulla parete capitonné", ("Dove siamo", "Via Luigi Prina 21, Verona."),
-                [("Aperti", "7 giorni su 7", "dalle 9 alle 20"), ("Telefono", "045 862 6014", "chiamateci"), ("WhatsApp", "345 696 7120", "per prenotare e ordinare")],
-                "Scrivici su WhatsApp", "Ciao! Vorrei prenotare un tavolo da Alba Iulia.",
-                second=f'<a class="btn btn--ghost btn--lg magnetic" href="{MAPS_DIR}" target="_blank" rel="noopener">Indicazioni stradali</a>', pos="50% 45%")
-    body += visit("Orari e contatti", week=True)
-    body += REVIEWS
-    body += services("Prima di venire a trovarci", "Date un'occhiata al menu, al locale e alla macelleria.", [
-        ("piatto.webp", "Pranzo in sala", "Il menu", "Antipasti, ciorbe, secondi, grigliate, contorni e dolci, con foto e prezzi.", "/menu", None),
-        ("sala.webp", "La sala con la parete capitonné", "Il locale", "Ristorante, caffetteria, gastronomia e macelleria sotto lo stesso tetto.", "/il-locale", None),
-        ("banco.webp", "Un taglio di manzo al banco", "La macelleria", "Carne fresca e prodotti tipici, con ordini su WhatsApp e consegna.", "/macelleria", None),
-    ])
-    return page("/dove-siamo", [("Dove siamo", "/dove-siamo")], "Dove siamo e orari · Alba Iulia, Via Luigi Prina 21 Verona",
-                "Alba Iulia è in Via Luigi Prina 21, 37136 Verona. Aperti tutti i giorni dalle 9 alle 20. Telefono 045 862 6014, WhatsApp 345 696 7120.",
-                "/img/insegna.webp", body, "insegna.webp")
+# ---------------------------------------------------------------- menu
+
+def index_rows(current=None):
+    rows = []
+    for i, k in enumerate(CATS):
+        cur = ' aria-current="page"' if k is current else ""
+        pic = f'menu/{k["dishes"][0]["img"]}.webp'
+        rows.append(f"""        <li><a class="ed-index__row" href="/menu/{k["slug"]}" data-img="/img/{pic}"{cur}>
+          <span class="ed-index__num">{i + 1:02d}</span>
+          <span class="ed-index__thumb">{img(pic, k["dishes"][0]["name"])}</span>
+          <span class="ed-index__name">{e(k["it"])} <em>{e(k["ro"])}</em></span>
+          <span class="ed-index__meta">{plural(len(k["dishes"]))}<br>{price_range(k)}</span>
+          <span class="ed-index__arrow" aria-hidden="true">→</span>
+        </a></li>""")
+    return f"""      <ul class="ed-index">
+{chr(10).join(rows)}
+      </ul>
+      <div class="ed-follow" aria-hidden="true"><img alt=""></div>"""
 
 
-def other_sections(current=None):
-    cards = []
-    for k in CATS:
-        badge = "Sei qui" if k is current else plural(len(k["dishes"]))
-        cards.append((f'menu/{k["dishes"][0]["img"]}.webp', k["dishes"][0]["name"], k["it"], f'{k["ro"]} · {price_range(k)}',
-                      f'/menu/{k["slug"]}', badge))
-    return cards
+def card(cats, title, sub):
+    secs = []
+    for k in cats:
+        items = []
+        for d in k["dishes"]:
+            q = f' <i>· {e(d["qty"])}</i>' if d["qty"] else ""
+            items.append(f"""            <li class="ed-item">
+              {img("menu/" + d["img"] + ".webp", d["name"])}
+              <div>
+                <p class="ed-item__line"><span class="ed-item__name">{e(d["name"])}</span><span class="ed-item__dots" aria-hidden="true"></span><span class="ed-item__price">{euro(d["price"])}</span></p>
+                <p class="ed-item__desc">{e(d["desc"])}{q}</p>
+              </div>
+            </li>""")
+        more = "" if len(cats) == 1 else f'\n          <a class="ed-card__more" href="/menu/{k["slug"]}">Vedi le foto dei piatti <span aria-hidden="true">→</span></a>'
+        secs.append(f"""        <section class="ed-card__sec">
+          <h3>{e(k["it"])} <em>{e(k["ro"])}</em></h3>
+          <ul>
+{chr(10).join(items)}
+          </ul>{more}
+        </section>""")
+    return f"""      <div class="ed-card reveal">
+        <header class="ed-card__head">
+          <svg class="ed-card__logo" aria-hidden="true"><use href="#logo"/></svg>
+          <p class="ed-label ed-label--center"><span>—</span>{e(sub)}</p>
+          <h2>{title}</h2>
+        </header>
+        <div class="ed-card__cols{' ed-card__cols--one' if len(cats) == 1 else ''}">
+{chr(10).join(secs)}
+        </div>
+        <p class="ed-card__foot">Coperto {euro(DATA["coperto"])} a persona · Per allergie e intolleranze chiedete al personale</p>
+      </div>"""
 
 
 def menu_index():
+    path = "/menu"
     total = sum(len(k["dishes"]) for k in CATS)
-    body = hero([("Menu", "/menu")], "Meniu · Il menu", "Il nostro menu.",
-                f"Cucina tradizionale romena preparata ogni giorno dalla famiglia Sbuciumelea: {total} piatti tra antipasti, ciorbe, secondi, grigliate, contorni e dolci, con foto e prezzi.",
-                "menu/tochitura.webp", "Tochitură con mămăligă, brânză e uovo", ("Il menu", "Ricette di famiglia, dal 2004."),
-                [("Sezioni", str(len(CATS)), "dagli antipasti ai dolci"), ("Piatti", str(total), "con foto e prezzi"), ("Coperto", euro(DATA["coperto"]), "a persona")],
-                "Prenota un tavolo", "Ciao! Vorrei prenotare un tavolo da Alba Iulia.", pos="50% 50%")
-    body += services("Scegli una sezione", "Ogni sezione ha la sua pagina con tutti i piatti.", other_sections())
-    body += carta()
-    body += visit()
-    ldm = {"@type": "Menu", "name": "Menu Alba Iulia", "url": SITE + "/menu", "inLanguage": "it",
+    body = hero_center([("Menu", path)], (num(path), "Il menu"), "Il nostro <em>menu.</em>",
+                       f"Cucina tradizionale romena preparata ogni giorno dalla famiglia Sbuciumelea: {total} piatti tra antipasti, ciorbe, secondi, grigliate, contorni e dolci.",
+                       btn_wa("Prenota un tavolo", BOOK) + '<a class="btn btn--ghost btn--lg magnetic" href="#carta">Leggi la carta</a>',
+                       [("menu/sarmale.webp", "Sarmale con mămăligă"), ("menu/mici.webp", "Mici alla griglia"), ("menu/papanasi.webp", "Papanași")], "Meniu")
+    body += f"""
+  <section class="ed-sec">
+    <div class="wrap">
+{sec_head("Le sezioni", "Scegliete da dove <em>cominciare.</em>", "Ogni sezione ha la sua pagina, con le foto di tutti i piatti.")}
+{index_rows()}
+    </div>
+  </section>
+
+  <section class="ed-sec ed-sec--cream" id="carta">
+    <div class="wrap">
+{card(CATS, "La <em>carta</em>", "Alba Iulia · dal 2004")}
+{credits([d for k in CATS for d in k["dishes"]], " ed-credits", "      ")}
+    </div>
+  </section>
+"""
+    body += cta() + next_page(path)
+    ldm = {"@type": "Menu", "name": "Menu Alba Iulia", "url": SITE + path, "inLanguage": "it",
            "hasMenuSection": [{"@type": "MenuSection", "name": f"{k['it']} / {k['ro']}", "url": f"{SITE}/menu/{k['slug']}",
                                "hasMenuItem": [{"@type": "MenuItem", "name": d["name"], "description": d["desc"],
                                                 "offers": {"@type": "Offer", "price": d["price"], "priceCurrency": "EUR"}} for d in k["dishes"]]} for k in CATS]}
-    return page("/menu", [("Menu", "/menu")], "Menu · Alba Iulia Verona, cucina tradizionale romena",
+    return page(path, [("Menu", path)], "Menu · Alba Iulia Verona, cucina tradizionale romena",
                 f"Il menu di Alba Iulia a Verona: {total} piatti della tradizione romena tra antipasti, ciorbe, secondi, grigliate, contorni e dolci, con foto e prezzi.",
-                "/img/menu/platou-alba-iulia.webp", body, "menu/tochitura.webp", ldm)
+                "/img/menu/platou-alba-iulia.webp", "menu/sarmale.webp", body, ldm)
 
 
-def category(c):
+def category(i, c):
     path = f"/menu/{c['slug']}"
     n = len(c["dishes"])
     first = c["dishes"][0]
-    body = hero([("Menu", "/menu"), (c["it"], path)], f"Meniu · {c['ro']}", c["it"] + ".",
-                e(c["intro"]), f"menu/{first['img']}.webp", first["name"], (c["ro"], f"{plural(n)}, {price_range(c)}."),
-                [("Piatti", str(n), "in questa sezione"), ("Prezzi", price_range(c), ""), ("Coperto", euro(DATA["coperto"]), "a persona")],
-                "Prenota un tavolo", f"Ciao! Vorrei prenotare un tavolo da Alba Iulia. Ho visto il menu: {c['it']}.",
-                second='<a class="btn btn--ghost btn--lg magnetic" href="#piatti">Vedi i piatti</a>', pos="50% 50%")
-    body += carta(c)
-    body += services("Le altre sezioni del menu", "Continuate a sfogliare: ogni sezione ha la sua pagina.", other_sections(c), link=("/menu", "Tutto il menu"))
-    body += visit()
+    body = hero_arch([("Menu", "/menu"), (c["it"], path)], (f"{i + 1:02d}/{len(CATS):02d}", "Il menu"), e(c["it"]) + ".",
+                     e(c["intro"]), f"menu/{first['img']}.webp", first["name"],
+                     btn_wa("Prenota un tavolo", f"Ciao! Vorrei prenotare un tavolo da Alba Iulia. Ho visto il menu: {c['it']}.") +
+                     '<a class="btn btn--ghost btn--lg magnetic" href="#piatti">Vedi i piatti</a>',
+                     [("Piatti", str(n)), ("Prezzi", price_range(c)), ("Coperto", euro(DATA["coperto"]))], c["ro"],
+                     f"{c['ro'].upper()} · ALBA IULIA · VERONA · ", oval=True, pos="50% 50%")
+    tiles = []
+    for d in c["dishes"]:
+        q = f'<p class="ed-dish__qty">{e(d["qty"])}</p>' if d["qty"] else ""
+        tiles.append(f"""        <li class="ed-dish reveal">
+          <figure class="ed-dish__img"><span class="ed-dish__frame">{img("menu/" + d["img"] + ".webp", d["name"])}</span><span class="ed-seal">{euro(d["price"])}</span></figure>
+          <h3>{e(d["name"])}</h3>
+          {q}<p class="ed-dish__desc">{e(d["desc"])}</p>
+        </li>""")
+    body += f"""
+  <section class="ed-sec" id="piatti">
+    <div class="wrap">
+{sec_head(c["ro"], f"{plural(n).capitalize()}, da gustare in sala o da portare <em>via.</em>")}
+      <ul class="ed-dishes ed-dishes--{min(n, 3)}">
+{chr(10).join(tiles)}
+      </ul>
+{credits(c["dishes"], " ed-credits", "      ")}
+    </div>
+  </section>
+
+  <section class="ed-sec ed-sec--cream">
+    <div class="wrap">
+{sec_head("Il menu", "Le altre <em>sezioni.</em>")}
+{index_rows(c)}
+    </div>
+  </section>
+"""
+    nxt = CATS[(i + 1) % len(CATS)]
+    body += cta(f"Ciao! Vorrei prenotare un tavolo da Alba Iulia. Ho visto il menu: {c['it']}.")
+    body += next_link(f"/menu/{nxt['slug']}", nxt["it"], f"menu/{nxt['dishes'][0]['img']}.webp", "Sezione successiva")
     ldc = {"@type": "MenuSection", "name": f"{c['it']} / {c['ro']}", "description": c["intro"], "url": SITE + path,
            "hasMenuItem": [{"@type": "MenuItem", "name": d["name"], "description": d["desc"], "image": f"{SITE}/img/menu/{d['img']}.webp",
                             "offers": {"@type": "Offer", "price": d["price"], "priceCurrency": "EUR"}} for d in c["dishes"]]}
     desc = f"{c['it']} del ristorante Alba Iulia a Verona: {', '.join(d['name'] for d in c['dishes'][:4])}{' e altri' if n > 4 else ''}. Cucina romena della famiglia Sbuciumelea, prezzi e foto."
     return page(path, [("Menu", "/menu"), (c["it"], path)], f"{c['it']} ({c['ro']}) · Menu Alba Iulia Verona", desc,
-                f"/img/menu/{first['img']}.webp", body, f"menu/{first['img']}.webp", ldc, active="/menu")
+                f"/img/menu/{first['img']}.webp", f"menu/{first['img']}.webp", body, ldc, active="/menu")
+
+
+# ---------------------------------------------------------------- /macelleria
+
+def macelleria():
+    path = "/macelleria"
+    msg = "Ciao! Vorrei ordinare dalla macelleria di Alba Iulia."
+    body = hero_arch([("Macelleria", path)], (num(path), "La macelleria"), "Tagliata al momento, come la <em>chiedete voi.</em>",
+                     "La stessa carne che cuciniamo in sala, pronta per la vostra cucina. Tagli freschi, macinato per i mici, salsicce e salumi artigianali.",
+                     "banco.webp", "Un taglio di manzo marezzato affettato a mano al banco della macelleria",
+                     btn_wa("Ordina su WhatsApp", msg, "btn--gold") + btn_tel("btn--line"),
+                     [("Ogni giorno", "Carne fresca"), ("Da noi", "Salumi artigianali"), ("Ordini", "Ritiro o consegna")], "Măcelărie",
+                     "MACELLERIA · PRODOTTI TIPICI · ALBA IULIA · ", dark=True, pos="50% 50%")
+    prods = [("menu/costata.webp", "Costata di manzo", "Carne fresca", "Tagli selezionati ogni giorno, preparati al momento come li chiedete."),
+             ("menu/mici.webp", "Mici alla griglia con senape", "Per i mici", "Il macinato speziato per i mici, come lo usiamo nella nostra cucina."),
+             ("menu/carnat.webp", "Salsiccia fresca alla griglia", "Salsicce e salumi", "Salsicce fresche e salumi artigianali, da cuocere o da affettare."),
+             ("gastronomia.webp", "Il banco della gastronomia", "Prodotti tipici", "Formaggi, conserve, dolci e bevande romeni, moldavi e italiani.")]
+    li = "\n".join(f"""        <li>
+          <figure class="ed-img">{img(p, a)}</figure>
+          <div class="reveal"><span class="ed-num">0{i + 1}</span><h3>{e(h)}</h3><p>{e(t)}</p></div>
+        </li>""" for i, (p, a, h, t) in enumerate(prods))
+    body += f"""
+  <section class="ed-sec">
+    <div class="wrap">
+{sec_head("Al banco", "Dalla griglia alla tavola di <em>casa.</em>", "La carne per la griglia, il macinato per i mici e i prodotti per una tavola romena, moldava o italiana.")}
+      <ul class="ed-products">
+{li}
+      </ul>
+    </div>
+  </section>
+"""
+    body += quote("La stessa carne che cuciniamo in sala, pronta per la vostra <em>cucina.</em>", "Carne fresca selezionata ogni giorno · Salumi artigianali")
+    steps = [("Scrivete cosa vi serve", "Il taglio, il peso, quante persone siete: un messaggio su WhatsApp o una telefonata."),
+             ("Prepariamo l'ordine", "La carne viene tagliata e confezionata al momento, come la chiedete."),
+             ("Ritiro o consegna", "Passate in Via Luigi Prina 21 oppure ve la portiamo a domicilio.")]
+    li = "\n".join(f'        <li class="reveal"><b>{i + 1}</b><h3>{e(h)}</h3><p>{e(t)}</p></li>' for i, (h, t) in enumerate(steps))
+    body += f"""
+  <section class="ed-sec ed-sec--cream">
+    <div class="wrap">
+{sec_head("Ordinare è semplice", "Ditecelo su WhatsApp, al resto pensiamo <em>noi.</em>")}
+      <ol class="ed-steps">
+{li}
+      </ol>
+      <p class="ed-center reveal">{btn_wa("Ordina su WhatsApp", msg)}</p>
+    </div>
+  </section>
+"""
+    body += cta(msg, "La carne per domani, <em>oggi.</em>", "Ordini su WhatsApp · ritiro in Via Luigi Prina 21 o consegna a domicilio") + next_page(path)
+    return page(path, [("Macelleria", path)], "Macelleria e prodotti tipici romeni · Alba Iulia Verona",
+                "La macelleria di Alba Iulia a Verona: carne fresca selezionata, macinato per i mici, salsicce, salumi artigianali e prodotti tipici romeni e moldavi. Ordini su WhatsApp, asporto e consegna.",
+                "/img/banco.webp", "banco.webp", body, dark=True)
+
+
+# ---------------------------------------------------------------- /galleria
+
+FOTO = [("sala-hd.webp", "La sala con la parete capitonné, il logo e i tavoli apparecchiati"),
+        ("bancone.webp", "Il bancone con il titolare al lavoro"), ("titolare.webp", "Il titolare nel suo locale"),
+        ("caffe.webp", "Dolci al cioccolato e sfogliatine della caffetteria"), ("bar.webp", "Il bar con la macchina del caffè e le bottiglie"),
+        ("insegna.webp", "L'insegna: dal 2004 famiglia Sbuciumelea"), ("ristorante.webp", "La sala con le vetrate verso il dehors"),
+        ("piatto.webp", "Pranzo in sala"), ("gastronomia.webp", "Il banco della gastronomia"),
+        ("banco.webp", "Un taglio di manzo al banco della macelleria"), ("macelleria.webp", "Carne bovina marezzata"),
+        ("sala.webp", "La sala e il logo sulla parete capitonné")]
+
+
+def galleria():
+    path = "/galleria"
+    body = hero_center([("Galleria", path)], (num(path), "La galleria"), "Un giro nel <em>locale.</em>",
+                       "La sala, il bancone, la caffetteria, la gastronomia e la macelleria. Toccate una foto per vederla a schermo intero.",
+                       btn_wa("Prenota un tavolo", BOOK),
+                       [("caffe.webp", "La pasticceria"), ("bancone.webp", "Il bancone"), ("insegna.webp", "L'insegna")], "Galerie")
+    tiles = "\n".join(f"""        <li class="ed-bento__item"><button type="button" class="ed-bento__btn ed-img" data-full="/img/{p}" aria-label="Ingrandisci: {e(a)}">{img(p, a)}</button></li>""" for p, a in FOTO)
+    body += f"""
+  <section class="ed-sec ed-sec--tight">
+    <div class="wrap">
+      <ul class="ed-bento">
+{tiles}
+      </ul>
+    </div>
+  </section>
+"""
+    body += cta() + next_page(path)
+    return page(path, [("Galleria", path)], "Galleria fotografica · Alba Iulia Verona",
+                "Le foto di Alba Iulia a Verona: la sala con la parete capitonné, il bancone della caffetteria, la gastronomia e la macelleria.",
+                "/img/sala-hd.jpg", "caffe.webp", body)
+
+
+# ---------------------------------------------------------------- /dove-siamo
+
+def dove():
+    path = "/dove-siamo"
+    giorni = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"]
+    hours = "\n".join(f'            <li data-day="{i + 1}"><span>{g}</span><span>09:00 – 20:00</span></li>' for i, g in enumerate(giorni))
+    body = hero_arch([("Dove siamo", path)], (num(path), "Dove siamo"), "Vi aspettiamo in Via <em>Luigi Prina.</em>",
+                     "Tutti i giorni dalle 9 alle 20. Per prenotare un tavolo, ordinare dalla macelleria o chiedere un'informazione, scriveteci o chiamateci.",
+                     "insegna.webp", "L'insegna ovale di Alba Iulia sulla parete capitonné",
+                     btn_wa("Scrivici su WhatsApp", BOOK) + f'<a class="btn btn--ghost btn--lg magnetic" href="{MAPS_DIR}" target="_blank" rel="noopener">Indicazioni stradali</a>',
+                     [("Aperti", "7 giorni su 7"), ("Orario", "09:00 – 20:00"), ("Servizi", "Sala, dehors, asporto")], "Verona",
+                     "VIA LUIGI PRINA 21 · 37136 VERONA · ", pos="50% 45%")
+    body += f"""
+  <section class="ed-sec">
+    <div class="wrap ed-where">
+      <div class="ed-where__info">
+        <p class="ed-label"><span>—</span>Indirizzo</p>
+        <p class="ed-where__addr ed-split">Via Luigi Prina, <em>21</em></p>
+        <p class="ed-where__city">37136 Verona</p>
+        <p class="ed-open" id="open-status" aria-live="polite"></p>
+        <div class="ed-where__block reveal">
+          <h2 class="ed-where__h">Orari</h2>
+          <ul class="ed-hours">
+{hours}
+          </ul>
+        </div>
+        <div class="ed-where__block reveal">
+          <h2 class="ed-where__h">Contatti</h2>
+          <a class="ed-contact js-wa" {wa(BOOK)}><span>WhatsApp</span><b>345 696 7120</b><i aria-hidden="true">→</i></a>
+          <a class="ed-contact" href="{TEL}"><span>Telefono</span><b>045 862 6014</b><i aria-hidden="true">→</i></a>
+          <a class="ed-contact" href="https://www.facebook.com/albajuliaverona/" target="_blank" rel="noopener"><span>Facebook</span><b>albajuliaverona</b><i aria-hidden="true">→</i></a>
+          <a class="ed-contact" href="{MAPS_DIR}" target="_blank" rel="noopener"><span>Indicazioni</span><b>Apri in Google Maps</b><i aria-hidden="true">→</i></a>
+        </div>
+      </div>
+      <div class="ed-where__map ed-img">
+        <iframe title="Mappa: Alba Iulia, Via Luigi Prina 21, Verona" src="{MAP_SRC}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </section>
+"""
+    body += quote("Sala, dehors, asporto e consegna a <em>domicilio.</em>", "Ristorante · Caffetteria · Gastronomia · Macelleria", ("/il-locale", "Scopri il locale"))
+    body += next_page(path)
+    return page(path, [("Dove siamo", path)], "Dove siamo e orari · Alba Iulia, Via Luigi Prina 21 Verona",
+                "Alba Iulia è in Via Luigi Prina 21, 37136 Verona. Aperti tutti i giorni dalle 9 alle 20. Telefono 045 862 6014, WhatsApp 345 696 7120.",
+                "/img/insegna.webp", "insegna.webp", body)
 
 
 def build_all():
     out = [("il-titolare.html", titolare()), ("il-locale.html", locale()), ("macelleria.html", macelleria()),
            ("galleria.html", galleria()), ("dove-siamo.html", dove()), ("menu/index.html", menu_index())]
-    out += [(f"menu/{k['slug']}.html", category(k)) for k in CATS]
+    out += [(f"menu/{k['slug']}.html", category(i, k)) for i, k in enumerate(CATS)]
     return out
