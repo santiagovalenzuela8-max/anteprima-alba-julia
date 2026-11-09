@@ -35,9 +35,6 @@ ORDER = [("/la-famiglia", "La famiglia", "titolare.webp"), ("/il-locale", "Il lo
          ("/galleria", "La galleria", "bancone.webp"), ("/dove-siamo", "Dove siamo", "insegna.webp")]
 
 
-def num(path):
-    return f"{[p for p, *_ in ORDER].index(path) + 1:02d}"
-
 
 def wa(msg):
     return f'href="{WA}" target="_blank" rel="noopener" data-msg="{e(msg)}"'
@@ -119,9 +116,6 @@ FOOT = f"""</main>
     <p class="footer__meta">Ristorante, caffetteria, gastronomia e macelleria<br>Via Luigi Prina 21, 37136 Verona<br><a href="{TEL}">045 862 6014</a> <span aria-hidden="true">/</span> <a href="https://www.facebook.com/albajuliaverona/" target="_blank" rel="noopener">Facebook</a></p>
     <p class="footer__bye">Poftă bună!<small>Buon appetito, in romeno</small></p>
   </div>
-  <nav class="wrap footer__nav" aria-label="Pagine del sito">
-{nav_links(None, "    ")}
-  </nav>
   <div class="wrap made-by">
     <a class="made-by__link" href="https://andiamonline.eu/" target="_blank" rel="noopener">
       <span>Sito creato da</span>
@@ -191,14 +185,14 @@ def hero_arch(crumbs, label, title, lead, pic, alt, actions, fx, ghost, badge_te
     <div class="wrap ed-hero__grid">
       <div class="ed-hero__copy">
         {crumbs_html(crumbs)}
-        <p class="ed-label"><span>{label[0]}</span>{e(label[1])}</p>
+        <p class="ed-label">{e(label[1])}</p>
         <h1 class="ed-title ed-split">{title}</h1>
         <p class="ed-lead">{lead}</p>
         <div class="ed-actions">{actions}</div>
       </div>
       <figure class="ed-arch{' ed-arch--oval' if oval else ''}">
         <div class="ed-arch__img ed-img">{img(pic, alt, lazy=False, extra=f' style="object-position:{pos}"')}</div>
-        {badge(badge_text, label[0])}
+        {badge(badge_text, "a")}
       </figure>
     </div>
     <div class="wrap ed-hero__foot">{facts(fx)}</div>
@@ -212,7 +206,7 @@ def hero_wide(crumbs, label, title, lead, pic, alt, actions, ghost):
     <span class="ed-ghost" aria-hidden="true">{e(ghost)}</span>
     <div class="wrap">
       {crumbs_html(crumbs)}
-      <p class="ed-label"><span>{label[0]}</span>{e(label[1])}</p>
+      <p class="ed-label">{e(label[1])}</p>
       <h1 class="ed-title ed-title--xl ed-split">{title}</h1>
       <div class="ed-hero__row">
         <p class="ed-lead">{lead}</p>
@@ -233,7 +227,7 @@ def hero_center(crumbs, label, title, lead, actions, pics, ghost):
 {fl}
     <div class="wrap ed-hero__center">
       {crumbs_html(crumbs)}
-      <p class="ed-label ed-label--center"><span>{label[0]}</span>{e(label[1])}</p>
+      <p class="ed-label ed-label--center">{e(label[1])}</p>
       <h1 class="ed-title ed-split">{title}</h1>
       <p class="ed-lead">{lead}</p>
       <div class="ed-actions">{actions}</div>
@@ -325,7 +319,7 @@ def marquee(pics):
 
 def titolare():
     path = "/la-famiglia"
-    body = hero_arch([("La famiglia", path)], (num(path), "La famiglia"), "La famiglia dietro il <em>bancone.</em>",
+    body = hero_arch([("La famiglia", path)], ("", "La famiglia"), "La famiglia dietro il <em>bancone.</em>",
                      "Ogni giorno in sala e al banco, per accogliervi di persona. Alba Iulia è un locale di famiglia: chi vi accoglie è chi l'ha costruito, un pezzo alla volta.",
                      "titolare.webp", "Il titolare di Alba Iulia, sorridente, nel suo locale",
                      btn_wa("Prenota un tavolo", BOOK) + btn_tel(),
@@ -357,7 +351,7 @@ def titolare():
     vals = [("Ricette di famiglia", "Sarmale, mici, ciorbe e tochitură come si preparano a casa in Romania, accanto ai piatti della cucina italiana."),
             ("Fatto da noi", "I mici sono di nostra produzione e la carne arriva dal nostro banco di macelleria: la stessa che potete portare a casa."),
             ("Accoglienza", "Porzioni generose e un'accoglienza che fa tornare. Chi vi serve al tavolo è chi il locale l'ha costruito.")]
-    li = "\n".join(f'        <li class="reveal"><span class="ed-num">0{i + 1}</span><h3>{e(h)}</h3><p>{e(t)}</p></li>' for i, (h, t) in enumerate(vals))
+    li = "\n".join(f'        <li class="reveal"><h3>{e(h)}</h3><p>{e(t)}</p></li>' for i, (h, t) in enumerate(vals))
     body += f"""
   <section class="ed-sec ed-sec--cream">
     <div class="wrap">
@@ -394,7 +388,7 @@ ANIME = [
 
 def locale():
     path = "/il-locale"
-    body = hero_wide([("Il locale", path)], (num(path), "Il locale"), "Un locale, quattro <em>anime.</em>",
+    body = hero_wide([("Il locale", path)], ("", "Il locale"), "Un locale, quattro <em>anime.</em>",
                      "La parete capitonné, i lampadari di cristallo, il bancone della caffetteria e la sala apparecchiata. Tutto sotto lo stesso tetto, dal mattino alla sera.",
                      "sala-hd.webp", "La sala di Alba Iulia: parete capitonné bianca con il logo, tavoli apparecchiati e il bancone della caffetteria",
                      btn_wa("Prenota un tavolo", BOOK) + btn_tel(), "Acasă")
@@ -405,7 +399,6 @@ def locale():
         ch.append(f"""      <article class="ed-chapter{' ed-chapter--rev' if i % 2 else ''}">
         <figure class="ed-chapter__img ed-img">{img(p, a, extra=' data-speed="-6"')}</figure>
         <div class="ed-chapter__copy reveal">
-          <span class="ed-chapter__num">0{i + 1}</span>
           <h3 class="ed-h3">{e(t)}</h3>
           <p>{e(txt)}</p>
           <ul class="ed-tags">{tg}</ul>{lk}
@@ -453,7 +446,6 @@ def index_rows(current=None):
         cur = ' aria-current="page"' if k is current else ""
         pic = f'menu/{k["dishes"][0]["img"]}.webp'
         rows.append(f"""        <li><a class="ed-index__row" href="/menu/{k["slug"]}" data-img="/img/{pic}"{cur}>
-          <span class="ed-index__num">{i + 1:02d}</span>
           <span class="ed-index__thumb">{img(pic, k["dishes"][0]["name"])}</span>
           <span class="ed-index__name">{e(k["it"])} <em>{e(k["ro"])}</em></span>
           <span class="ed-index__meta">{plural(len(k["dishes"]))}<br>{price_range(k)}</span>
@@ -501,18 +493,11 @@ def card(cats, title, sub):
 def menu_index():
     path = "/menu"
     total = sum(len(k["dishes"]) for k in CATS)
-    body = hero_center([("Menu", path)], (num(path), "Il menu"), "Il nostro <em>menu.</em>",
+    body = hero_center([("Menu", path)], ("", "Il menu"), "Il nostro <em>menu.</em>",
                        f"Cucina tradizionale romena preparata ogni giorno dalla famiglia Sbuciumelea: {total} piatti tra antipasti, ciorbe, secondi, grigliate, contorni e dolci.",
                        btn_wa("Prenota un tavolo", BOOK) + '<a class="btn btn--ghost btn--lg magnetic" href="#carta">Leggi la carta</a>',
                        [("menu/sarmale.webp", "Sarmale con mămăligă"), ("menu/mici.webp", "Mici alla griglia"), ("menu/papanasi.webp", "Papanași")], "Meniu")
     body += f"""
-  <section class="ed-sec">
-    <div class="wrap">
-{sec_head("Le sezioni", "Scegliete da dove <em>cominciare.</em>", "Ogni sezione ha la sua pagina, con le foto di tutti i piatti.")}
-{index_rows()}
-    </div>
-  </section>
-
   <section class="ed-sec ed-sec--cream" id="carta">
     <div class="wrap">
 {card(CATS, "La <em>carta</em>", "Alba Iulia · dal 2004")}
@@ -534,7 +519,7 @@ def category(i, c):
     path = f"/menu/{c['slug']}"
     n = len(c["dishes"])
     first = c["dishes"][0]
-    body = hero_arch([("Menu", "/menu"), (c["it"], path)], (f"{i + 1:02d}/{len(CATS):02d}", "Il menu"), e(c["it"]) + ".",
+    body = hero_arch([("Menu", "/menu"), (c["it"], path)], ("", "Il menu"), e(c["it"]) + ".",
                      e(c["intro"]), f"menu/{first['img']}.webp", first["name"],
                      btn_wa("Prenota un tavolo", f"Ciao! Vorrei prenotare un tavolo da Alba Iulia. Ho visto il menu: {c['it']}.") +
                      '<a class="btn btn--ghost btn--lg magnetic" href="#piatti">Vedi i piatti</a>',
@@ -582,7 +567,7 @@ def category(i, c):
 def macelleria():
     path = "/macelleria"
     msg = "Ciao! Vorrei ordinare dalla macelleria di Alba Iulia."
-    body = hero_arch([("Macelleria", path)], (num(path), "La macelleria"), "Tagliata al momento, come la <em>chiedete voi.</em>",
+    body = hero_arch([("Macelleria", path)], ("", "La macelleria"), "Tagliata al momento, come la <em>chiedete voi.</em>",
                      "La stessa carne che cuciniamo in sala, pronta per la vostra cucina. Tagli freschi, macinato per i mici, salsicce e salumi artigianali.",
                      "banco.webp", "Un taglio di manzo marezzato affettato a mano al banco della macelleria",
                      btn_wa("Ordina su WhatsApp", msg, "btn--gold") + btn_tel("btn--line"),
@@ -594,7 +579,7 @@ def macelleria():
              ("gastronomia.webp", "Il banco della gastronomia", "Prodotti tipici", "Formaggi, conserve, dolci e bevande romeni, moldavi e italiani.")]
     li = "\n".join(f"""        <li>
           <figure class="ed-img">{img(p, a)}</figure>
-          <div class="reveal"><span class="ed-num">0{i + 1}</span><h3>{e(h)}</h3><p>{e(t)}</p></div>
+          <div class="reveal"><h3>{e(h)}</h3><p>{e(t)}</p></div>
         </li>""" for i, (p, a, h, t) in enumerate(prods))
     body += f"""
   <section class="ed-sec">
@@ -641,7 +626,7 @@ FOTO = [("sala-hd.webp", "La sala con la parete capitonné, il logo e i tavoli a
 
 def galleria():
     path = "/galleria"
-    body = hero_center([("Galleria", path)], (num(path), "La galleria"), "Un giro nel <em>locale.</em>",
+    body = hero_center([("Galleria", path)], ("", "La galleria"), "Un giro nel <em>locale.</em>",
                        "La sala, il bancone, la caffetteria, la gastronomia e la macelleria. Toccate una foto per vederla a schermo intero.",
                        btn_wa("Prenota un tavolo", BOOK),
                        [("caffe.webp", "La pasticceria"), ("bancone.webp", "Il bancone"), ("insegna.webp", "L'insegna")], "Galerie")
@@ -667,7 +652,7 @@ def dove():
     path = "/dove-siamo"
     giorni = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"]
     hours = "\n".join(f'            <li data-day="{i + 1}"><span>{g}</span><span>09:00 – 20:00</span></li>' for i, g in enumerate(giorni))
-    body = hero_arch([("Dove siamo", path)], (num(path), "Dove siamo"), "Vi aspettiamo in Via <em>Luigi Prina.</em>",
+    body = hero_arch([("Dove siamo", path)], ("", "Dove siamo"), "Vi aspettiamo in Via <em>Luigi Prina.</em>",
                      "Tutti i giorni dalle 9 alle 20. Per prenotare un tavolo, ordinare dalla macelleria o chiedere un'informazione, scriveteci o chiamateci.",
                      "insegna.webp", "L'insegna ovale di Alba Iulia sulla parete capitonné",
                      btn_wa("Scrivici su WhatsApp", BOOK) + f'<a class="btn btn--ghost btn--lg magnetic" href="{MAPS_DIR}" target="_blank" rel="noopener">Indicazioni stradali</a>',
