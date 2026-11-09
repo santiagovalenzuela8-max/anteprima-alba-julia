@@ -1,0 +1,114 @@
+[
+ {
+  "dev": "iphone",
+  "path": "/",
+  "status": 200,
+  "url": "https://albaiulia.it/",
+  "errs": []
+ },
+ {
+  "dev": "iphone",
+  "path": "/il-titolare",
+  "status": 200,
+  "url": "https://albaiulia.it/il-titolare",
+  "errs": []
+ },
+ {
+  "dev": "iphone",
+  "path": "/il-locale",
+  "status": 200,
+  "url": "https://albaiulia.it/il-locale",
+  "errs": []
+ },
+ {
+  "dev": "iphone",
+  "path": "/menu",
+  "status": 200,
+  "url": "https://albaiulia.it/menu",
+  "errs": []
+ },
+ {
+  "dev": "iphone",
+  "path": "/menu/grigliate",
+  "status": 200,
+  "url": "https://albaiulia.it/menu/grigliate",
+  "errs": []
+ },
+ {
+  "dev": "iphone",
+  "path": "/macelleria",
+  "status": 200,
+  "url": "https://albaiulia.it/macelleria",
+  "errs": []
+ },
+ {
+  "dev": "iphone",
+  "path": "/galleria",
+  "status": 200,
+  "url": "https://albaiulia.it/galleria",
+  "errs": []
+ },
+ {
+  "dev": "iphone",
+  "path": "/dove-siamo",
+  "status": 200,
+  "url": "https://albaiulia.it/dove-siamo",
+  "errs": []
+ },
+ {
+  "dev": "desktop",
+  "path": "/",
+  "status": 200,
+  "url": "https://albaiulia.it/",
+  "errs": []
+ },
+ {
+  "dev": "desktop",
+  "path": "/il-titolare",
+  "status": 200,
+  "url": "https://albaiulia.it/il-titolare",
+  "errs": []
+ },
+ {
+  "dev": "desktop",
+  "path": "/il-locale",
+  "status": 200,
+  "url": "https://albaiulia.it/il-locale",
+  "errs": []
+ },
+ {
+  "dev": "desktop",
+  "path": "/menu",
+  "status": 200,
+  "url": "https://albaiulia.it/menu",
+  "errs": []
+ },
+ {
+  "dev": "desktop",
+  "path": "/menu/grigliate",
+  "status": 200,
+  "url": "https://albaiulia.it/menu/grigliate",
+  "errs": []
+ },
+ {
+  "dev": "desktop",
+  "path": "/macelleria",
+  "status": 200,
+  "url": "https://albaiulia.it/macelleria",
+  "errs": []
+ },
+ {
+  "dev": "desktop",
+  "path": "/galleria",
+  "status": 200,
+  "url": "https://albaiulia.it/galleria",
+  "errs": []
+ },
+ {
+  "dev": "desktop",
+  "path": "/dove-siamo",
+  "status": 200,
+  "url": "https://albaiulia.it/dove-siamo",
+  "errs": []
+ }
+]
