@@ -18,6 +18,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sorts+Mill+Goudy:ital@0;1&family=Figtree:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="/style.css">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preload" as="image" href="/img/banco.webp" fetchpriority="high">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
 <script type="application/ld+json">
 {
  "@context": "https://schema.org",
@@ -68,13 +77,18 @@
     "addressRegion": "VR",
     "addressCountry": "IT"
    },
-   "openingHours": "Mo-Su 09:00-20:00"
+   "openingHours": "Mo-Su 09:00-20:00",
+   "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.7",
+    "reviewCount": "232"
+   }
   }
  ]
 }
 </script>
 </head>
-<body class="page-menu page-site">
+<body class="page-inner">
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="logo" viewBox="0 0 240 140">
@@ -93,7 +107,7 @@
 
 <a class="skip" href="#contenuto">Vai al contenuto</a>
 
-<header class="nav is-scrolled" id="top">
+<header class="nav" id="top">
   <div class="nav__inner">
     <a class="brand" href="/" aria-label="Alba Iulia, torna alla home">
       <svg class="brand__logo" aria-hidden="true"><use href="#logo"/></svg>
@@ -114,78 +128,141 @@
 </header>
 
 <main id="contenuto">
-  <section class="mp-hero">
-    <div class="wrap mp-hero__inner">
-      <div class="mp-hero__copy">
+  <section class="hero hero--page" id="hero">
+    <canvas class="hero__gl" id="gl" aria-hidden="true"></canvas>
+    <div class="hero__inner">
+      <div class="hero__copy">
         <nav class="crumbs" aria-label="Sei qui"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">Macelleria</span></nav>
-        <p class="carta__kicker">Macelleria e prodotti tipici</p>
-        <h1>La macelleria</h1>
-        <p class="mp-hero__intro">La stessa carne che cuciniamo in sala, pronta per la vostra cucina. Tagli freschi, macinato per i mici, salsicce e salumi artigianali, tagliati al momento come li chiedete.</p>
-        <p class="mp-hero__meta"><span>Carne fresca ogni giorno</span><span>Asporto e consegna</span></p>
+        <p class="hero__kicker">Macelleria e prodotti tipici</p>
+        <h1 class="hero__title" id="hero-title">Il banco della nostra macelleria.</h1>
+        <p class="hero__lead">La stessa carne che cuciniamo in sala, pronta per la vostra cucina. Tagli freschi, macinato per i mici, salsicce e salumi artigianali, tagliati al momento come li chiedete.</p>
+        <div class="hero__actions">
+          <a class="btn btn--solid btn--lg magnetic js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei ordinare dalla macelleria di Alba Iulia.">
+            <svg aria-hidden="true"><use href="#wa"/></svg>Ordina su WhatsApp
+          </a>
+          <a class="btn btn--ghost btn--lg magnetic" href="tel:+390458626014"><svg aria-hidden="true"><use href="#tel"/></svg>045 862 6014</a>
+        </div>
       </div>
-      <figure class="pg-photo">
-        <img src="/img/banco.webp" alt="Un taglio di manzo marezzato affettato a mano al banco della macelleria" width="1012" height="733" fetchpriority="high" decoding="async">
+
+      <figure class="owner">
+        <div class="owner__frame" id="owner-frame">
+          <div class="owner__ring" aria-hidden="true"></div>
+          <div class="owner__photo">
+            <img src="/img/banco.webp" alt="Un taglio di manzo marezzato affettato a mano al banco della macelleria" width="1012" height="733" style="object-position:50% 50%" fetchpriority="high" decoding="async">
+            <span class="owner__glare" aria-hidden="true"></span>
+          </div>
+        </div>
+        <figcaption class="owner__tag">
+          <b>La macelleria</b>
+          <span>Tagliata al momento, come la chiedete voi.</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <dl class="hero__facts">
+      <div><dt>Ogni giorno</dt><dd><strong>Carne fresca</strong> selezionata</dd></div>
+      <div><dt>Da noi</dt><dd><strong>Salumi</strong> artigianali</dd></div>
+      <div><dt>Ordini</dt><dd><strong>WhatsApp</strong> ritiro o consegna a domicilio</dd></div>
+    </dl>
+  </section>
+
+  <section class="butcher">
+    <div class="wrap butcher__inner">
+      <div class="butcher__copy reveal">
+        <h2>Macelleria e prodotti tipici</h2>
+        <p>La stessa carne che cuciniamo in sala, pronta per la tua cucina. Tagli freschi, macinato per i mici, salsicce e salumi artigianali. E poi formaggi, conserve, dolci e bevande per una tavola romena o moldava.</p>
+        <ul class="checks">
+          <li>Carne fresca selezionata ogni giorno</li>
+          <li>Salumi artigianali</li>
+          <li>Prodotti tipici romeni, moldavi e italiani</li>
+          <li>Asporto e consegna a domicilio</li>
+        </ul>
+        <a class="btn btn--solid magnetic js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei ordinare dalla macelleria di Alba Iulia.">
+          <svg aria-hidden="true"><use href="#wa"/></svg>Ordina su WhatsApp
+        </a>
+      </div>
+      <figure class="butcher__photo reveal">
+        <img src="/img/macelleria.webp" alt="Taglio di carne bovina marezzata al banco" width="582" height="733" loading="lazy" decoding="async">
       </figure>
     </div>
   </section>
 
-  <section class="pg-section">
-    <div class="wrap">
-      <header class="pg-head reveal">
-        <p class="pg-kicker">Al banco</p>
-        <h2>Cosa trovate da noi</h2>
+  <section class="services">
+    <div class="services__pin">
+      <header class="services__head reveal">
+        <h2>Cosa trovate al banco</h2>
+        <p>Dalla carne per la griglia ai prodotti per una tavola romena, moldava o italiana.</p>
+        <div class="services__ctrl">
+          <button type="button" class="round round--dark" id="svc-prev" aria-label="Scheda precedente" disabled>‹</button>
+          <button type="button" class="round round--dark" id="svc-next" aria-label="Scheda successiva">›</button>
+        </div>
       </header>
-      <ul class="pg-products">
-        <li class="reveal"><img src="/img/macelleria.webp" alt="Taglio di carne bovina marezzata" width="582" height="733" loading="lazy" decoding="async"><h3>Carne fresca</h3><p>Tagli selezionati ogni giorno, preparati al momento come li chiedete.</p></li>
-        <li class="reveal"><img src="/img/menu/mici.webp" alt="Mici alla griglia con senape" width="800" height="600" loading="lazy" decoding="async"><h3>Per i mici</h3><p>Il macinato speziato per i mici, come lo usiamo nella nostra cucina.</p></li>
-        <li class="reveal"><img src="/img/menu/carnat.webp" alt="Salsiccia fresca alla griglia" width="800" height="600" loading="lazy" decoding="async"><h3>Salsicce e salumi</h3><p>Salsicce fresche e salumi artigianali, da cuocere o da affettare.</p></li>
-        <li class="reveal"><img src="/img/gastronomia.webp" alt="Il banco della gastronomia" width="694" height="771" loading="lazy" decoding="async"><h3>Prodotti tipici</h3><p>Formaggi, conserve, dolci e bevande per una tavola romena, moldava o italiana.</p></li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="pg-section pg-section--cream">
-    <div class="wrap">
-      <header class="pg-head reveal">
-        <p class="pg-kicker">Ordinare è semplice</p>
-        <h2>Ditecelo su WhatsApp, al resto pensiamo noi</h2>
-      </header>
-      <ol class="pg-steps">
-        <li class="reveal"><b>1</b><h3>Scrivete cosa vi serve</h3><p>Il taglio, il peso, quante persone: un messaggio su WhatsApp o una telefonata.</p></li>
-        <li class="reveal"><b>2</b><h3>Prepariamo l'ordine</h3><p>La carne viene tagliata e confezionata al momento.</p></li>
-        <li class="reveal"><b>3</b><h3>Ritiro o consegna</h3><p>Passate in Via Luigi Prina 21 oppure ve lo portiamo a domicilio.</p></li>
-      </ol>
-      <p class="pg-center reveal"><a class="btn btn--solid btn--lg js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei ordinare dalla macelleria di Alba Iulia."><svg aria-hidden="true"><use href="#wa"/></svg>Ordina su WhatsApp</a></p>
-    </div>
-  </section>
-
-  <section class="mp-next pg-more" aria-label="Continua a scoprire Alba Iulia">
-    <div class="wrap mp-next__row">
-      <a class="mp-next__card reveal" href="/menu/grigliate">
-        <img src="/img/menu/platou-alba-iulia.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
-        <span class="mp-next__label">Assaggiala in sala →</span>
-        <span class="mp-next__name">Le grigliate</span>
-      </a>
-      <a class="mp-next__card reveal" href="/dove-siamo">
-        <img src="/img/insegna.webp" alt="" width="708" height="732" loading="lazy" decoding="async">
-        <span class="mp-next__label">Vieni a trovarci →</span>
-        <span class="mp-next__name">Dove siamo</span>
-      </a>
-    </div>
-  </section>
-
-  <section class="mp-cta">
-    <div class="wrap mp-cta__inner reveal">
-      <div>
-        <h2>Ti aspettiamo a tavola</h2>
-        <p>Via Luigi Prina 21, Verona. Aperti tutti i giorni. Prenota un tavolo o chiedici il piatto del giorno su WhatsApp.</p>
-      </div>
-      <div class="mp-cta__actions">
-        <a class="btn btn--solid btn--lg js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei ordinare dalla macelleria di Alba Iulia."><svg aria-hidden="true"><use href="#wa"/></svg>Prenota su WhatsApp</a>
-        <a class="btn btn--ghost btn--lg" href="tel:+390458626014"><svg aria-hidden="true"><use href="#tel"/></svg>045 862 6014</a>
+      <div class="services__track services__track--4" id="services-track">
+        <article class="service">
+          <div class="service__media"><img src="/img/menu/costata.webp" alt="Costata di manzo" width="800" height="600" loading="lazy" decoding="async"></div>
+          <h3>Carne fresca</h3>
+          <p>Tagli selezionati ogni giorno, preparati al momento come li chiedete.</p>
+        </article>
+        <article class="service">
+          <div class="service__media"><img src="/img/menu/mici.webp" alt="Mici alla griglia con senape" width="800" height="600" loading="lazy" decoding="async"></div>
+          <h3>Per i mici</h3>
+          <p>Il macinato speziato per i mici, come lo usiamo nella nostra cucina.</p>
+        </article>
+        <article class="service">
+          <div class="service__media"><img src="/img/menu/carnat.webp" alt="Salsiccia fresca alla griglia" width="800" height="600" loading="lazy" decoding="async"></div>
+          <h3>Salsicce e salumi</h3>
+          <p>Salsicce fresche e salumi artigianali, da cuocere o da affettare.</p>
+        </article>
+        <article class="service">
+          <div class="service__media"><img src="/img/gastronomia.webp" alt="Il banco della gastronomia" width="694" height="771" loading="lazy" decoding="async"></div>
+          <h3>Prodotti tipici</h3>
+          <p>Formaggi, conserve, dolci e bevande romeni, moldavi e italiani.</p>
+        </article>
       </div>
     </div>
-    <p class="wrap mp-cta__note">Coperto € 2,00 a persona. Per allergie e intolleranze chiedi al personale: ti indichiamo gli ingredienti di ogni piatto.</p>
+  </section>
+
+  <section class="family">
+    <div class="wrap family__inner">
+      <figure class="family__photo reveal">
+        <img src="/img/insegna.webp" alt="L&#x27;insegna di Alba Iulia sulla parete capitonné" width="708" height="732" loading="lazy" decoding="async">
+      </figure>
+      <div class="family__copy reveal">
+        <p class="sec-kicker sec-kicker--light">Ordinare è semplice</p>
+        <h2>Ditecelo su WhatsApp, al resto pensiamo noi.</h2>
+        <p>Ordinare è semplice: scrivete cosa vi serve, prepariamo l'ordine e lo ritirate in negozio oppure ve lo portiamo a casa.</p>
+        <ol class="timeline">
+          <li><b>1</b><span>Scrivete il taglio, il peso o quante persone siete</span></li>
+          <li><b>2</b><span>Tagliamo e confezioniamo la carne al momento</span></li>
+          <li><b>3</b><span>Ritiro in Via Luigi Prina 21 o consegna a domicilio</span></li>
+        </ol>
+        <a class="more-link more-link--light" href="/menu/grigliate">Assaggiatela in sala: le grigliate <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="visit" id="contatti">
+    <div class="wrap visit__inner">
+      <div class="visit__info reveal">
+        <h2>Via Luigi Prina 21, Verona</h2>
+        <dl class="visit__list">
+          <div><dt>Orari</dt><dd>Tutti i giorni, 09:00 – 20:00<span class="visit__status" id="open-status" aria-live="polite"></span></dd></div>
+          <div><dt>Telefono</dt><dd><a class="link" href="tel:+390458626014">045 862 6014</a></dd></div>
+          <div><dt>WhatsApp</dt><dd><a class="link js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei ordinare dalla macelleria di Alba Iulia.">345 696 7120</a></dd></div>
+          <div><dt>Indirizzo</dt><dd>Via Luigi Prina, 21, 37136 Verona</dd></div>
+          <div><dt>Servizi</dt><dd>Sala, dehors, asporto e consegna a domicilio</dd></div>
+        </dl>
+        <div class="visit__actions">
+          <a class="btn btn--wa btn--lg magnetic js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei ordinare dalla macelleria di Alba Iulia.">
+            <svg aria-hidden="true"><use href="#wa"/></svg>Scrivici su WhatsApp
+          </a>
+          <a class="btn btn--ghost btn--lg magnetic" href="https://www.google.com/maps/dir/?api=1&amp;destination=Via+Luigi+Prina+21+37136+Verona" target="_blank" rel="noopener">Indicazioni stradali</a>
+        </div>
+      </div>
+      <div class="visit__map reveal">
+        <iframe title="Mappa: Alba Iulia, Via Luigi Prina 21, Verona" src="https://maps.google.com/maps?q=Via%20Luigi%20Prina%2021%2C%2037136%20Verona&amp;z=16&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
   </section>
 </main>
 
@@ -216,6 +293,14 @@
   <span class="wa-float__label">Scrivici su WhatsApp</span>
 </a>
 
-<script src="/pagine.js" defer></script>
+<dialog class="lightbox" id="lightbox" aria-label="Foto ingrandita">
+  <button class="lightbox__close" type="button" id="lightbox-close" aria-label="Chiudi">×</button>
+  <img id="lightbox-img" alt="">
+</dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="/ui.js"></script>
+<script type="module" src="/wall.js"></script>
 </body>
 </html>

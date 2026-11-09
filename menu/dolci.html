@@ -18,10 +18,78 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sorts+Mill+Goudy:ital@0;1&family=Figtree:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="/style.css">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preload" as="image" href="/img/menu/papanasi.webp" fetchpriority="high">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
 <script type="application/ld+json">
 {
  "@context": "https://schema.org",
  "@graph": [
+  {
+   "@type": "WebPage",
+   "name": "Dolci",
+   "url": "https://albaiulia.it/menu/dolci",
+   "about": {
+    "@id": "https://albaiulia.it/#ristorante"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://albaiulia.it/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Menu",
+     "item": "https://albaiulia.it/menu"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Dolci",
+     "item": "https://albaiulia.it/menu/dolci"
+    }
+   ]
+  },
+  {
+   "@type": "Restaurant",
+   "@id": "https://albaiulia.it/#ristorante",
+   "name": "Alba Iulia",
+   "url": "https://albaiulia.it/",
+   "image": "https://albaiulia.it/img/sala-hd.jpg",
+   "telephone": "+39 045 862 6014",
+   "servesCuisine": [
+    "Romena",
+    "Moldava",
+    "Italiana"
+   ],
+   "foundingDate": "2004",
+   "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Via Luigi Prina, 21",
+    "postalCode": "37136",
+    "addressLocality": "Verona",
+    "addressRegion": "VR",
+    "addressCountry": "IT"
+   },
+   "openingHours": "Mo-Su 09:00-20:00",
+   "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.7",
+    "reviewCount": "232"
+   }
+  },
   {
    "@type": "MenuSection",
    "name": "Dolci / Deserturi",
@@ -51,35 +119,12 @@
      }
     }
    ]
-  },
-  {
-   "@type": "BreadcrumbList",
-   "itemListElement": [
-    {
-     "@type": "ListItem",
-     "position": 1,
-     "name": "Home",
-     "item": "https://albaiulia.it/"
-    },
-    {
-     "@type": "ListItem",
-     "position": 2,
-     "name": "Menu",
-     "item": "https://albaiulia.it/menu"
-    },
-    {
-     "@type": "ListItem",
-     "position": 3,
-     "name": "Dolci",
-     "item": "https://albaiulia.it/menu/dolci"
-    }
-   ]
   }
  ]
 }
 </script>
 </head>
-<body class="page-menu">
+<body class="page-inner">
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="logo" viewBox="0 0 240 140">
@@ -98,7 +143,7 @@
 
 <a class="skip" href="#contenuto">Vai al contenuto</a>
 
-<header class="nav is-scrolled" id="top">
+<header class="nav" id="top">
   <div class="nav__inner">
     <a class="brand" href="/" aria-label="Alba Iulia, torna alla home">
       <svg class="brand__logo" aria-hidden="true"><use href="#logo"/></svg>
@@ -119,101 +164,169 @@
 </header>
 
 <main id="contenuto">
-  <section class="mp-hero">
-    <div class="wrap mp-hero__inner">
-      <div class="mp-hero__copy">
+  <section class="hero hero--page" id="hero">
+    <canvas class="hero__gl" id="gl" aria-hidden="true"></canvas>
+    <div class="hero__inner">
+      <div class="hero__copy">
         <nav class="crumbs" aria-label="Sei qui"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/menu">Menu</a><span aria-hidden="true">/</span><span aria-current="page">Dolci</span></nav>
-        <p class="carta__kicker">Meniu · Deserturi</p>
-        <h1>Dolci</h1>
-        <p class="mp-hero__intro">Per chiudere in dolcezza: i papanași, frittelle di formaggio fresco con panna acida e confettura, e le crêpes Ana Lugojana cotte al forno.</p>
-        <p class="mp-hero__meta"><span>2 piatti</span><span>da € 5,00 a € 8,00</span></p>
-      </div>
-      <div class="mp-hero__stack mp-hero__stack--2" aria-hidden="true">
-        <img class="mp-hero__pic mp-hero__pic--1" src="/img/menu/papanasi.webp" alt="Papanași" width="800" height="600" fetchpriority="high" decoding="async">
-        <img class="mp-hero__pic mp-hero__pic--2" src="/img/menu/clatite-ana-lugojana.webp" alt="Clătite Ana Lugojana" width="800" height="600" decoding="async">
-      </div>
-    </div>
-  </section>
-
-  <nav class="mp-cats" aria-label="Sezioni del menu">
-    <div class="wrap mp-cats__row">
-      <a href="/menu/antipasti"><span>Antipasti</span><small>Gustări</small></a>
-      <a href="/menu/ciorbe"><span>Primi piatti</span><small>Ciorbe</small></a>
-      <a href="/menu/secondi"><span>Secondi piatti</span><small>Felul secund</small></a>
-      <a href="/menu/grigliate"><span>Grigliate</span><small>Grătar</small></a>
-      <a href="/menu/contorni"><span>Contorni e insalate</span><small>Garnituri și salate</small></a>
-      <a href="/menu/dolci" aria-current="page"><span>Dolci</span><small>Deserturi</small></a>
-    </div>
-  </nav>
-
-  <section class="mp-list" aria-label="Dolci: i piatti">
-    <ul class="wrap mp-grid">
-      <li class="mp-dish reveal">
-        <figure class="mp-dish__media"><img src="/img/menu/papanasi.webp" alt="Papanași" width="800" height="600" loading="lazy" decoding="async"></figure>
-        <div class="mp-dish__body">
-          <div class="mp-dish__head">
-            <h2 class="mp-dish__name">Papanași</h2>
-            <span class="mp-dish__dots" aria-hidden="true"></span>
-            <p class="mp-dish__price">€ 5,00</p>
-          </div>
-          
-          <p class="mp-dish__desc">Frittelle dolci della casa a base di formaggio fresco, servite con panna acida e confettura di frutta.</p>
+        <p class="hero__kicker">Meniu · Deserturi</p>
+        <h1 class="hero__title" id="hero-title">Dolci.</h1>
+        <p class="hero__lead">Per chiudere in dolcezza: i papanași, frittelle di formaggio fresco con panna acida e confettura, e le crêpes Ana Lugojana cotte al forno.</p>
+        <div class="hero__actions">
+          <a class="btn btn--solid btn--lg magnetic js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei prenotare un tavolo da Alba Iulia. Ho visto il menu: Dolci.">
+            <svg aria-hidden="true"><use href="#wa"/></svg>Prenota un tavolo
+          </a>
+          <a class="btn btn--ghost btn--lg magnetic" href="#piatti">Vedi i piatti</a>
         </div>
-      </li>
-      <li class="mp-dish reveal">
-        <figure class="mp-dish__media"><img src="/img/menu/clatite-ana-lugojana.webp" alt="Clătite Ana Lugojana" width="800" height="600" loading="lazy" decoding="async"></figure>
-        <div class="mp-dish__body">
-          <div class="mp-dish__head">
-            <h2 class="mp-dish__name">Clătite Ana Lugojana</h2>
-            <span class="mp-dish__dots" aria-hidden="true"></span>
-            <p class="mp-dish__price">€ 8,00</p>
+      </div>
+
+      <figure class="owner">
+        <div class="owner__frame" id="owner-frame">
+          <div class="owner__ring" aria-hidden="true"></div>
+          <div class="owner__photo">
+            <img src="/img/menu/papanasi.webp" alt="Papanași" width="800" height="600" style="object-position:50% 50%" fetchpriority="high" decoding="async">
+            <span class="owner__glare" aria-hidden="true"></span>
           </div>
-          
-          <p class="mp-dish__desc">Crêpes tradizionali cotte al forno e ripiene di ricotta dolce e uvetta.</p>
         </div>
-      </li>
-    </ul>
-  </section>
-
-  <section class="mp-next" aria-label="Continua a sfogliare il menu">
-    <div class="wrap mp-next__row">
-      <a class="mp-next__card mp-next__card--prev reveal" href="/menu/contorni">
-        <img src="/img/menu/cartofi-prajiti.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
-        <span class="mp-next__label">← Sezione precedente</span>
-        <span class="mp-next__name">Contorni e insalate <em>Garnituri și salate</em></span>
-      </a>
-      <a class="mp-next__card mp-next__card--next reveal" href="/menu/antipasti">
-        <img src="/img/menu/platou-traditional.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
-        <span class="mp-next__label">Sezione successiva →</span>
-        <span class="mp-next__name">Antipasti <em>Gustări</em></span>
-      </a>
+        <figcaption class="owner__tag">
+          <b>Deserturi</b>
+          <span>2 piatti, da € 5,00 a € 8,00.</span>
+        </figcaption>
+      </figure>
     </div>
-    <p class="wrap mp-next__all"><a class="link" href="/menu">Tutte le sezioni del menu</a></p>
+
+    <dl class="hero__facts">
+      <div><dt>Piatti</dt><dd><strong>2</strong> in questa sezione</dd></div>
+      <div><dt>Prezzi</dt><dd><strong>da € 5,00 a € 8,00</strong> </dd></div>
+      <div><dt>Coperto</dt><dd><strong>€ 2,00</strong> a persona</dd></div>
+    </dl>
   </section>
 
-  <section class="mp-cta">
-    <div class="wrap mp-cta__inner reveal">
-      <div>
-        <h2>Ti aspettiamo a tavola</h2>
-        <p>Via Luigi Prina 21, Verona. Aperti tutti i giorni. Prenota un tavolo o chiedici il piatto del giorno su WhatsApp.</p>
+  <section class="carta" id="piatti" aria-labelledby="carta-title">
+    <div class="wrap">
+      <header class="carta__head reveal">
+        <div>
+          <p class="carta__kicker">Meniu · Il menu</p>
+          <h2 id="carta-title">Dolci <span class="carta__ro">Deserturi</span></h2>
+        </div>
+        <div class="carta__lead"><p>Per chiudere in dolcezza: i papanași, frittelle di formaggio fresco con panna acida e confettura, e le crêpes Ana Lugojana cotte al forno.</p></div>
+      </header>
+      <nav class="carta__tabs" aria-label="Sezioni del menu">
+        <a class="carta__tab" href="/menu/antipasti"><span>Antipasti</span><small>Gustări</small></a>
+        <a class="carta__tab" href="/menu/ciorbe"><span>Primi piatti</span><small>Ciorbe</small></a>
+        <a class="carta__tab" href="/menu/secondi"><span>Secondi piatti</span><small>Felul secund</small></a>
+        <a class="carta__tab" href="/menu/grigliate"><span>Grigliate</span><small>Grătar</small></a>
+        <a class="carta__tab" href="/menu/contorni"><span>Contorni e insalate</span><small>Garnituri și salate</small></a>
+        <a class="carta__tab" href="/menu/dolci" aria-current="page"><span>Dolci</span><small>Deserturi</small></a>
+      </nav>
+      <div class="carta__panel">
+        <ul class="carta__grid">
+          <li class="dish reveal">
+            <figure class="dish__media"><img src="/img/menu/papanasi.webp" alt="Papanași" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h3 class="dish__name">Papanași</h3>
+              <p class="dish__desc">Frittelle dolci della casa a base di formaggio fresco, servite con panna acida e confettura di frutta.</p>
+              <p class="dish__price">€ 5,00</p>
+            </div>
+          </li>
+          <li class="dish reveal">
+            <figure class="dish__media"><img src="/img/menu/clatite-ana-lugojana.webp" alt="Clătite Ana Lugojana" width="800" height="600" loading="lazy" decoding="async"></figure>
+            <div class="dish__body">
+              <h3 class="dish__name">Clătite Ana Lugojana</h3>
+              <p class="dish__desc">Crêpes tradizionali cotte al forno e ripiene di ricotta dolce e uvetta.</p>
+              <p class="dish__price">€ 8,00</p>
+            </div>
+          </li>
+        </ul>
       </div>
-      <div class="mp-cta__actions">
-        <a class="btn btn--solid btn--lg js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei prenotare un tavolo da Alba Iulia. Ho visto il menu: Dolci."><svg aria-hidden="true"><use href="#wa"/></svg>Prenota su WhatsApp</a>
-        <a class="btn btn--ghost btn--lg" href="tel:+390458626014"><svg aria-hidden="true"><use href="#tel"/></svg>045 862 6014</a>
+      <footer class="carta__foot">
+        <p>Coperto € 2,00 a persona. Per allergie e intolleranze chiedi al personale.</p>
+        <a class="btn btn--solid js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei prenotare un tavolo da Alba Iulia."><svg aria-hidden="true"><use href="#wa"/></svg>Prenota un tavolo</a>
+      </footer>
+      <details class="carta__credits">
+        <summary>Le foto sono indicative del piatto servito · Crediti fotografici</summary>
+        <ul>
+          <li>Papanași: <a href="https://commons.wikimedia.org/wiki/File:Papanasi_cu_cirese.jpg" target="_blank" rel="noopener nofollow">Nicubunu</a>, CC BY-SA 3.0</li>
+          <li>Clătite Ana Lugojana: <a href="https://commons.wikimedia.org/wiki/File:Blintzes_in_frying_pan.jpg" target="_blank" rel="noopener nofollow">Andrevan</a>, CC BY-SA 2.5</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
+  <section class="services">
+    <div class="services__pin">
+      <header class="services__head reveal">
+        <h2>Le altre sezioni del menu</h2>
+        <p>Continuate a sfogliare: ogni sezione ha la sua pagina.<br><a class="more-link" href="/menu">Tutto il menu <span aria-hidden="true">→</span></a></p>
+        <div class="services__ctrl">
+          <button type="button" class="round round--dark" id="svc-prev" aria-label="Scheda precedente" disabled>‹</button>
+          <button type="button" class="round round--dark" id="svc-next" aria-label="Scheda successiva">›</button>
+        </div>
+      </header>
+      <div class="services__track services__track--6" id="services-track">
+        <a class="service service--link" href="/menu/antipasti">
+          <div class="service__media"><img src="/img/menu/platou-traditional.webp" alt="Platou Tradițional" width="800" height="600" loading="lazy" decoding="async"><span class="service__badge">4 piatti</span></div>
+          <h3>Antipasti</h3>
+          <p>Gustări · da € 7,00 a € 20,00</p>
+          <span class="service__go">Scopri <span aria-hidden="true">→</span></span>
+        </a>
+        <a class="service service--link" href="/menu/ciorbe">
+          <div class="service__media"><img src="/img/menu/ciorba-burta.webp" alt="Ciorbă de Burtă" width="800" height="600" loading="lazy" decoding="async"><span class="service__badge">7 piatti</span></div>
+          <h3>Primi piatti</h3>
+          <p>Ciorbe · da € 10,00 a € 11,00</p>
+          <span class="service__go">Scopri <span aria-hidden="true">→</span></span>
+        </a>
+        <a class="service service--link" href="/menu/secondi">
+          <div class="service__media"><img src="/img/menu/sarmale.webp" alt="Sarmale cu Mămăliguță și Smântână" width="800" height="600" loading="lazy" decoding="async"><span class="service__badge">3 piatti</span></div>
+          <h3>Secondi piatti</h3>
+          <p>Felul secund · € 16,00</p>
+          <span class="service__go">Scopri <span aria-hidden="true">→</span></span>
+        </a>
+        <a class="service service--link" href="/menu/grigliate">
+          <div class="service__media"><img src="/img/menu/mici.webp" alt="Mici producție proprie" width="800" height="600" loading="lazy" decoding="async"><span class="service__badge">11 piatti</span></div>
+          <h3>Grigliate</h3>
+          <p>Grătar · da € 3,50 a € 49,00</p>
+          <span class="service__go">Scopri <span aria-hidden="true">→</span></span>
+        </a>
+        <a class="service service--link" href="/menu/contorni">
+          <div class="service__media"><img src="/img/menu/cartofi-prajiti.webp" alt="Cartofi prăjiți" width="800" height="600" loading="lazy" decoding="async"><span class="service__badge">10 piatti</span></div>
+          <h3>Contorni e insalate</h3>
+          <p>Garnituri și salate · da € 4,50 a € 12,00</p>
+          <span class="service__go">Scopri <span aria-hidden="true">→</span></span>
+        </a>
+        <a class="service service--link" href="/menu/dolci">
+          <div class="service__media"><img src="/img/menu/papanasi.webp" alt="Papanași" width="800" height="600" loading="lazy" decoding="async"><span class="service__badge">Sei qui</span></div>
+          <h3>Dolci</h3>
+          <p>Deserturi · da € 5,00 a € 8,00</p>
+          <span class="service__go">Scopri <span aria-hidden="true">→</span></span>
+        </a>
       </div>
     </div>
-    <p class="wrap mp-cta__note">Coperto € 2,00 a persona. Per allergie e intolleranze chiedi al personale: ti indichiamo gli ingredienti di ogni piatto.</p>
   </section>
 
-  <div class="wrap">
-    <details class="carta__credits mp-credits">
-      <summary>Le foto sono indicative del piatto servito · Crediti fotografici</summary>
-      <ul>
-        <li>Papanași: <a href="https://commons.wikimedia.org/wiki/File:Papanasi_cu_cirese.jpg" target="_blank" rel="noopener nofollow">Nicubunu</a>, CC BY-SA 3.0</li>
-        <li>Clătite Ana Lugojana: <a href="https://commons.wikimedia.org/wiki/File:Blintzes_in_frying_pan.jpg" target="_blank" rel="noopener nofollow">Andrevan</a>, CC BY-SA 2.5</li>
-      </ul>
-    </details>
-  </div>
+  <section class="visit" id="contatti">
+    <div class="wrap visit__inner">
+      <div class="visit__info reveal">
+        <h2>Via Luigi Prina 21, Verona</h2>
+        <dl class="visit__list">
+          <div><dt>Orari</dt><dd>Tutti i giorni, 09:00 – 20:00<span class="visit__status" id="open-status" aria-live="polite"></span></dd></div>
+          <div><dt>Telefono</dt><dd><a class="link" href="tel:+390458626014">045 862 6014</a></dd></div>
+          <div><dt>WhatsApp</dt><dd><a class="link js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei prenotare un tavolo da Alba Iulia.">345 696 7120</a></dd></div>
+          <div><dt>Indirizzo</dt><dd>Via Luigi Prina, 21, 37136 Verona</dd></div>
+          <div><dt>Servizi</dt><dd>Sala, dehors, asporto e consegna a domicilio</dd></div>
+        </dl>
+        <div class="visit__actions">
+          <a class="btn btn--wa btn--lg magnetic js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei prenotare un tavolo da Alba Iulia.">
+            <svg aria-hidden="true"><use href="#wa"/></svg>Scrivici su WhatsApp
+          </a>
+          <a class="btn btn--ghost btn--lg magnetic" href="https://www.google.com/maps/dir/?api=1&amp;destination=Via+Luigi+Prina+21+37136+Verona" target="_blank" rel="noopener">Indicazioni stradali</a>
+        </div>
+      </div>
+      <div class="visit__map reveal">
+        <iframe title="Mappa: Alba Iulia, Via Luigi Prina 21, Verona" src="https://maps.google.com/maps?q=Via%20Luigi%20Prina%2021%2C%2037136%20Verona&amp;z=16&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer class="footer">
@@ -243,6 +356,14 @@
   <span class="wa-float__label">Scrivici su WhatsApp</span>
 </a>
 
-<script src="/pagine.js" defer></script>
+<dialog class="lightbox" id="lightbox" aria-label="Foto ingrandita">
+  <button class="lightbox__close" type="button" id="lightbox-close" aria-label="Chiudi">×</button>
+  <img id="lightbox-img" alt="">
+</dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="/ui.js"></script>
+<script type="module" src="/wall.js"></script>
 </body>
 </html>

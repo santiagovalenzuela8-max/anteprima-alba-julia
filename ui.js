@@ -54,7 +54,7 @@
   document.querySelectorAll('.nav__links a').forEach(function (a) {
     Object.keys(SECTION).forEach(function (id) { if (SECTION[id] === a.getAttribute('href')) links[id] = a; });
   });
-  if ('IntersectionObserver' in window) {
+  if ('IntersectionObserver' in window && !document.body.classList.contains('page-inner')) {
     var spy = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (e.isIntersecting && links[e.target.id]) {
@@ -70,7 +70,7 @@
   var hero = document.getElementById('hero');
   var frame = document.getElementById('owner-frame');
   var photo = frame && frame.querySelector('.owner__photo');
-  if (frame && fine && !reduced) {
+  if (hero && frame && fine && !reduced) {
     hero.addEventListener('pointermove', function (e) {
       var r = frame.getBoundingClientRect();
       var dx = (e.clientX - (r.left + r.width / 2)) / innerWidth;
@@ -150,16 +150,22 @@
   var box = document.getElementById('lightbox');
   var boxImg = document.getElementById('lightbox-img');
   function openBox(img) {
-    if (!box.showModal) return;
+    if (!box || !box.showModal) return;
     boxImg.src = img.currentSrc || img.src;
     boxImg.alt = img.alt;
     box.showModal();
   }
-  document.getElementById('lightbox-close').addEventListener('click', function () { box.close(); });
-  box.addEventListener('click', function (e) { if (e.target === box) box.close(); });
+  if (box) {
+    document.getElementById('lightbox-close').addEventListener('click', function () { box.close(); });
+    box.addEventListener('click', function (e) { if (e.target === box) box.close(); });
+    document.querySelectorAll('[data-full]').forEach(function (b) {
+      b.addEventListener('click', function () { openBox(b.querySelector('img')); });
+    });
+  }
 
   /* ---------- Giostra 3D della galleria ---------- */
   var carousel = document.getElementById('carousel');
+  if (carousel) (function () {
   var ring = document.getElementById('ring');
   var items = Array.prototype.slice.call(ring.children);
   var shades = items.map(function (it) { var sh = document.createElement('span'); sh.className = 'carousel__shade'; it.appendChild(sh); return sh; });
@@ -241,6 +247,7 @@
   });
   document.getElementById('prev').addEventListener('click', function () { snapBy(1); });
   document.getElementById('next').addEventListener('click', function () { snapBy(-1); });
+  })();
 
   /* ---------- Animazioni allo scroll ---------- */
   if (!hasGsap || reduced) return;
@@ -249,14 +256,23 @@
   window.ScrollTrigger.config({ ignoreMobileResize: true });
 
   // Titolo: le parole entrano una dopo l'altra, finita l'intro
+  // (nella home dopo l'animazione del logo, nelle altre pagine subito)
+  var d0 = document.getElementById('intro') ? 0.95 : 0.1;
   var title = document.getElementById('hero-title');
-  title.innerHTML = title.textContent.trim().split(/\s+/).map(function (w) { return '<span class="w">' + w + '</span>'; }).join(' ');
-  gsap.from(title.querySelectorAll('.w'), { yPercent: 60, opacity: 0, duration: 1, ease: 'power3.out', stagger: 0.05, delay: 0.95 });
-  gsap.from('.hero__kicker, .hero__lead, .hero__actions, .hero__facts', { y: 20, opacity: 0, duration: .9, ease: 'power3.out', stagger: .07, delay: 1.2 });
-  gsap.from('.owner', { scale: .9, opacity: 0, duration: 1.1, ease: 'power3.out', delay: 1 });
+  if (title) {
+    title.innerHTML = title.textContent.trim().split(/\s+/).map(function (w) { return '<span class="w">' + w + '</span>'; }).join(' ');
+    gsap.from(title.querySelectorAll('.w'), { yPercent: 60, opacity: 0, duration: 1, ease: 'power3.out', stagger: 0.05, delay: d0 });
+    gsap.from('.crumbs, .hero__kicker, .hero__lead, .hero__actions, .hero__facts', { y: 20, opacity: 0, duration: .9, ease: 'power3.out', stagger: .07, delay: d0 + 0.25 });
+    gsap.from('.owner', { scale: .9, opacity: 0, duration: 1.1, ease: 'power3.out', delay: d0 + 0.05 });
+  }
+  // Nelle pagine interne i blocchi entrano dal basso quando arrivano sullo schermo
+  gsap.utils.toArray('.reveal').forEach(function (el) {
+    gsap.from(el, { y: 36, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%', once: true } });
+  });
 
   // La sala si apre dall'ovale del logo fino a tutto schermo (solo transform e opacità)
   var salaBox = document.getElementById('sala-media');
+  if (salaBox) (function () {
   var salaImg = document.getElementById('sala-img');
   var salaShade = document.querySelector('.sala__shade');
   var salaText = document.querySelector('.sala__text');
@@ -283,17 +299,18 @@
     onUpdate: function (st) { salaAt(st.progress); },
     onRefresh: function (st) { salaSize(); salaAt(st.progress); }
   });
+  })();
 
 
   // Parallasse leggero sull'insegna
-  gsap.fromTo('.family__photo img', { yPercent: -8 }, { yPercent: 4, ease: 'none', scrollTrigger: { trigger: '.family', start: 'top bottom', end: 'bottom top', scrub: true } });
+  if (document.querySelector('.family__photo img')) gsap.fromTo('.family__photo img', { yPercent: -8 }, { yPercent: 4, ease: 'none', scrollTrigger: { trigger: '.family', start: 'top bottom', end: 'bottom top', scrub: true } });
 
   addEventListener('load', function () { window.ScrollTrigger.refresh(); });
 })();
 
 // Il menu: una sezione alla volta (Antipasti, Ciorbe, ...), con frecce da tastiera
 (function () {
-  var tabs = [].slice.call(document.querySelectorAll('.carta__tab'));
+  var tabs = [].slice.call(document.querySelectorAll('button.carta__tab'));
   if (!tabs.length) return;
   var bar = tabs[0].parentNode;
   function show(tab, focus) {

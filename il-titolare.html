@@ -18,6 +18,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sorts+Mill+Goudy:ital@0;1&family=Figtree:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="/style.css">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preload" as="image" href="/img/titolare.webp" fetchpriority="high">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
 <script type="application/ld+json">
 {
  "@context": "https://schema.org",
@@ -68,13 +77,18 @@
     "addressRegion": "VR",
     "addressCountry": "IT"
    },
-   "openingHours": "Mo-Su 09:00-20:00"
+   "openingHours": "Mo-Su 09:00-20:00",
+   "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.7",
+    "reviewCount": "232"
+   }
   }
  ]
 }
 </script>
 </head>
-<body class="page-menu page-site">
+<body class="page-inner">
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="logo" viewBox="0 0 240 140">
@@ -93,7 +107,7 @@
 
 <a class="skip" href="#contenuto">Vai al contenuto</a>
 
-<header class="nav is-scrolled" id="top">
+<header class="nav" id="top">
   <div class="nav__inner">
     <a class="brand" href="/" aria-label="Alba Iulia, torna alla home">
       <svg class="brand__logo" aria-hidden="true"><use href="#logo"/></svg>
@@ -114,96 +128,125 @@
 </header>
 
 <main id="contenuto">
-  <section class="mp-hero">
-    <div class="wrap mp-hero__inner">
-      <div class="mp-hero__copy">
+  <section class="hero hero--page" id="hero">
+    <canvas class="hero__gl" id="gl" aria-hidden="true"></canvas>
+    <div class="hero__inner">
+      <div class="hero__copy">
         <nav class="crumbs" aria-label="Sei qui"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">Il titolare</span></nav>
-        <p class="carta__kicker">Dal 2004 · Famiglia Sbuciumelea</p>
-        <h1>Il titolare</h1>
-        <p class="mp-hero__intro">Ogni giorno in sala e al banco, per accogliervi di persona. Alba Iulia è un locale di famiglia: chi vi accoglie è chi l'ha costruito, un pezzo alla volta.</p>
-        <p class="mp-hero__meta"><span>Dal 2004</span><span>Famiglia Sbuciumelea</span><span>Via Luigi Prina 21</span></p>
+        <p class="hero__kicker">Dal 2004 · Famiglia Sbuciumelea</p>
+        <h1 class="hero__title" id="hero-title">Il titolare e la sua famiglia.</h1>
+        <p class="hero__lead">Ogni giorno in sala e al banco, per accogliervi di persona. Alba Iulia è un locale di famiglia: chi vi accoglie è chi l'ha costruito, un pezzo alla volta.</p>
+        <div class="hero__actions">
+          <a class="btn btn--solid btn--lg magnetic js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei prenotare un tavolo da Alba Iulia.">
+            <svg aria-hidden="true"><use href="#wa"/></svg>Prenota su WhatsApp
+          </a>
+          <a class="btn btn--ghost btn--lg magnetic" href="tel:+390458626014"><svg aria-hidden="true"><use href="#tel"/></svg>045 862 6014</a>
+        </div>
       </div>
-      <figure class="pg-photo pg-photo--portrait">
-        <img src="/img/titolare.webp" alt="Il titolare di Alba Iulia, sorridente, nel suo locale" width="764" height="954" fetchpriority="high" decoding="async">
+
+      <figure class="owner">
+        <div class="owner__frame" id="owner-frame">
+          <div class="owner__ring" aria-hidden="true"></div>
+          <div class="owner__photo">
+            <img src="/img/titolare.webp" alt="Il titolare di Alba Iulia, sorridente, nel suo locale" width="764" height="954" style="object-position:50% 30%" fetchpriority="high" decoding="async">
+            <span class="owner__glare" aria-hidden="true"></span>
+          </div>
+        </div>
+        <figcaption class="owner__tag">
+          <b>Il titolare</b>
+          <span>Ogni giorno in sala e al banco, per accogliervi di persona.</span>
+        </figcaption>
       </figure>
     </div>
+
+    <dl class="hero__facts">
+      <div><dt>Dal 2004</dt><dd><strong>Il primo</strong> locale romeno a Verona</dd></div>
+      <div><dt>La famiglia</dt><dd><strong>Sbuciumelea</strong> in sala e al banco</dd></div>
+      <div><dt>Su Google</dt><dd><strong>4,7</strong> su 5, 232 recensioni</dd></div>
+    </dl>
   </section>
 
-  <section class="pg-section">
-    <div class="wrap pg-split">
-      <figure class="pg-split__media reveal"><img src="/img/insegna.webp" alt="L'insegna ovale sulla parete capitonné: Caffetteria Alba Iulia Gastronomia, dal 2004 famiglia Sbuciumelea" width="708" height="732" loading="lazy" decoding="async"></figure>
-      <div class="pg-split__copy reveal">
-        <p class="pg-kicker">La nostra storia</p>
-        <h2>Vent'anni fa abbiamo aperto la porta. Da allora non l'abbiamo più chiusa.</h2>
+  <section class="family">
+    <div class="wrap family__inner">
+      <figure class="family__photo reveal">
+        <img src="/img/insegna.webp" alt="L&#x27;insegna ovale sulla parete capitonné: Caffetteria Alba Iulia Gastronomia, dal 2004 famiglia Sbuciumelea" width="708" height="732" loading="lazy" decoding="async">
+      </figure>
+      <div class="family__copy reveal">
+        <p class="sec-kicker sec-kicker--light">La nostra storia</p>
+        <h2>Vent&#x27;anni fa abbiamo aperto la porta. Da allora non l&#x27;abbiamo più chiusa.</h2>
         <p>Nel 2004 Alba Iulia è stato il primo locale di Verona dedicato alla gastronomia tipica romena, e il secondo in tutta Italia. Porta il nome della città simbolo della nostra terra, e l'abbiamo costruito come si costruisce una casa: un pezzo alla volta.</p>
         <p>Oggi in sala e al banco c'è ancora la famiglia Sbuciumelea. Nel 2022 abbiamo inaugurato i nuovi spazi di caffetteria e gastronomia, con lo stesso spirito del primo giorno.</p>
+        <ol class="timeline">
+          <li><b>2004</b><span>Apre Alba Iulia in Via Luigi Prina</span></li>
+          <li><b>2022</b><span>Nuovi spazi di caffetteria e gastronomia</span></li>
+          <li><b>Oggi</b><span>Ristorante, caffè, gastronomia e macelleria</span></li>
+        </ol>
       </div>
     </div>
   </section>
 
-  <section class="pg-section pg-section--brand">
-    <div class="wrap">
-      <header class="pg-head reveal">
-        <p class="pg-kicker">Le tappe</p>
-        <h2>Da una porta aperta in Via Luigi Prina a quattro attività sotto lo stesso tetto</h2>
-      </header>
-      <ol class="pg-timeline">
-        <li class="reveal"><b>2004</b><h3>Si apre la porta</h3><p>Nasce Alba Iulia in Via Luigi Prina: il primo locale di Verona dedicato alla gastronomia tipica romena.</p></li>
-        <li class="reveal"><b>2022</b><h3>I nuovi spazi</h3><p>Inauguriamo la nuova caffetteria e la gastronomia, con il bancone e la parete capitonné che oggi ci rappresentano.</p></li>
-        <li class="reveal"><b>Oggi</b><h3>Una casa per tutti</h3><p>Ristorante, caffetteria, gastronomia e macelleria, aperti sette giorni su sette dalle 9 alle 20.</p></li>
-      </ol>
-    </div>
-  </section>
-
-  <section class="pg-section">
-    <div class="wrap">
-      <header class="pg-head reveal">
-        <p class="pg-kicker">Come lavoriamo</p>
+  <section class="services">
+    <div class="services__pin">
+      <header class="services__head reveal">
         <h2>Quello che ci chiedete di non cambiare mai</h2>
+        <p>Tre cose che la famiglia Sbuciumelea porta in tavola ogni giorno, dal 2004.</p>
+        <div class="services__ctrl">
+          <button type="button" class="round round--dark" id="svc-prev" aria-label="Scheda precedente" disabled>‹</button>
+          <button type="button" class="round round--dark" id="svc-next" aria-label="Scheda successiva">›</button>
+        </div>
       </header>
-      <ul class="pg-cards">
-        <li class="reveal"><span class="pg-cards__num">01</span><h3>Ricette di famiglia</h3><p>Sarmale, mici, ciorbe e tochitură come si preparano a casa in Romania, accanto ai piatti della cucina italiana.</p></li>
-        <li class="reveal"><span class="pg-cards__num">02</span><h3>Fatto da noi</h3><p>I mici sono di nostra produzione e la carne arriva dal nostro banco di macelleria, la stessa che potete portare a casa.</p></li>
-        <li class="reveal"><span class="pg-cards__num">03</span><h3>Accoglienza</h3><p>Porzioni generose e un'accoglienza che fa tornare: per tanti romeni a Verona è il sapore di casa, per tanti veronesi una cucina da scoprire.</p></li>
-      </ul>
+      <div class="services__track services__track--3" id="services-track">
+        <a class="service service--link" href="/menu">
+          <div class="service__media"><img src="/img/menu/sarmale.webp" alt="Sarmale con mămăligă e smântână" width="800" height="600" loading="lazy" decoding="async"></div>
+          <h3>Ricette di famiglia</h3>
+          <p>Sarmale, mici, ciorbe e tochitură come si preparano a casa in Romania, accanto ai piatti della cucina italiana.</p>
+          <span class="service__go">Scopri <span aria-hidden="true">→</span></span>
+        </a>
+        <a class="service service--link" href="/macelleria">
+          <div class="service__media"><img src="/img/banco.webp" alt="Un taglio di manzo al banco della macelleria" width="1012" height="733" loading="lazy" decoding="async"></div>
+          <h3>Fatto da noi</h3>
+          <p>I mici sono di nostra produzione e la carne arriva dal nostro banco di macelleria, la stessa che potete portare a casa.</p>
+          <span class="service__go">Scopri <span aria-hidden="true">→</span></span>
+        </a>
+        <article class="service">
+          <div class="service__media"><img src="/img/bancone.webp" alt="Il bancone con il titolare al lavoro" width="530" height="771" loading="lazy" decoding="async"></div>
+          <h3>Accoglienza</h3>
+          <p>Porzioni generose e un&#x27;accoglienza che fa tornare: per tanti romeni a Verona è il sapore di casa.</p>
+        </article>
+      </div>
     </div>
   </section>
 
-  <section class="pg-quote">
-    <div class="wrap pg-quote__inner reveal">
-      <p class="pg-quote__score"><strong>4,7</strong><span>su 5 · 232 recensioni su Google</span></p>
-      <p class="pg-quote__text">“Cucina di famiglia, porzioni generose e un'accoglienza che fa tornare.”</p>
+  <section class="reviews">
+    <div class="wrap reviews__inner reveal">
+      <p class="reviews__score"><strong>4,7</strong><span class="reviews__stars" aria-label="4,7 su 5"><i style="--fill:94%"></i></span><small>232 recensioni su Google</small></p>
+      <p class="reviews__big">Cucina di famiglia, porzioni generose e un'accoglienza che fa tornare. Per tanti romeni a Verona è il sapore di casa. Per tanti veronesi è la scoperta di una cucina nuova.</p>
       <a class="link" href="https://www.google.com/maps/search/?api=1&amp;query=Alba+Iulia+Via+Luigi+Prina+21+Verona" target="_blank" rel="noopener">Leggi le recensioni su Google</a>
     </div>
   </section>
 
-  <section class="mp-next pg-more" aria-label="Continua a scoprire Alba Iulia">
-    <div class="wrap mp-next__row">
-      <a class="mp-next__card reveal" href="/il-locale">
-        <img src="/img/sala.webp" alt="" width="1037" height="754" loading="lazy" decoding="async">
-        <span class="mp-next__label">Scopri →</span>
-        <span class="mp-next__name">Il locale</span>
-      </a>
-      <a class="mp-next__card reveal" href="/menu">
-        <img src="/img/piatto.webp" alt="" width="682" height="833" loading="lazy" decoding="async">
-        <span class="mp-next__label">Sfoglia →</span>
-        <span class="mp-next__name">Il menu</span>
-      </a>
-    </div>
-  </section>
-
-  <section class="mp-cta">
-    <div class="wrap mp-cta__inner reveal">
-      <div>
-        <h2>Ti aspettiamo a tavola</h2>
-        <p>Via Luigi Prina 21, Verona. Aperti tutti i giorni. Prenota un tavolo o chiedici il piatto del giorno su WhatsApp.</p>
+  <section class="visit" id="contatti">
+    <div class="wrap visit__inner">
+      <div class="visit__info reveal">
+        <h2>Via Luigi Prina 21, Verona</h2>
+        <dl class="visit__list">
+          <div><dt>Orari</dt><dd>Tutti i giorni, 09:00 – 20:00<span class="visit__status" id="open-status" aria-live="polite"></span></dd></div>
+          <div><dt>Telefono</dt><dd><a class="link" href="tel:+390458626014">045 862 6014</a></dd></div>
+          <div><dt>WhatsApp</dt><dd><a class="link js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei prenotare un tavolo da Alba Iulia.">345 696 7120</a></dd></div>
+          <div><dt>Indirizzo</dt><dd>Via Luigi Prina, 21, 37136 Verona</dd></div>
+          <div><dt>Servizi</dt><dd>Sala, dehors, asporto e consegna a domicilio</dd></div>
+        </dl>
+        <div class="visit__actions">
+          <a class="btn btn--wa btn--lg magnetic js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei prenotare un tavolo da Alba Iulia.">
+            <svg aria-hidden="true"><use href="#wa"/></svg>Scrivici su WhatsApp
+          </a>
+          <a class="btn btn--ghost btn--lg magnetic" href="https://www.google.com/maps/dir/?api=1&amp;destination=Via+Luigi+Prina+21+37136+Verona" target="_blank" rel="noopener">Indicazioni stradali</a>
+        </div>
       </div>
-      <div class="mp-cta__actions">
-        <a class="btn btn--solid btn--lg js-wa" href="https://wa.me/393456967120" target="_blank" rel="noopener" data-msg="Ciao! Vorrei prenotare un tavolo da Alba Iulia."><svg aria-hidden="true"><use href="#wa"/></svg>Prenota su WhatsApp</a>
-        <a class="btn btn--ghost btn--lg" href="tel:+390458626014"><svg aria-hidden="true"><use href="#tel"/></svg>045 862 6014</a>
+      <div class="visit__map reveal">
+        <iframe title="Mappa: Alba Iulia, Via Luigi Prina 21, Verona" src="https://maps.google.com/maps?q=Via%20Luigi%20Prina%2021%2C%2037136%20Verona&amp;z=16&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
-    <p class="wrap mp-cta__note">Coperto € 2,00 a persona. Per allergie e intolleranze chiedi al personale: ti indichiamo gli ingredienti di ogni piatto.</p>
   </section>
 </main>
 
@@ -234,6 +277,14 @@
   <span class="wa-float__label">Scrivici su WhatsApp</span>
 </a>
 
-<script src="/pagine.js" defer></script>
+<dialog class="lightbox" id="lightbox" aria-label="Foto ingrandita">
+  <button class="lightbox__close" type="button" id="lightbox-close" aria-label="Chiudi">×</button>
+  <img id="lightbox-img" alt="">
+</dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="/ui.js"></script>
+<script type="module" src="/wall.js"></script>
 </body>
 </html>
