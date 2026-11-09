@@ -158,6 +158,24 @@ def write(rel, text):
     print("scritto", rel)
 
 
+ASSETS = ("style.css", "ui.js", "fire.js", "wall.js")
+
+
+def stamp_versions():
+    """Aggiunge a style.css, ui.js, ... un numero di versione (?v=...) legato al contenuto del file.
+    Così, dopo ogni modifica, i browser scaricano subito i file nuovi invece di usare quelli vecchi in memoria."""
+    import hashlib
+    import glob
+    ver = {a: hashlib.md5(open(os.path.join(ROOT, a), "rb").read()).hexdigest()[:8] for a in ASSETS}
+    pat = re.compile(r'((?:href|src)=")(/?)(' + "|".join(re.escape(a) for a in ASSETS) + r')(?:\?v=[0-9a-f]+)?"')
+    for f in glob.glob(os.path.join(ROOT, "*.html")) + glob.glob(os.path.join(ROOT, "menu", "*.html")):
+        t = open(f, encoding="utf-8").read()
+        n = pat.sub(lambda m: f'{m.group(1)}{m.group(2)}{m.group(3)}?v={ver[m.group(3)]}"', t)
+        if n != t:
+            open(f, "w", encoding="utf-8").write(n)
+    print("versioni", ver)
+
+
 if __name__ == "__main__":
     import sys
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -174,6 +192,7 @@ if __name__ == "__main__":
     n1 = idx.index("</nav>", n0)
     idx = idx[:n0] + '<nav class="nav__links" id="menu" aria-label="Sezioni">\n' + nav_links(None) + "\n    " + idx[n1:]
     write("index.html", idx)
+    stamp_versions()
     url = lambda path, pr: f"  <url><loc>{SITE}{path}</loc><changefreq>monthly</changefreq><priority>{pr}</priority></url>"
     sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', url("/", "1.0")]
     sm += [url(href, "0.9") for _, href in NAV]

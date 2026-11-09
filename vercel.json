@@ -21,6 +21,6 @@
       ]
     },
     { "source": "/(img|fuoco|dolce)/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000, immutable" }] },
-    { "source": "/(.*)\\.(css|js|svg)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }] }
+    { "source": "/(.*)\\.(css|js|svg)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] }
   ]
 }
