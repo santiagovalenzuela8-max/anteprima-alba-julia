@@ -98,7 +98,6 @@ def home_section():
     <div class="wrap">
       <header class="carta__head">
         <div>
-          <p class="carta__kicker">Meniu · Il menu</p>
           <h2 id="carta-title">Il nostro menu</h2>
         </div>
         <div class="carta__lead">

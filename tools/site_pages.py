@@ -156,6 +156,35 @@ def page(path, crumbs, title, desc, og, preload, body, extra_ld=None, active=Non
     return head(title, desc, path, og, ld(path, crumbs, extra_ld), active or path, "/img/" + preload, dark) + body + FOOT
 
 
+def _words(text, k):
+    import re as _re
+    import unicodedata
+    t = unicodedata.normalize("NFD", _re.sub(r"<[^>]+>", " ", text).lower())
+    t = "".join(ch for ch in t if not unicodedata.combining(ch))
+    return {w[:k] for w in _re.findall(r"[a-z]+", t) if len(w) >= 4}
+
+
+def repeats(small, title, k=4):
+    """True se la scritta piccola (o la parola in filigrana) ripete una parola del titolo."""
+    return bool(_words(small, k) & _words(title, k))
+
+
+def label_html(label, title, center=False):
+    """Etichetta sopra il titolo: si omette se ripete una parola del titolo; può essere un link."""
+    text, href = label[1], (label[2] if len(label) > 2 else None)
+    if repeats(text, title):
+        return ""
+    cls = "ed-label ed-label--center" if center else "ed-label"
+    inner = f'<a href="{href}">{e(text)}</a>' if href else e(text)
+    return f'<p class="{cls}">{inner}</p>'
+
+
+def ghost_html(ghost, title):
+    if not ghost or repeats(ghost, title, 3):
+        return ""
+    return f'<span class="ed-ghost" aria-hidden="true">{e(ghost)}</span>'
+
+
 def crumbs_html(crumbs):
     out = ['<a href="/">Home</a>']
     for i, (n, h) in enumerate(crumbs):
@@ -181,11 +210,10 @@ def badge(text, uid):
 def hero_arch(crumbs, label, title, lead, pic, alt, actions, fx, ghost, badge_text, oval=False, dark=False, pos="50% 40%"):
     """Testo a sinistra, foto ad arco (o ovale) a destra con il filetto dorato e il sigillo rotante."""
     return f"""  <section class="ed-hero ed-hero--arch{' ed-hero--dark' if dark else ''}">
-    <span class="ed-ghost" aria-hidden="true">{e(ghost)}</span>
+    {ghost_html(ghost, title + " " + label[1])}
     <div class="wrap ed-hero__grid">
       <div class="ed-hero__copy">
-        {crumbs_html(crumbs)}
-        <p class="ed-label">{e(label[1])}</p>
+        {label_html(label, title)}
         <h1 class="ed-title ed-split">{title}</h1>
         <p class="ed-lead">{lead}</p>
         <div class="ed-actions">{actions}</div>
@@ -203,10 +231,9 @@ def hero_arch(crumbs, label, title, lead, pic, alt, actions, fx, ghost, badge_te
 def hero_wide(crumbs, label, title, lead, pic, alt, actions, ghost):
     """Titolo su tutta la larghezza, poi la foto in panoramica che scorre più lenta."""
     return f"""  <section class="ed-hero ed-hero--wide">
-    <span class="ed-ghost" aria-hidden="true">{e(ghost)}</span>
+    {ghost_html(ghost, title + " " + label[1])}
     <div class="wrap">
-      {crumbs_html(crumbs)}
-      <p class="ed-label">{e(label[1])}</p>
+      {label_html(label, title)}
       <h1 class="ed-title ed-title--xl ed-split">{title}</h1>
       <div class="ed-hero__row">
         <p class="ed-lead">{lead}</p>
@@ -223,11 +250,10 @@ def hero_center(crumbs, label, title, lead, actions, pics, ghost):
     fl = "\n".join(f'      <figure class="ed-float ed-float--{i + 1}" data-speed="{s}">{img(p, a, lazy=False)}</figure>'
                    for i, ((p, a), s) in enumerate(zip(pics, (-18, -30, -10))))
     return f"""  <section class="ed-hero ed-hero--center">
-    <span class="ed-ghost" aria-hidden="true">{e(ghost)}</span>
+    {ghost_html(ghost, title + " " + label[1])}
 {fl}
     <div class="wrap ed-hero__center">
-      {crumbs_html(crumbs)}
-      <p class="ed-label ed-label--center">{e(label[1])}</p>
+      {label_html(label, title, center=True)}
       <h1 class="ed-title ed-split">{title}</h1>
       <p class="ed-lead">{lead}</p>
       <div class="ed-actions">{actions}</div>
@@ -240,8 +266,8 @@ def hero_center(crumbs, label, title, lead, actions, pics, ghost):
 
 def sec_head(label, h2, intro=None, center=False):
     i = f'\n        <p class="ed-intro">{intro}</p>' if intro else ""
-    return f"""      <header class="ed-head{' ed-head--center' if center else ''}">
-        <p class="ed-label"><span>—</span>{e(label)}</p>
+    lab = "" if repeats(label, h2) else f'\n        <p class="ed-label"><span>—</span>{e(label)}</p>'
+    return f"""      <header class="ed-head{' ed-head--center' if center else ''}">{lab}
         <h2 class="ed-h2 ed-split">{h2}</h2>{i}
       </header>"""
 
@@ -323,7 +349,7 @@ def titolare():
                      "Ogni giorno in sala e al banco, per accogliervi di persona. Alba Iulia è un locale di famiglia: chi vi accoglie è chi l'ha costruito, un pezzo alla volta.",
                      "titolare.webp", "Il titolare di Alba Iulia, sorridente, nel suo locale",
                      btn_wa("Prenota un tavolo", BOOK) + btn_tel(),
-                     [("Dal", "2004"), ("Famiglia", "Sbuciumelea"), ("Su Google", "4,7 / 5")], "Familia",
+                     [("Dal", "2004"), ("In sala e al banco", "Sbuciumelea"), ("Su Google", "4,7 / 5")], "Familia",
                      "FAMIGLIA SBUCIUMELEA · DAL 2004 · VERONA · ", pos="50% 28%")
     story = [
         ("2004", "Si apre la porta", "Alba Iulia nasce in Via Luigi Prina: il primo locale di Verona dedicato alla gastronomia tipica romena, e il secondo in tutta Italia. Porta il nome della città simbolo della nostra terra.", "insegna.webp", "L'insegna di Alba Iulia sulla parete capitonné"),
@@ -448,7 +474,7 @@ def index_rows(current=None):
         rows.append(f"""        <li><a class="ed-index__row" href="/menu/{k["slug"]}" data-img="/img/{pic}"{cur}>
           <span class="ed-index__thumb">{img(pic, k["dishes"][0]["name"])}</span>
           <span class="ed-index__name">{e(k["it"])} <em>{e(k["ro"])}</em></span>
-          <span class="ed-index__meta">{plural(len(k["dishes"]))}<br>{price_range(k)}</span>
+          <span class="ed-index__meta">{price_range(k)}</span>
           <span class="ed-index__arrow" aria-hidden="true">→</span>
         </a></li>""")
     return f"""      <ul class="ed-index">
@@ -494,7 +520,7 @@ def menu_index():
     path = "/menu"
     total = sum(len(k["dishes"]) for k in CATS)
     body = hero_center([("Menu", path)], ("", "Il menu"), "Il nostro <em>menu.</em>",
-                       f"Cucina tradizionale romena preparata ogni giorno dalla famiglia Sbuciumelea: {total} piatti tra antipasti, ciorbe, secondi, grigliate, contorni e dolci.",
+                       "Cucina tradizionale romena preparata ogni giorno dalla famiglia Sbuciumelea: antipasti, ciorbe, secondi, grigliate, contorni e dolci.",
                        btn_wa("Prenota un tavolo", BOOK) + '<a class="btn btn--ghost btn--lg magnetic" href="#carta">Leggi la carta</a>',
                        [("menu/sarmale.webp", "Sarmale con mămăligă"), ("menu/mici.webp", "Mici alla griglia"), ("menu/papanasi.webp", "Papanași")], "Meniu")
     body += f"""
@@ -519,11 +545,11 @@ def category(i, c):
     path = f"/menu/{c['slug']}"
     n = len(c["dishes"])
     first = c["dishes"][0]
-    body = hero_arch([("Menu", "/menu"), (c["it"], path)], ("", "Il menu"), e(c["it"]) + ".",
+    body = hero_arch([("Menu", "/menu"), (c["it"], path)], ("", "← Tutto il menu", "/menu"), e(c["it"]) + ".",
                      e(c["intro"]), f"menu/{first['img']}.webp", first["name"],
                      btn_wa("Prenota un tavolo", f"Ciao! Vorrei prenotare un tavolo da Alba Iulia. Ho visto il menu: {c['it']}.") +
                      '<a class="btn btn--ghost btn--lg magnetic" href="#piatti">Vedi i piatti</a>',
-                     [("Piatti", str(n)), ("Prezzi", price_range(c)), ("Coperto", euro(DATA["coperto"]))], c["ro"],
+                     [("Prezzi", price_range(c)), ("Coperto", euro(DATA["coperto"]) + " a persona")], c["ro"].split(" ")[0],
                      f"{c['ro'].upper()} · ALBA IULIA · VERONA · ", oval=True, pos="50% 50%")
     tiles = []
     for d in c["dishes"]:
@@ -536,7 +562,7 @@ def category(i, c):
     body += f"""
   <section class="ed-sec" id="piatti">
     <div class="wrap">
-{sec_head(c["ro"], f"{plural(n).capitalize()}, da gustare in sala o da portare <em>via.</em>")}
+{sec_head("In carta", "Da gustare in sala o da portare <em>via.</em>")}
       <ul class="ed-dishes ed-dishes--{min(n, 3)}">
 {chr(10).join(tiles)}
       </ul>
@@ -546,7 +572,7 @@ def category(i, c):
 
   <section class="ed-sec ed-sec--cream">
     <div class="wrap">
-{sec_head("Il menu", "Le altre <em>sezioni.</em>")}
+{sec_head("Continua a sfogliare", "Le altre <em>sezioni.</em>")}
 {index_rows(c)}
     </div>
   </section>
@@ -595,7 +621,7 @@ def macelleria():
     steps = [("Scrivete cosa vi serve", "Il taglio, il peso, quante persone siete: un messaggio su WhatsApp o una telefonata."),
              ("Prepariamo l'ordine", "La carne viene tagliata e confezionata al momento, come la chiedete."),
              ("Ritiro o consegna", "Passate in Via Luigi Prina 21 oppure ve la portiamo a domicilio.")]
-    li = "\n".join(f'        <li class="reveal"><b>{i + 1}</b><h3>{e(h)}</h3><p>{e(t)}</p></li>' for i, (h, t) in enumerate(steps))
+    li = "\n".join(f'        <li class="reveal"><h3>{e(h)}</h3><p>{e(t)}</p></li>' for i, (h, t) in enumerate(steps))
     body += f"""
   <section class="ed-sec ed-sec--cream">
     <div class="wrap">
