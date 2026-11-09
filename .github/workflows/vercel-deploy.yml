@@ -2,10 +2,10 @@ name: Pubblica su Vercel (ristorante-alba-iulia)
 
 # Crea (se manca) il progetto Vercel "ristorante-alba-iulia", pubblica il sito in produzione
 # e collega albaiulia.it + www.albaiulia.it. Serve il segreto VERCEL_TOKEN nel repository.
+# Le pubblicazioni normali le fa Vercel da solo (progetto collegato a GitHub, ramo main).
+# Questo resta solo per lanciarlo a mano, se mai servisse.
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
 
 concurrency: vercel-production
 
