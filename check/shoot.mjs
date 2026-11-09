@@ -1,4 +1,4 @@
-// Controllo del sito pubblicato: stato HTTP, errori JS, scorrimento laterale e screenshot
+// Controllo del sito pubblicato (giro 2): stato HTTP, errori JS, scorrimento laterale e screenshot
 import { chromium, devices } from 'playwright';
 import fs from 'fs';
 const BASE = 'https://albaiulia.it';
