@@ -48,7 +48,7 @@
     });
   });
   // Le voci della barra aprono le pagine; nella home si evidenzia la voce della sezione che si sta guardando
-  var SECTION = { titolare: '/il-titolare', famiglia: '/il-titolare', locale: '/il-locale', carta: '/menu',
+  var SECTION = { titolare: '/la-famiglia', famiglia: '/la-famiglia', locale: '/il-locale', carta: '/menu',
                   macelleria: '/macelleria', galleria: '/galleria', dove: '/dove-siamo' };
   var links = {};
   document.querySelectorAll('.nav__links a').forEach(function (a) {
@@ -173,6 +173,68 @@
       });
     });
   }
+
+  /* ---------- Nastro di foto: gira da solo, si ferma sotto il mouse o il dito, si trascina ---------- */
+  document.querySelectorAll('.ed-marquee').forEach(function (box) {
+    var view = box.querySelector('.ed-marquee__view'), track = box.querySelector('.ed-marquee__track');
+    if (!view || !track) return;
+    box.classList.add('is-js');
+    var hold = 0, down = false, sx = 0, sl = 0, acc = 0, last = 0, visible = false, running = false, anim = null;
+    var SPEED = 0.035;                                   // pixel al millisecondo quando gira da solo
+    function now() { return performance.now(); }
+    function half() { return track.scrollWidth / 2; }
+    // la fila è ripetuta due volte: quando si arriva a metà si torna indietro di mezza fila, senza scatti
+    function wrap() {
+      var h = half(), d = 0;
+      if (h < 10) return 0;
+      if (view.scrollLeft >= h) d = -h; else if (view.scrollLeft < 1) d = h;
+      if (d) { view.scrollLeft += d; if (anim) { anim.from += d; anim.to += d; } if (down) sl += d; }
+      return d;
+    }
+    function step() { var li = track.children[0]; return li ? li.getBoundingClientRect().width + 20 : 300; }
+    function tick(t) {
+      var dt = last ? Math.min(t - last, 50) : 16; last = t;
+      if (anim) {
+        var k = Math.min(1, (t - anim.t0) / 600), ease = 1 - Math.pow(1 - k, 3);
+        view.scrollLeft = anim.from + (anim.to - anim.from) * ease;
+        if (k >= 1) anim = null;
+      } else if (!down && t > hold && !reduced) {
+        acc += dt * SPEED;
+        var px = Math.floor(acc);
+        if (px) { view.scrollLeft += px; acc -= px; }
+      }
+      wrap();
+      if (visible) requestAnimationFrame(tick); else { running = false; last = 0; }
+    }
+    function start() { if (!running && visible) { running = true; requestAnimationFrame(tick); } }
+    function pause(ms) { hold = ms === Infinity ? Infinity : now() + ms; }
+    // mouse: sopra si ferma, si trascina tenendo premuto
+    view.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') pause(Infinity); });
+    view.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse' && !down) pause(500); });
+    view.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      down = true; anim = null; sx = e.clientX; sl = view.scrollLeft;
+      view.classList.add('is-dragging'); view.setPointerCapture(e.pointerId);
+    });
+    view.addEventListener('pointermove', function (e) { if (down) view.scrollLeft = sl - (e.clientX - sx); });
+    function up() { if (!down) return; down = false; view.classList.remove('is-dragging'); pause(view.matches(':hover') ? Infinity : 1500); }
+    view.addEventListener('pointerup', up);
+    view.addEventListener('pointercancel', up);
+    // dito e rotellina/trackpad: lo scorrimento è quello naturale, il nastro aspetta e poi riparte
+    view.addEventListener('touchstart', function () { anim = null; pause(Infinity); }, { passive: true });
+    view.addEventListener('touchend', function () { pause(2500); }, { passive: true });
+    view.addEventListener('wheel', function (e) { if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) pause(2500); }, { passive: true });
+    // frecce e tastiera
+    function go(dir) { pause(3500); anim = { from: view.scrollLeft, to: view.scrollLeft + dir * step(), t0: now() }; start(); }
+    box.querySelectorAll('[data-dir]').forEach(function (b) { b.addEventListener('click', function () { go(+b.getAttribute('data-dir')); }); });
+    view.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { go(1); e.preventDefault(); }
+      if (e.key === 'ArrowLeft') { go(-1); e.preventDefault(); }
+    });
+    view.scrollLeft = 1;
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; start(); }).observe(box);
+    else { visible = true; start(); }
+  });
 
   /* ---------- Lightbox ---------- */
   var box = document.getElementById('lightbox');

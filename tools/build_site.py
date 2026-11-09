@@ -3,7 +3,7 @@
 
     python3 tools/build_site.py
 
-- una pagina per ogni voce della barra: /il-titolare, /il-locale, /menu, /macelleria,
+- una pagina per ogni voce della barra: /la-famiglia, /il-locale, /menu, /macelleria,
   /galleria, /dove-siamo, e le pagine del menu dei piatti /menu/antipasti, /menu/ciorbe, ...
   (modelli e testi in tools/site_pages.py, piatti e prezzi in tools/menu.json)
 - in index.html la parte tra <!-- IL MENU COMPLETO --> e <!-- MACELLERIA -->, e sitemap.xml
@@ -66,7 +66,7 @@ SPRITE = SPRITE[SPRITE.index('<svg width="0" height="0"'):]
 SPRITE = SPRITE[:SPRITE.index("</svg>") + 6]
 
 
-NAV = [("Il titolare", "/il-titolare"), ("Il locale", "/il-locale"), ("Menu", "/menu"),
+NAV = [("La famiglia", "/la-famiglia"), ("Il locale", "/il-locale"), ("Menu", "/menu"),
        ("Macelleria", "/macelleria"), ("Galleria", "/galleria"), ("Dove siamo", "/dove-siamo")]
 
 

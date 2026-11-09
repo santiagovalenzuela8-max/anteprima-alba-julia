@@ -2,6 +2,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
+    { "source": "/il-titolare", "destination": "/la-famiglia", "permanent": true },
     {
       "source": "/:path*",
       "has": [{ "type": "host", "value": "www.albaiulia.it" }],

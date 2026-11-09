@@ -2,7 +2,7 @@
 
 Stesso linguaggio della home (bordeaux e oro, capitonné, l'ovale del logo, Sorts Mill Goudy),
 ma ogni pagina ha una composizione sua:
-- /il-titolare  titolo grande, ritratto ad arco con sigillo rotante, la storia con gli anni giganti
+- /la-famiglia  titolo grande, ritratto ad arco con sigillo rotante, la storia con gli anni giganti
 - /il-locale    sala in panoramica, quattro capitoli sfalsati, la giornata, nastro di foto
 - /menu         indice delle sezioni con la foto che segue il mouse, e la carta "stampata"
 - /menu/...     i piatti di una sezione con il prezzo nel sigillo
@@ -30,7 +30,7 @@ RESTAURANT = {
     "aggregateRating": {"@type": "AggregateRating", "ratingValue": "4.7", "reviewCount": "232"},
 }
 # ordine delle pagine: numero nell'etichetta e "pagina successiva"
-ORDER = [("/il-titolare", "Il titolare", "titolare.webp"), ("/il-locale", "Il locale", "sala.webp"),
+ORDER = [("/la-famiglia", "La famiglia", "titolare.webp"), ("/il-locale", "Il locale", "sala.webp"),
          ("/menu", "Il menu", "menu/tochitura.webp"), ("/macelleria", "La macelleria", "banco.webp"),
          ("/galleria", "La galleria", "bancone.webp"), ("/dove-siamo", "Dove siamo", "insegna.webp")]
 
@@ -304,19 +304,28 @@ def next_page(path):
 
 
 def marquee(pics):
-    row = "".join(f'<li>{img(p, a)}</li>' for p, a in pics)
+    """Nastro di foto che scorre da solo; si ferma sotto il mouse o il dito e si può trascinare."""
+    nodrag = ' draggable="false"'
+    row = "".join(f"<li>{img(p, a, extra=nodrag)}</li>" for p, a in pics)
     return f"""
   <section class="ed-marquee" aria-label="Foto del locale">
-    <ul class="ed-marquee__track">{row}{row.replace('alt="', 'aria-hidden="true" alt="')}</ul>
+    <div class="ed-marquee__view" tabindex="0" aria-label="Foto del locale: trascina o scorri per sfogliarle">
+      <ul class="ed-marquee__track">{row}{row.replace('alt="', 'aria-hidden="true" alt="')}</ul>
+    </div>
+    <div class="wrap ed-marquee__ctrl">
+      <p>Trascinate le foto o usate le frecce</p>
+      <button type="button" class="round round--dark" data-dir="-1" aria-label="Foto precedenti">‹</button>
+      <button type="button" class="round round--dark" data-dir="1" aria-label="Foto successive">›</button>
+    </div>
   </section>
 """
 
 
-# ---------------------------------------------------------------- /il-titolare
+# ---------------------------------------------------------------- /la-famiglia
 
 def titolare():
-    path = "/il-titolare"
-    body = hero_arch([("Il titolare", path)], (num(path), "Il titolare"), "La famiglia dietro il <em>bancone.</em>",
+    path = "/la-famiglia"
+    body = hero_arch([("La famiglia", path)], (num(path), "La famiglia"), "La famiglia dietro il <em>bancone.</em>",
                      "Ogni giorno in sala e al banco, per accogliervi di persona. Alba Iulia è un locale di famiglia: chi vi accoglie è chi l'ha costruito, un pezzo alla volta.",
                      "titolare.webp", "Il titolare di Alba Iulia, sorridente, nel suo locale",
                      btn_wa("Prenota un tavolo", BOOK) + btn_tel(),
@@ -360,7 +369,7 @@ def titolare():
   </section>
 """
     body += cta() + next_page(path)
-    return page(path, [("Il titolare", path)], "Il titolare e la famiglia Sbuciumelea · Alba Iulia Verona",
+    return page(path, [("La famiglia", path)], "La famiglia Sbuciumelea · Alba Iulia Verona",
                 "La storia di Alba Iulia a Verona: dal 2004 la famiglia Sbuciumelea accoglie in sala e al banco, nel primo locale di gastronomia romena della città.",
                 "/img/titolare-og.webp", "titolare.webp", body)
 
@@ -700,7 +709,7 @@ def dove():
 
 
 def build_all():
-    out = [("il-titolare.html", titolare()), ("il-locale.html", locale()), ("macelleria.html", macelleria()),
+    out = [("la-famiglia.html", titolare()), ("il-locale.html", locale()), ("macelleria.html", macelleria()),
            ("galleria.html", galleria()), ("dove-siamo.html", dove()), ("menu/index.html", menu_index())]
     out += [(f"menu/{k['slug']}.html", category(i, k)) for i, k in enumerate(CATS)]
     return out
